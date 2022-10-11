@@ -17,4 +17,12 @@ public class MemberServiceImpl implements MemberService {
 	public MemberVO login(MemberVO member) {
 		return mm.login(member);
 	}	
+	// 아이디 중복확인
+	public MemberVO idchk(String str) {
+		return mm.idchk(str);
+	}
+	// 이메일 중복확인
+	public MemberVO emchk(String str) {
+		return mm.emchk(str);
+	}
 }

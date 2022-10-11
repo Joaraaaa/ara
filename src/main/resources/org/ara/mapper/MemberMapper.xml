@@ -14,4 +14,14 @@
 		select * from member where
 		id=#{id} and password=#{password};
 	</select>
+	<!-- 아이디 중복확인 -->
+	<select id="idchk" resultType="org.ara.model.MemberVO">
+		select * from member where
+		id=#{str};
+	</select>
+	<!-- 이메일 중복확인 -->
+	<select id="emchk" resultType="org.ara.model.MemberVO">
+		select * from member where
+		email like concat(#{str},'%');
+	</select>
 </mapper>

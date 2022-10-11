@@ -11,6 +11,8 @@
 	Hello world!  
 </h1>
 <p>홈이다</p>
+<a href="/member/login">로그인</a>
+<a href="/member/signup">회원가입</a>
 아이디:${userInfo.id}
 </body>
 </html>
