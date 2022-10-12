@@ -3,7 +3,6 @@ package org.ara.model;
 public class MemberVO {
 	private boolean admin;
 	private boolean sns;
-	private String id;
 	private String password;
 	private String name;
 	private String email;
@@ -13,7 +12,6 @@ public class MemberVO {
 	private String birth_d;
 	private String sign_date;
 	private String userImg;
-	
 	public boolean isAdmin() {
 		return admin;
 	}
@@ -25,12 +23,6 @@ public class MemberVO {
 	}
 	public void setSns(boolean sns) {
 		this.sns = sns;
-	}
-	public String getId() {
-		return id;
-	}
-	public void setId(String id) {
-		this.id = id;
 	}
 	public String getPassword() {
 		return password;
@@ -88,8 +80,10 @@ public class MemberVO {
 	}
 	@Override
 	public String toString() {
-		return "MemberVO [admin=" + admin + ", sns=" + sns + ", id=" + id + ", password=" + password + ", name=" + name
-				+ ", email=" + email + ", gender=" + gender + ", birth_y=" + birth_y + ", birth_m=" + birth_m
-				+ ", birth_d=" + birth_d + ", sign_date=" + sign_date + ", userImg=" + userImg + "]";
+		return "MemberVO [admin=" + admin + ", sns=" + sns + ", password=" + password + ", name=" + name + ", email="
+				+ email + ", gender=" + gender + ", birth_y=" + birth_y + ", birth_m=" + birth_m + ", birth_d="
+				+ birth_d + ", sign_date=" + sign_date + ", userImg=" + userImg + "]";
 	}
+	
+	
 }

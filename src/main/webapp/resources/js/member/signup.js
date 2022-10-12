@@ -8,47 +8,47 @@
 
 
 
-let id = false;
-//let idd = false;
-$("#idchk").on("keyup",function(){ 
-	const idid=/^[a-z0-9-_]{5,20}$/g;
-	if($("#idchk").val()==""){
-		$("#idmsg").text("필수입력정보입니다.");
-		$("#idmsg").css("color","red");
-//		idd = false;
-	}else if(idid.test($("#idchk").val())){ 
-		$("#idmsg").text("");
-//		idd = true;
-		let idc=$("#idchk").val();
-		idcheck(idc);
-	}else{ 
-		$("#idmsg").text("5~20의 영문 소문자, 숫자와 특수기호 (-)(_)만 사용가능합니다.");
-		$("#idmsg").css("color","red");
-//		idd = false;
-	}
-})
-
-function idcheck(idc){
-	console.log(idc);
-	$.ajax({
-		type: "get",
-		url: "/member/signup/"+idc,
-		data: idc,
-		contentType: "application/json; charset=utf-8"
-	})
-	.done(function(r){
-//		alert("중복된 id 입니다.");
-		$("#idmsg").text("이미 사용중인 id 입니다.");
-		$("#idmsg").css("color","red");
-		id = false;
-	})
-	.fail(function(){
-//		alert("사용가능한 id 입니다.");
-		$("#idmsg").text("사용가능한 id 입니다.");
-		$("#idmsg").css("color","green");
-		id = true;
-	})
-}
+//let id = false;
+////let idd = false;
+//$("#idchk").on("keyup",function(){ 
+//	const idid=/^[a-z0-9-_]{5,20}$/g;
+//	if($("#idchk").val()==""){
+//		$("#idmsg").text("필수입력정보입니다.");
+//		$("#idmsg").css("color","red");
+////		idd = false;
+//	}else if(idid.test($("#idchk").val())){ 
+//		$("#idmsg").text("");
+////		idd = true;
+//		let idc=$("#idchk").val();
+//		idcheck(idc);
+//	}else{ 
+//		$("#idmsg").text("5~20의 영문 소문자, 숫자와 특수기호 (-)(_)만 사용가능합니다.");
+//		$("#idmsg").css("color","red");
+////		idd = false;
+//	}
+//})
+//
+//function idcheck(idc){
+//	console.log(idc);
+//	$.ajax({
+//		type: "get",
+//		url: "/member/signup/"+idc,
+//		data: idc,
+//		contentType: "application/json; charset=utf-8"
+//	})
+//	.done(function(r){
+////		alert("중복된 id 입니다.");
+//		$("#idmsg").text("이미 사용중인 id 입니다.");
+//		$("#idmsg").css("color","red");
+//		id = false;
+//	})
+//	.fail(function(){
+////		alert("사용가능한 id 입니다.");
+//		$("#idmsg").text("사용가능한 id 입니다.");
+//		$("#idmsg").css("color","green");
+//		id = true;
+//	})
+//}
 
 
 
@@ -94,20 +94,40 @@ $("#pwchk2").on("keyup",function(){
 
 
 var na = false;
-$("#nachk").on("blur",function(){
-	const name = /^[가-힣a-zA-Z]+$/;
+$("#nachk").on("keyup",function(){
+	const name = /^[가-힣a-zA-Z0-9-_]{1,20}$/g;
 	if($("#nachk").val()==""){
 		$("#namsg").text("필수입력정보입니다.").css("color","red");
-		na = false;
+//		na = false;
 	}else if(name.test($("#nachk").val())){
 		$("#namsg").text("");
-		na = true;
+		let nac=$("#nachk").val();
+		nacheck(nac);
+//		na = true;
 	}else{
 		$("#namsg").text("한글 또는 영문 대소문자 사용하세요.").css("color","red");
-		na = false;
+//		na = false;
 	}
 })
-
+function nacheck(nac){
+	console.log(nac);
+	$.ajax({
+		type: "get",
+		url: "/member/signup/"+nac,
+		data: nac,
+		contentType: "application/json; charset=utf-8"
+	})
+	.done(function(r){
+//		alert("중복된 id 입니다.");
+		$("#namsg").text("이미 사용중인 닉네임 입니다.").css("color","red");
+		na = false;
+	})
+	.fail(function(){
+//		alert("사용가능한 id 입니다.");
+		$("#namsg").text("사용가능한 닉네임 입니다.").css("color","green");
+		na = true;
+	})
+}
 
 
 
@@ -227,7 +247,7 @@ $("#signsub").on("click",function(e){
 
 	
 	
-	if(!(id && pw && pw2 && na && em)){
+	if(!(pw && pw2 && na && em)){
 
 		alert('입력해');
 	}else{

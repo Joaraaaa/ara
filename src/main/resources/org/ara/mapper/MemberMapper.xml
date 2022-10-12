@@ -6,22 +6,33 @@
 <mapper namespace="org.ara.mapper.MemberMapper">
 	<!-- 회원가입 -->
 	<insert id="signUp">
-		insert into member(id,password,name,email)
-		values(#{id},#{password},#{name},#{email})
+		insert into member(email,password,name)
+		values(#{email},#{password},#{name})
 	</insert>
 	<!-- 로그인 -->
 	<select id="login" resultType="org.ara.model.MemberVO">
 		select * from member where
-		id=#{id} and password=#{password};
+		email=#{email} and password=#{password};
 	</select>
-	<!-- 아이디 중복확인 -->
-	<select id="idchk" resultType="org.ara.model.MemberVO">
+	<!-- 닉네임 중복확인 -->
+	<select id="nachk" resultType="org.ara.model.MemberVO">
 		select * from member where
-		id=#{str};
+		name=#{str};
 	</select>
 	<!-- 이메일 중복확인 -->
 	<select id="emchk" resultType="org.ara.model.MemberVO">
 		select * from member where
 		email like concat(#{str},'%');
 	</select>
+		<select id="snsCheck" resultType="org.ara.model.MemberVO">
+		select *
+		from member
+		where email=#{email};
+	</select>
+	<insert id="snsSignup">
+		insert into member
+		(password,name,email,phone,gender,birth_y,birth_m,birth_d,sns)
+		values(#{password},#{name},#{email},#{id},"m","1000",#{birth_m},#{birth_d},true);
+	</insert>
+	
 </mapper>

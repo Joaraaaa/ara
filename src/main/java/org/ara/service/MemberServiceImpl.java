@@ -17,12 +17,18 @@ public class MemberServiceImpl implements MemberService {
 	public MemberVO login(MemberVO member) {
 		return mm.login(member);
 	}	
-	// 아이디 중복확인
-	public MemberVO idchk(String str) {
-		return mm.idchk(str);
+	// 닉네임 중복확인
+	public MemberVO nachk(String str) {
+		return mm.nachk(str);
 	}
 	// 이메일 중복확인
 	public MemberVO emchk(String str) {
 		return mm.emchk(str);
+	}
+	public MemberVO snsCheck(String id) {
+		return mm.snsCheck(id);
+	}
+	public void snsSignup(MemberVO member) {
+		mm.snsSignup(member);
 	}
 }

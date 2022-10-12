@@ -4,10 +4,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>일반 회원 가입</title>
+<title>사업자 회원가입</title>
 </head>
 <body>
-	<form action="/member/signup" method="post">
+	<form action="/member/signub" method="post">
 				<div id="signup_box">
 					<div id="signup_box_text">
 						<h4 class="signup_text" id="text_email">이메일</h4>
@@ -33,11 +33,22 @@
 						<input class="signup_input" type="password" name="pw2" id="pwchk2">
 						<p class="signup_msg" id="pwmsg2"></p>
 						
-						<h4 class="signup_text" id="text_name">닉네임</h4>
-						<input class="signup_input" type="text" name="name" id="nachk">
+						<h4 class="signup_text" id="text_name">대표자명</h4>
+						<input class="signup_input" type="text" id="name">
 						<p class="signup_msg" id="namsg"></p>
 						
+						<h4 class="signup_text" id="text_b_num">사업자등록번호</h4>
+						<input class="signup_input" type="text" name="name" id="b_num">
+						<button id="buisness_num">인증</button>
+						<p class="signup_msg" id="namsg"></p>
 						
+						<h4 class="signup_text" id="text_b_name">상호명</h4>
+						<input class="signup_input" type="text" id="b_name">
+						<p class="signup_msg" id="namsg"></p>
+						
+						<h4 class="signup_text" id="text_phone">연락처</h4>
+						<input class="signup_input" type="text" id="phone">
+						<p class="signup_msg" id="namsg"></p>
 
 						
 
@@ -50,6 +61,6 @@
 				</div>		
 	</form>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-	<script src="../resources/js/member/signup.js?ver=1"></script>
+	<script src="../resources/js/member/signupb.js?ver=1"></script>
 </body>
 </html>
