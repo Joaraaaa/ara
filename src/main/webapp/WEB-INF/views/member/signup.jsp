@@ -11,7 +11,8 @@
 				<div id="signup_box">
 					<div id="signup_box_text">
 						<h4 class="signup_text" id="text_email">이메일</h4>
-						<input type="hidden" name="email">
+						<input type="text" name="admin" value="false">
+						<input type="text" name="email">
 						<input class="e_input" type="text" id="email">@<input class="e_input" type="text" id="direct"> 
 						<select class="e_select" id="email_address">
 							<option id="user_email" value="@user">직접입력</option>
@@ -35,6 +36,7 @@
 						
 						<h4 class="signup_text" id="text_name">닉네임</h4>
 						<input class="signup_input" type="text" name="name" id="nachk">
+						<button id="make_name">닉네임 만들기</button>
 						<p class="signup_msg" id="namsg"></p>
 						
 						

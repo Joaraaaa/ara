@@ -2,63 +2,21 @@
  * 
  */
 
-
-
-
-
-
-
-//let id = false;
-////let idd = false;
-//$("#idchk").on("keyup",function(){ 
-//	const idid=/^[a-z0-9-_]{5,20}$/g;
-//	if($("#idchk").val()==""){
-//		$("#idmsg").text("필수입력정보입니다.");
-//		$("#idmsg").css("color","red");
-////		idd = false;
-//	}else if(idid.test($("#idchk").val())){ 
-//		$("#idmsg").text("");
-////		idd = true;
-//		let idc=$("#idchk").val();
-//		idcheck(idc);
-//	}else{ 
-//		$("#idmsg").text("5~20의 영문 소문자, 숫자와 특수기호 (-)(_)만 사용가능합니다.");
-//		$("#idmsg").css("color","red");
-////		idd = false;
-//	}
-//})
-//
-//function idcheck(idc){
-//	console.log(idc);
-//	$.ajax({
-//		type: "get",
-//		url: "/member/signup/"+idc,
-//		data: idc,
-//		contentType: "application/json; charset=utf-8"
-//	})
-//	.done(function(r){
-////		alert("중복된 id 입니다.");
-//		$("#idmsg").text("이미 사용중인 id 입니다.");
-//		$("#idmsg").css("color","red");
-//		id = false;
-//	})
-//	.fail(function(){
-////		alert("사용가능한 id 입니다.");
-//		$("#idmsg").text("사용가능한 id 입니다.");
-//		$("#idmsg").css("color","green");
-//		id = true;
-//	})
-//}
-
-
-$("#make_name").on("click",function(e){
+$("#buisness_num").on("click",function(e){
 	e.preventDefault();
-	$.getJSON("/makename",function(res){
-		console.log(res.words[0]);
-		$("#nachk").val(res.words[0]);
+	let num=$("#bno").val();
+	
+	$.ajax({
+		type : 'get',
+		url: "/buisnesscheck",
+		data:{num},
+		contentType: "application/json; charset=utf8",
+		success : function (data) {
+			console.log("data="+data);
+			$("#bname").val(data);
+		}
 	})
 })
-
 
 var pw = false;
 $("#pwchk").on("keyup",function(){
@@ -115,25 +73,6 @@ $("#nachk").on("keyup",function(){
 //		na = false;
 	}
 })
-function nacheck(nac){
-	console.log(nac);
-	$.ajax({
-		type: "get",
-		url: "/member/signup/"+nac,
-		data: nac,
-		contentType: "application/json; charset=utf-8"
-	})
-	.done(function(r){
-//		alert("중복된 id 입니다.");
-		$("#namsg").text("이미 사용중인 닉네임 입니다.").css("color","red");
-		na = false;
-	})
-	.fail(function(){
-//		alert("사용가능한 id 입니다.");
-		$("#namsg").text("사용가능한 닉네임 입니다.").css("color","green");
-		na = true;
-	})
-}
 
 
 
@@ -250,15 +189,16 @@ $("#email_address")
 
 $("#signsub").on("click",function(e){
 	e.preventDefault();
-
+	alert('가입됨');
+	$("form[action='/member/bsignup']").submit();
 	
 	
-	if(!(pw && pw2 && na && em)){
-
-		alert('입력해');
-	}else{
-		$("input[name='email']").val();
-		alert('가입됨');
-		$("form[action='/member/signup']").submit();
-	}
+//	if(!(pw && pw2 && na && em)){
+//
+//		alert('입력해');
+//	}else{
+//		$("input[name='email']").val();
+//		alert('가입됨');
+//		$("form[action='/member/signup']").submit();
+//	}
 })

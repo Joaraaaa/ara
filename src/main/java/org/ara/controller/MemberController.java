@@ -1,11 +1,17 @@
 package org.ara.controller;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.ara.model.MemberVO;
 import org.ara.service.MemberService;
+import org.json.XML;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -31,31 +37,42 @@ public class MemberController {
 	@Autowired
 	private MailSendService mailService;
 	
-	// 회원가입
+	// 회원가입 화면
 	@RequestMapping(value = "/member/signup", method = RequestMethod.GET)
 	public String signup(HttpSession session) {
 		session.invalidate();
 		return "member/signup";
 	}
 
+	// 사업자 회원가입 화면
+	@RequestMapping(value = "/member/bsignup", method = RequestMethod.GET)
+	public String signupB(HttpSession session) {
+		session.invalidate();
+		return "member/bsignup";
+	}
+
 	@RequestMapping(value = "/member/signup", method = RequestMethod.POST)
-	public String signupin(MemberVO member,HttpSession session) {
+	public String signup(MemberVO member,HttpSession session) {
+		System.out.println("member="+member);
 		try {
 			ms.signUp(member);
 			session.setAttribute("userInfo", ms.login(member));
-			return "redirect:/";
+			if(member.isAdmin()==true) {
+				return "redirect:/bhome";
+			}else {
+				return "redirect:/nhome";
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "member/signup";
+			if(member.isAdmin()==true) {
+				return "member/bsignup";
+			}else {
+				return "member/signup";
+			}
 		}
 	}
 	
-	// 사업자 회원가입
-	@RequestMapping(value = "/member/signupb", method = RequestMethod.GET)
-	public String signupB(HttpSession session) {
-		session.invalidate();
-		return "member/signupb";
-	}
+
 	
 	// 이메일 인증
 	@RequestMapping(value = "/member/emailchk/{email}/", method = RequestMethod.GET)
@@ -95,8 +112,11 @@ public class MemberController {
 		session.setAttribute("userInfo", ms.login(member));
 		System.out.println(session.getAttribute("userInfo"));
 		if (session.getAttribute("userInfo") != null) {
-
-			return "redirect:/";
+			if(member.isAdmin()==true) {
+				return "redirect:/bhome";
+			}else {
+				return "redirect:/nhome";
+			}
 		} else {
 			return "member/login";
 		}
@@ -179,13 +199,47 @@ public class MemberController {
 		return "redirect:/";
 	}
 	
-	@RequestMapping(value = "/buisnesscheck", method = RequestMethod.GET)
-	public String buisnessCheck(String num) {
+	@RequestMapping(value = "/buisnesscheck", produces = "application/text; charset=UTF-8", method = RequestMethod.GET)
+	public ResponseEntity<String> buisnessCheck(String num,HttpServletResponse response) {
 		System.out.println(num);
 		GetBuisnessInfoService getBuisnessInfoService = new GetBuisnessInfoService();
-		//유저 정보가 포함된 JSON String을 받아온다.
+		//유저 정보가 포함된 JSON 을 받아온다.
 		org.json.JSONObject userInfo = getBuisnessInfoService.getUserInfo(num);
 		System.out.println(userInfo);
-		return null;
+		org.json.JSONObject responseJsonObject = (org.json.JSONObject) userInfo.get("response");
+		org.json.JSONObject bodyJsonObject = (org.json.JSONObject) responseJsonObject.get("body");
+		org.json.JSONObject itemsJsonObject = (org.json.JSONObject) bodyJsonObject.get("items");
+		org.json.JSONObject itemJsonObject = (org.json.JSONObject) itemsJsonObject.get("item");
+		System.out.println(itemJsonObject);
+		String company = itemJsonObject.get("company").toString();
+		System.out.println(company);
+		return new ResponseEntity<>(company,HttpStatus.OK);
 	}	
+	
+	@RequestMapping(value = "/makename", produces = "application/text; charset=UTF-8", method = RequestMethod.GET)
+	public ResponseEntity<String> makename(HttpServletResponse response) {
+		final String HTTP_REQUEST = "https://nickname.hwanmoo.kr/?format=json&count=2";
+		 try {
+		String info = "";
+		URL url = new URL(HTTP_REQUEST);
+		BufferedReader bf;
+        bf = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));
+        String line;
+        while((line = bf.readLine()) != null){
+        	info+=line;
+        	System.out.println(info);
+        	
+        	JSONParser mname = new JSONParser();
+			Object nobj = mname.parse(info);
+			JSONObject nameObj = (JSONObject) nobj;
+			System.out.println(nameObj.get("words"));
+        	String makename=info;
+        	return new ResponseEntity<>(makename,HttpStatus.OK);
+        }
+	} catch(Exception e) {
+        return null;
+    }
+		 return null; 
+	}
+	
 }

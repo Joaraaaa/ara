@@ -1,7 +1,7 @@
 package org.ara.model;
 
 public class MemberVO {
-	private boolean admin;
+	
 	private boolean sns;
 	private String password;
 	private String name;
@@ -12,11 +12,35 @@ public class MemberVO {
 	private String birth_d;
 	private String sign_date;
 	private String userImg;
+	private boolean admin;
+	private String bno;
+	private String bname;
+	private String phone;
+	
+	
 	public boolean isAdmin() {
 		return admin;
 	}
 	public void setAdmin(boolean admin) {
 		this.admin = admin;
+	}
+	public String getBno() {
+		return bno;
+	}
+	public void setBno(String bno) {
+		this.bno = bno;
+	}
+	public String getBname() {
+		return bname;
+	}
+	public void setBname(String bname) {
+		this.bname = bname;
+	}
+	public String getPhone() {
+		return phone;
+	}
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 	public boolean isSns() {
 		return sns;
@@ -80,9 +104,10 @@ public class MemberVO {
 	}
 	@Override
 	public String toString() {
-		return "MemberVO [admin=" + admin + ", sns=" + sns + ", password=" + password + ", name=" + name + ", email="
-				+ email + ", gender=" + gender + ", birth_y=" + birth_y + ", birth_m=" + birth_m + ", birth_d="
-				+ birth_d + ", sign_date=" + sign_date + ", userImg=" + userImg + "]";
+		return "MemberVO [sns=" + sns + ", password=" + password + ", name=" + name + ", email=" + email + ", gender="
+				+ gender + ", birth_y=" + birth_y + ", birth_m=" + birth_m + ", birth_d=" + birth_d + ", sign_date="
+				+ sign_date + ", userImg=" + userImg + ", admin=" + admin + ", bno=" + bno + ", bname=" + bname
+				+ ", phone=" + phone + "]";
 	}
 	
 	

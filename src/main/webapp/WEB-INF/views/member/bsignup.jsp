@@ -7,11 +7,12 @@
 <title>사업자 회원가입</title>
 </head>
 <body>
-	<form action="/member/signub" method="post">
+	<form action="/member/signup" method="post">
 				<div id="signup_box">
 					<div id="signup_box_text">
+					<input type="text" name="admin" value="true">
 						<h4 class="signup_text" id="text_email">이메일</h4>
-						<input type="hidden" name="email">
+						<input type="text" name="email">
 						<input class="e_input" type="text" id="email">@<input class="e_input" type="text" id="direct"> 
 						<select class="e_select" id="email_address">
 							<option id="user_email" value="@user">직접입력</option>
@@ -34,20 +35,20 @@
 						<p class="signup_msg" id="pwmsg2"></p>
 						
 						<h4 class="signup_text" id="text_name">대표자명</h4>
-						<input class="signup_input" type="text" id="name">
+						<input class="signup_input" type="text" name="name" id="name">
 						<p class="signup_msg" id="namsg"></p>
 						
 						<h4 class="signup_text" id="text_b_num">사업자등록번호</h4>
-						<input class="signup_input" type="text" name="name" id="b_num">
+						<input class="signup_input" type="text" name="bno" id="bno">
 						<button id="buisness_num">인증</button>
-						<p class="signup_msg" id="namsg"></p>
+						<p class="signup_msg" id="bnomsg"></p>
 						
 						<h4 class="signup_text" id="text_b_name">상호명</h4>
-						<input class="signup_input" type="text" id="b_name">
-						<p class="signup_msg" id="namsg"></p>
+						<input class="signup_input" type="text" name="bname" id="bname">
+						<p class="signup_msg" id="bnamsg"></p>
 						
 						<h4 class="signup_text" id="text_phone">연락처</h4>
-						<input class="signup_input" type="text" id="phone">
+						<input class="signup_input" type="text" name="phone" id="phone">
 						<p class="signup_msg" id="namsg"></p>
 
 						
@@ -61,6 +62,7 @@
 				</div>		
 	</form>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-	<script src="../resources/js/member/signupb.js?ver=1"></script>
+<!-- 	<script src="../resources/js/member/signup.js?ver=1"></script> -->
+<!-- 	<script src="../resources/js/member/bsignup.js?ver=1"></script> -->
 </body>
 </html>

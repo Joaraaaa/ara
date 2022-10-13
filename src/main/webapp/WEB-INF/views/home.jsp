@@ -14,7 +14,9 @@
 
     
 <a href="/member/login">로그인</a>
-<a href="/member/signup">회원가입</a>
-아이디:${userInfo.email}
+<a href="/signupcheck">회원가입</a>
+<a href="/nhome">비회원</a>
+
+
 </body>
 </html>

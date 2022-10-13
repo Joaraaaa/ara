@@ -24,4 +24,24 @@ public class HomeController {
 		return "home";
 	}
 	
+	@RequestMapping(value = "/signupcheck", method = RequestMethod.GET)
+	public String signupcheck(Locale locale, Model model) {
+		
+		
+		return "signupcheck";
+	}
+	
+	@RequestMapping(value = "/nhome", method = RequestMethod.GET)
+	public String nhome(Locale locale, Model model) {
+		
+		
+		return "nhome";
+	}
+	
+	@RequestMapping(value = "/bhome", method = RequestMethod.GET)
+	public String bhome(Locale locale, Model model) {
+		
+		
+		return "bhome";
+	}
 }
