@@ -12,8 +12,17 @@
 		values(#{bno},#{bname},#{phone},#{email},#{password},#{name})
 		</when>
 		<otherwise>
-		insert into member(email,password,name)
-		values(#{email},#{password},#{name})
+		insert into member
+			<choose>
+				<when test="sns==true">
+				(password,name,email,sns)
+				values(#{password},#{name},#{email},true);
+				</when>
+				<otherwise>
+				(email,password,name)
+				values(#{email},#{password},#{name})
+				</otherwise>
+			</choose>
 		</otherwise>
 	</choose>
 	</insert>
@@ -37,15 +46,10 @@
 		select * from member where
 		email like concat(#{str},'%');
 	</select>
-		<select id="snsCheck" resultType="org.ara.model.MemberVO">
-		select *
-		from member
-		where email=#{email};
-	</select>
-	<insert id="snsSignup">
-		insert into member
-		(password,name,email,phone,gender,birth_y,birth_m,birth_d,sns)
-		values(#{password},#{name},#{email},#{id},"m","1000",#{birth_m},#{birth_d},true);
-	</insert>
+<!-- 		<select id="snsCheck" resultType="org.ara.model.MemberVO"> -->
+<!-- 		select * -->
+<!-- 		from member -->
+<!-- 		where email=#{email}; -->
+<!-- 	</select> -->
 	
 </mapper>

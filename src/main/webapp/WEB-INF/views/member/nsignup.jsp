@@ -10,8 +10,8 @@
 	<form action="/member/signup" method="post">
 				<div id="signup_box">
 					<div id="signup_box_text">
-						<h4 class="signup_text" id="text_email">이메일</h4>
 						<input type="text" name="admin" value="false">
+						<h4 class="signup_text" id="text_email">이메일</h4>
 						<input type="text" name="email">
 						<input class="e_input" type="text" id="email">@<input class="e_input" type="text" id="direct"> 
 						<select class="e_select" id="email_address">

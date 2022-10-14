@@ -25,10 +25,7 @@ public class MemberServiceImpl implements MemberService {
 	public MemberVO emchk(String str) {
 		return mm.emchk(str);
 	}
-	public MemberVO snsCheck(String id) {
-		return mm.snsCheck(id);
-	}
-	public void snsSignup(MemberVO member) {
-		mm.snsSignup(member);
+	public MemberVO snsCheck(String email) {
+		return mm.snsCheck(email);
 	}
 }

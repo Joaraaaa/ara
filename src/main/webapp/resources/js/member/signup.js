@@ -87,7 +87,7 @@ const name = /^[가-힣a-zA-Z0-9- _]{1,20}$/;
 $("#make_name").on("click", function(e) {
 	e.preventDefault();
 	$.getJSON("/makename", function(res) {
-		console.log(res.words[0]);
+//		console.log(res.words[0]);
 		$("#nachk").val(res.words[0]);
 		if (name.test($("#nachk").val())) {
 			$("#namsg").text("");
@@ -199,9 +199,24 @@ $("#email_btn")
 					}
 
 				})
+				
+function emcheck(emc) {
+	console.log(emc);
+	$.ajax({
+		type : "get",
+		url : "/member/signup/" + emc,
+		data : emc,
+		contentType : "application/json; charset=utf-8"
+	}).done(function(r) {
+		$("#email_msg").text("이미 사용중인 이메일 입니다.").css("color", "red");
+	}).fail(function() {
+//		$("#namsg").text("사용가능한 이메일 입니다.").css("color", "green");
+		emnocheck(emc);
+	})
+}
 
 const checkInput = $('.mail_check_input') // 인증번호 입력하는곳
-function emcheck(email) {
+function emnocheck(email) {
 	console.log(email);
 	$.ajax({
 		type : 'get',
@@ -255,7 +270,7 @@ $("#signsub").on("click", function(e) {
 
 		alert('입력해');
 	} else {
-		$("input[name='email']").val();
+//		$("input[name='email']").val();
 		alert('가입됨');
 		$("form[action='/member/signup']").submit();
 	}

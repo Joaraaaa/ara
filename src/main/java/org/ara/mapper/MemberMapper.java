@@ -11,6 +11,5 @@ public interface MemberMapper {
 	public MemberVO nachk(String str);
 	// 이메일 중복확인
 	public MemberVO emchk(String str);
-	public MemberVO snsCheck(String id);
-	public void snsSignup(MemberVO member);
+	public MemberVO snsCheck(String email);
 }

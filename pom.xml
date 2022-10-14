@@ -118,6 +118,35 @@
 		    <version>20211205</version>
 		</dependency>
 		<!-- xml->jsonObject로 변환 끝 -->
+		<!-- 구글 소셜 로그인 구현 -->
+	
+		<dependency>
+			<groupId>com.google.api-client</groupId>
+			<artifactId>google-api-client</artifactId>
+			<version>1.23.0</version>
+		</dependency>
+	
+		<dependency>
+			<groupId>com.google.oauth-client</groupId>
+			<artifactId>google-oauth-client-jetty</artifactId>
+			<version>1.23.0</version>
+		</dependency>
+	
+		<dependency>
+			<groupId>com.google.apis</groupId>
+			<artifactId>google-api-services-calendar</artifactId>
+			<version>v3-rev305-1.23.0</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.google.api-client/google-api-client-gson -->
+		<dependency>
+			<groupId>com.google.api-client</groupId>
+			<artifactId>google-api-client-gson</artifactId>
+			<version>1.21.0</version>
+		</dependency>
+		<!-- 구글 소셜 로그인 구현 끝 -->
+		
+		
+		
 		
 		
 		

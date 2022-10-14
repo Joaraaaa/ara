@@ -1,11 +1,12 @@
 /**
  * 
  */
-
+let bn = false;
 $("#buisness_num").on("click",function(e){
 	e.preventDefault();
+	$("#bnomsg").text("사업자 등록번호 조회중...").css("color","green");
 	let num=$("#bno").val();
-	
+	let company=$("#bname").val();
 	$.ajax({
 		type : 'get',
 		url: "/buisnesscheck",
@@ -13,8 +14,18 @@ $("#buisness_num").on("click",function(e){
 		contentType: "application/json; charset=utf8",
 		success : function (data) {
 			console.log("data="+data);
-			$("#bname").val(data);
+			if(data==company){
+				$("#bnamsg").text("인증완료").css("color","green");
+				bn = true;
+			}else{
+				$("#bnamsg").text("입력한 상호명과 등록된 상호명이 다르다.").css("color","red");
+			}
+//			$("#bname").val(data);
 		}
+	})
+	.fail(function(){
+		$("#bnomsg").text("사업자 등록번호를 다시 확인하세요.").css("color","red");
+		
 	})
 })
 
@@ -58,16 +69,16 @@ $("#pwchk2").on("keyup",function(){
 
 
 var na = false;
-$("#nachk").on("keyup",function(){
-	const name = /^[가-힣a-zA-Z0-9-_]{1,20}$/g;
-	if($("#nachk").val()==""){
+$("#name").on("keyup",function(){
+	const name = /^[가-힣a-zA-Z0-9- _]{1,20}$/;
+	if($("#name").val()==""){
 		$("#namsg").text("필수입력정보입니다.").css("color","red");
 //		na = false;
-	}else if(name.test($("#nachk").val())){
+	}else if(name.test($("#name").val())){
 		$("#namsg").text("");
-		let nac=$("#nachk").val();
-		nacheck(nac);
-//		na = true;
+//		let nac=$("#name").val();
+//		nacheck(nac);
+		na = true;
 	}else{
 		$("#namsg").text("한글 또는 영문 대소문자 사용하세요.").css("color","red");
 //		na = false;
@@ -189,16 +200,20 @@ $("#email_address")
 
 $("#signsub").on("click",function(e){
 	e.preventDefault();
-	alert('가입됨');
-	$("form[action='/member/bsignup']").submit();
 	
 	
-//	if(!(pw && pw2 && na && em)){
-//
-//		alert('입력해');
-//	}else{
+	
+	if(!(bn && pw && pw2 && na && em)){
+console.log(bn);
+console.log(pw);
+console.log(pw2);
+console.log(na);
+console.log(em);
+
+		alert('입력해');
+	}else{
 //		$("input[name='email']").val();
-//		alert('가입됨');
-//		$("form[action='/member/signup']").submit();
-//	}
+		alert('가입됨');
+		$("form[action='/member/signup']").submit();
+	}
 })

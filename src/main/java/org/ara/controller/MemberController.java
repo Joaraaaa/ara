@@ -1,9 +1,12 @@
 package org.ara.controller;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletResponse;
@@ -29,6 +32,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.gson.GsonFactory;
+
 @Controller
 public class MemberController {
 	@Autowired
@@ -37,11 +46,13 @@ public class MemberController {
 	@Autowired
 	private MailSendService mailService;
 	
-	// 회원가입 화면
-	@RequestMapping(value = "/member/signup", method = RequestMethod.GET)
+// 회원가입
+	
+	// 일반 회원가입 화면
+	@RequestMapping(value = "/member/nsignup", method = RequestMethod.GET)
 	public String signup(HttpSession session) {
 		session.invalidate();
-		return "member/signup";
+		return "member/nsignup";
 	}
 
 	// 사업자 회원가입 화면
@@ -50,16 +61,36 @@ public class MemberController {
 		session.invalidate();
 		return "member/bsignup";
 	}
-
+	
+	// 이메일 인증
+	// 이메일 컨트롤러에서는 js에서 받은 이메일 정보를 MailSendService로 연결만 시켜준다.
+	@RequestMapping(value = "/member/emailchk/{email}/", method = RequestMethod.GET)
+	@ResponseBody
+	public String mailCheck(@PathVariable String email) {
+		System.out.println("이메일 인증 요청이 들어옴!");
+		System.out.println("이메일 인증 이메일 : " + email);
+		return mailService.joinEmail(email);
+	}
+	
+	
+// 최종 회원가입
+	// js에서 확인 절차를 통해 바르게 입력된 (일반/사업자)회원가입 정보를 이곳으로 모두 받아옴.
 	@RequestMapping(value = "/member/signup", method = RequestMethod.POST)
+	                                     // 회원가입 후 별도의 로그인 절차 없이 바로 로그인
 	public String signup(MemberVO member,HttpSession session) {
+		// 일반 또는 사업자의 정보가 들어왔는지 확인용
 		System.out.println("member="+member);
 		try {
-			ms.signUp(member);
+			ms.signUp(member); // 가입을 시키고 바로 로그인시킴.
+			// 일반은 VO에서 admin false고
+			// 사업자는 VO에서 admin true다
 			session.setAttribute("userInfo", ms.login(member));
+			// admin으로 사업자와 일반회원을 구분해준다.
 			if(member.isAdmin()==true) {
+				// 사업자면 사업자 홈 화면으로 로그인 된채로 이동
 				return "redirect:/bhome";
 			}else {
+				// 일반회원이면 기본 홈 화면으로 로그인 된채로 이동
 				return "redirect:/nhome";
 			}
 		} catch (Exception e) {
@@ -67,22 +98,13 @@ public class MemberController {
 			if(member.isAdmin()==true) {
 				return "member/bsignup";
 			}else {
-				return "member/signup";
+				return "member/nsignup";
 			}
 		}
 	}
 	
 
 	
-	// 이메일 인증
-	@RequestMapping(value = "/member/emailchk/{email}/", method = RequestMethod.GET)
-	@ResponseBody
-	public String mailCheck(@PathVariable String email) {
-		System.out.println("이메일 인증 요청이 들어옴!");
-		System.out.println("이메일 인증 이메일 : " + email);
-		return mailService.joinEmail(email);
-
-	}
 
 	// 이메일, 닉네임 중복체크
 	@RequestMapping(value = "/member/signup/{str}", method = RequestMethod.GET)
@@ -174,17 +196,16 @@ public class MemberController {
 			}
 			// 5. MemberVO에 담기. ---- 끝!
 			MemberVO member = new MemberVO();
-			member.setEmail(email);
+			member.setSns(true);
+			member.setEmail("K+"+email);
 			member.setPassword(id);
-			member.setName(nickname);
-			member.setBirth_m(month);
-			member.setBirth_d(day);
+			member.setName("K+"+nickname);
 
 			System.out.println(member);
 			MemberVO mvo = new MemberVO();
-			mvo= ms.snsCheck(member.getEmail());
+			mvo= ms.emchk(member.getEmail());
 			try {
-				ms.snsSignup(member);
+				ms.signUp(member);
 			}catch(Exception e) {
 
 				e.printStackTrace();
@@ -196,8 +217,96 @@ public class MemberController {
 		}
 
 
-		return "redirect:/";
+		return "redirect:/nhome";
 	}
+	
+	// 구글 로그인(js에서 인증과정을 통해 아이디토큰까지 받음 -> 서버에서 아이디 토큰 검사후 사용자 정보 추출)
+	// login.js , pom.xml의 구글 소셜로그인(추가) 부분 확인하기
+		@RequestMapping(value="/googlelogin", method= RequestMethod.POST)
+
+		public String googleLogin(String idtoken, Model model, HttpSession session) throws GeneralSecurityException, IOException {
+	// 3. js에서 서버로 보낸 아이디 토큰에는 이미 사용자의 정보가 들어있다. 아이디 토큰 확인하기
+			System.out.println(idtoken);
+			GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), new GsonFactory())
+				    // Specify the CLIENT_ID of the app that accesses the backend:
+				    .setAudience(Collections.singletonList("1021807136832-ee5020m3rjgegr7phn8ki82n3rttnqcd.apps.googleusercontent.com"))
+				    // Or, if multiple clients access the backend:
+				    //.setAudience(Arrays.asList(CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3))
+				    .build();
+
+				// (Receive idTokenString by HTTPS POST)
+	// 4. 확인된 아이디 토큰으로 사용자 정보 추출
+				GoogleIdToken idToken = verifier.verify(idtoken);
+				if (idToken != null) {
+				  Payload payload = idToken.getPayload();
+
+				  // Print user identifier
+				  String userId = payload.getSubject();
+				  System.out.println("User ID: " + userId);
+
+				  // Get profile information from payload
+				  String email = payload.getEmail();
+				  String name = (String) payload.get("name");
+				  // Use or store profile information
+				  // ...
+
+				  
+				  
+	// 5. MemberVO에 담기 ---- 끝!
+				  MemberVO member = new MemberVO();
+				  	member.setSns(true);
+					member.setEmail("G+"+email);
+					member.setPassword(userId);
+					member.setName("G+"+name);
+					System.out.println(member);
+				  
+					MemberVO mvo = new MemberVO();
+					mvo= ms.emchk(member.getEmail());
+					
+					try {
+						ms.signUp(member);
+					}catch(Exception e) {
+
+						e.printStackTrace();
+					}
+					session.setAttribute("userInfo",ms.login(member));
+					System.out.println("session : "+session.getAttribute("userInfo"));
+					return "redirect:/nhome";
+				  
+				  
+				} else {
+				  System.out.println("Invalid ID token.");
+				  return "/member/login";
+				}		
+			//		return null;
+
+		}//googleLogin
+	
+	
+	// 네이버 로그인(인증부터 사용자 정보받는것까지 js에서 모두 처리)
+	// 1번-login.js , 2번3번-naverlogin.jsp 확인하기
+	// 4. login.js에서 인증요청할때의 주소. naverlogin.jsp의 js에서 받은 정보를 처리할것이다.
+		@RequestMapping(value="/member/naverlogin", method=RequestMethod.GET)
+		public String callBack(MemberVO member, HttpSession session){
+			
+			return null;
+		}
+	// 5. naverlogin.jsp의 input정보를 post로 받아서 MemberVO에 바로 넣어준다. ---- 끝!
+		@RequestMapping(value="/member/naverlogin", method=RequestMethod.POST)
+		public String callBackPost(MemberVO member, HttpSession session){
+			member.setSns(true);
+			System.out.println(member);
+			MemberVO mvo = new MemberVO();
+			mvo= ms.emchk(member.getEmail());
+			try {
+				ms.signUp(member);
+			}catch(Exception e) {
+				
+				e.printStackTrace();
+			}
+			session.setAttribute("userInfo",ms.login(member));
+			return "redirect:/nhome";
+		}
 	
 	@RequestMapping(value = "/buisnesscheck", produces = "application/text; charset=UTF-8", method = RequestMethod.GET)
 	public ResponseEntity<String> buisnessCheck(String num,HttpServletResponse response) {
@@ -229,10 +338,6 @@ public class MemberController {
         	info+=line;
         	System.out.println(info);
         	
-        	JSONParser mname = new JSONParser();
-			Object nobj = mname.parse(info);
-			JSONObject nameObj = (JSONObject) nobj;
-			System.out.println(nameObj.get("words"));
         	String makename=info;
         	return new ResponseEntity<>(makename,HttpStatus.OK);
         }
