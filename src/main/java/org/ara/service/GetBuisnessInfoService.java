@@ -10,7 +10,7 @@ import org.json.XML;
 public class GetBuisnessInfoService {
 	   private final String HTTP_REQUEST = "https://bizno.net/api/fapi";
 
-	    public JSONObject getUserInfo(String num){
+	    public String getUserInfo(String num){
 	        try {
 	            String info = "";
 
@@ -25,7 +25,13 @@ public class GetBuisnessInfoService {
 	            	info+=line;
 	            }
 	            JSONObject json = XML.toJSONObject(info);
-	            return json;
+	            JSONObject responseJsonObject = (JSONObject)json.get("response");
+	            JSONObject bodyJsonObject = (JSONObject) responseJsonObject.get("body");
+	    		JSONObject itemsJsonObject = (JSONObject) bodyJsonObject.get("items");
+	    		JSONObject itemJsonObject = (JSONObject) itemsJsonObject.get("item");
+	    		String company = itemJsonObject.get("company").toString();
+	    		System.out.println(company);
+	    		return company;
 
 	        } catch(Exception e) {
 	            return null;

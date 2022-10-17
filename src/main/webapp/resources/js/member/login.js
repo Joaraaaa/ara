@@ -2,11 +2,8 @@
  * 
  */
 
-
-
-
 $(".member").on("click",function(){
-	let admin=$('input[name="admin"]:checked').val();
+let admin=$('input[name="admin"]:checked').val();	
 	console.log(admin);
 	if(admin=="true"){
 		console.log("사업자 로그인");
@@ -18,6 +15,44 @@ $(".member").on("click",function(){
 		$("#social_login_box").show();
 	}
 })
+
+
+let lchk=false;
+$("#loginsub").on("click",function(e){
+	e.preventDefault();
+//	if(admin=="false"){
+//		if($("#email").val()==""){
+//			$("#login_msg").text("이메일 입력").css("color","red");
+//		}else{
+//			if($("#password").val()==""){
+//				$("#login_msg").text("비밀번호 입력").css("color","red");
+//			}else{
+//				$("form[action='/member/login']").submit();
+//			}
+//		}
+//	}
+	
+	if($("#email").val()==""){
+		$("#login_msg").text("이메일 입력").css("color","red");
+	}else{
+		if($("#password").val()==""){
+			$("#login_msg").text("비밀번호 입력").css("color","red");
+		}else{
+			if($("input[name=admin]:checked").val()=="true"){
+				if($("#buisness_num").val()==""){
+					$("#login_msg").text("사업자 등록번호 입력").css("color","red");
+				}else{
+					$("form[action='/member/login']").submit();
+				}
+			}else{
+				$("form[action='/member/login']").submit();
+			}
+		}
+	}
+})
+
+
+
 
 // 카카오 아이디로 로그인
 	// 1. 카카오에 인증코드 요청

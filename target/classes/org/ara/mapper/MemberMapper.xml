@@ -4,52 +4,61 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="org.ara.mapper.MemberMapper">
-	<!-- 회원가입 -->
+	<!-- 사업자 회원가입, 일반 회원가입, 소셜 회원가입 -->
 	<insert id="signUp">
-	<choose>
+		<choose>
+		<!-- 사업자 회원가입 -->
 		<when test="admin==true">
 		insert into b_member(bno,bname,phone,email,password,name)
 		values(#{bno},#{bname},#{phone},#{email},#{password},#{name})
 		</when>
 		<otherwise>
 		insert into member
-			<choose>
+				<choose>
+				<!-- 소셜 회원가입 -->
 				<when test="sns==true">
 				(password,name,email,sns)
 				values(#{password},#{name},#{email},true);
 				</when>
+				<!-- 일반 회원가입 -->
 				<otherwise>
 				(email,password,name)
 				values(#{email},#{password},#{name})
 				</otherwise>
-			</choose>
+				</choose>
 		</otherwise>
-	</choose>
+		</choose>
 	</insert>
-	<!-- 로그인 -->
-	<select id="login" resultType="org.ara.model.MemberVO">
+	
+	
+	<!-- 로그인, 닉네임 중복 확인, 이메일 중복 확인 -->
+	<select id="select" resultType="org.ara.model.MemberVO">
 		select * from 
 		<choose>
-		<when test="admin==true">b_member</when>
-		<otherwise>member</otherwise>
+		<!-- 사업자 로그인 -->
+		<when test="admin==true">
+		b_member where
+		email=#{email} and password=#{password} and bno=#{bno};
+		</when>
+		<otherwise>
+		member where
+				<choose>
+				<!-- 일반 로그인 -->
+				<when test="password!=null">
+				email=#{email} and password=#{password};
+				</when>
+				<!-- 닉네임/이메일 중복 확인 -->
+				<otherwise>
+						<choose>
+						<when test="name!=null">name=#{name};</when>
+						<otherwise>email like concat(#{email},'%');</otherwise>
+						</choose>
+				</otherwise>
+				</choose>
+		</otherwise>
 		</choose>
-		where
-		email=#{email} and password=#{password};
 	</select>
-	<!-- 닉네임 중복확인 -->
-	<select id="nachk" resultType="org.ara.model.MemberVO">
-		select * from member where
-		name=#{str};
-	</select>
-	<!-- 이메일 중복확인 -->
-	<select id="emchk" resultType="org.ara.model.MemberVO">
-		select * from member where
-		email like concat(#{str},'%');
-	</select>
-<!-- 		<select id="snsCheck" resultType="org.ara.model.MemberVO"> -->
-<!-- 		select * -->
-<!-- 		from member -->
-<!-- 		where email=#{email}; -->
-<!-- 	</select> -->
+	
+	
 	
 </mapper>

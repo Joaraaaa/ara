@@ -62,7 +62,7 @@ public class MemberController {
 		return "member/bsignup";
 	}
 	
-	// 이메일 인증
+	// 일반 이메일 인증
 	// 이메일 컨트롤러에서는 js에서 받은 이메일 정보를 MailSendService로 연결만 시켜준다.
 	@RequestMapping(value = "/member/emailchk/{email}/", method = RequestMethod.GET)
 	@ResponseBody
@@ -72,6 +72,63 @@ public class MemberController {
 		return mailService.joinEmail(email);
 	}
 	
+	// 사업자 이메일 인증
+	@RequestMapping(value = "/member/bemailchk/", method = RequestMethod.GET)
+	@ResponseBody
+	public String bMailCheck(MemberVO member) {
+		System.out.println("이메일 인증 요청이 들어옴!");
+		System.out.println("이메일 인증 이메일 : " + member);
+		return mailService.bJoinEmail(member);
+	}
+	
+	// 이메일, 닉네임 중복체크
+	@RequestMapping(value = "/member/signup/{str}", method = RequestMethod.GET)
+	public ResponseEntity<String> emchk(@PathVariable String str, MemberVO member) {
+		System.out.println(str);
+		try {
+			if (str.contains("@")) {
+				member.setEmail(str);
+			} else {
+				member.setName(str);
+			}
+			return new ResponseEntity<>(ms.select(member).getEmail(), HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	// 사업자 번호 조회
+	@RequestMapping(value = "/buisnesscheck", produces = "application/text; charset=UTF-8", method = RequestMethod.GET)
+	public ResponseEntity<String> buisnessCheck(String num,HttpServletResponse response) {
+		System.out.println(num);
+		GetBuisnessInfoService getBuisnessInfoService = new GetBuisnessInfoService();
+		String company = getBuisnessInfoService.getUserInfo(num);
+		System.out.println(company);
+		return new ResponseEntity<>(company,HttpStatus.OK);
+	}	
+	
+	// 닉네임 만들기
+	@RequestMapping(value = "/makename", produces = "application/text; charset=UTF-8", method = RequestMethod.GET)
+	public ResponseEntity<String> makename(HttpServletResponse response) {
+		final String HTTP_REQUEST = "https://nickname.hwanmoo.kr/?format=json&count=2";
+		 try {
+		String info = "";
+		URL url = new URL(HTTP_REQUEST);
+		BufferedReader bf;
+        bf = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));
+        String line;
+        while((line = bf.readLine()) != null){
+        	info+=line;
+        	System.out.println(info);
+        	
+        	String makename=info;
+        	return new ResponseEntity<>(makename,HttpStatus.OK);
+        }
+	} catch(Exception e) {
+        return null;
+    }
+		 return null; 
+	}
 	
 // 최종 회원가입
 	// js에서 확인 절차를 통해 바르게 입력된 (일반/사업자)회원가입 정보를 이곳으로 모두 받아옴.
@@ -84,7 +141,7 @@ public class MemberController {
 			ms.signUp(member); // 가입을 시키고 바로 로그인시킴.
 			// 일반은 VO에서 admin false고
 			// 사업자는 VO에서 admin true다
-			session.setAttribute("userInfo", ms.login(member));
+			session.setAttribute("userInfo", ms.select(member));
 			// admin으로 사업자와 일반회원을 구분해준다.
 			if(member.isAdmin()==true) {
 				// 사업자면 사업자 홈 화면으로 로그인 된채로 이동
@@ -106,20 +163,7 @@ public class MemberController {
 
 	
 
-	// 이메일, 닉네임 중복체크
-	@RequestMapping(value = "/member/signup/{str}", method = RequestMethod.GET)
-	public ResponseEntity<String> emchk(@PathVariable String str) {
-		try {
-			if (str.contains("@")) {
-				System.out.println(str);
-				return new ResponseEntity<>(ms.emchk(str).getEmail(), HttpStatus.OK);
-			} else {
-				return new ResponseEntity<>(ms.nachk(str).getName(), HttpStatus.OK);
-			}
-		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
+
 	
 	// 로그인
 	@RequestMapping(value = "/member/login", method = RequestMethod.GET)
@@ -130,8 +174,9 @@ public class MemberController {
 
 	@RequestMapping(value = "/member/login", method = RequestMethod.POST)
 	public String loginPost(MemberVO member, HttpSession session) {
-		System.out.println(ms.login(member));
-		session.setAttribute("userInfo", ms.login(member));
+		System.out.println(member);
+		System.out.println(ms.select(member));
+		session.setAttribute("userInfo", ms.select(member));
 		System.out.println(session.getAttribute("userInfo"));
 		if (session.getAttribute("userInfo") != null) {
 			if(member.isAdmin()==true) {
@@ -143,6 +188,8 @@ public class MemberController {
 			return "member/login";
 		}
 	}
+	
+	
 	// 카카오 로그인(js에서 js키 사용해서 서버로 인증코드 보내기 -> 인증코드 사용해서 엑세스 코드 받기 -> 엑세스 토큰 사용해서 사용자 정보 받기)
 	// 1번-login.js 확인하기. RestJsonService.java , GetUserInfoService.java , pom.xml의 문자열json변환(추가) 확인하기
 	@RequestMapping(value = "/snscheck", method = RequestMethod.GET)
@@ -184,33 +231,20 @@ public class MemberController {
 			String email = kakaoAccountJsonObject.get("email").toString();
 			String id = userInfojsonObj.get("id").toString();
 			String nickname = propertiesJsonObject.get("nickname").toString();
-			String birthday = kakaoAccountJsonObject.get("birthday").toString();
-			String month = birthday.substring(0,2);
-			String day = birthday.substring(2);
-
-			if(month.indexOf("0")==0) {
-				month=month.substring(1);
-			}
-			if(day.indexOf("0")==0) {
-				day=day.substring(1);
-			}
+			
 			// 5. MemberVO에 담기. ---- 끝!
 			MemberVO member = new MemberVO();
 			member.setSns(true);
 			member.setEmail("K+"+email);
 			member.setPassword(id);
 			member.setName("K+"+nickname);
-
 			System.out.println(member);
-			MemberVO mvo = new MemberVO();
-			mvo= ms.emchk(member.getEmail());
 			try {
 				ms.signUp(member);
 			}catch(Exception e) {
-
-				e.printStackTrace();
+				System.out.println("이미 회원이다.");
 			}
-			session.setAttribute("userInfo",ms.login(member));
+			session.setAttribute("userInfo",ms.select(member));
 
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -259,9 +293,6 @@ public class MemberController {
 					member.setPassword(userId);
 					member.setName("G+"+name);
 					System.out.println(member);
-				  
-					MemberVO mvo = new MemberVO();
-					mvo= ms.emchk(member.getEmail());
 					
 					try {
 						ms.signUp(member);
@@ -269,7 +300,7 @@ public class MemberController {
 
 						e.printStackTrace();
 					}
-					session.setAttribute("userInfo",ms.login(member));
+					session.setAttribute("userInfo",ms.select(member));
 					System.out.println("session : "+session.getAttribute("userInfo"));
 					return "redirect:/nhome";
 				  
@@ -296,55 +327,17 @@ public class MemberController {
 		public String callBackPost(MemberVO member, HttpSession session){
 			member.setSns(true);
 			System.out.println(member);
-			MemberVO mvo = new MemberVO();
-			mvo= ms.emchk(member.getEmail());
+
 			try {
 				ms.signUp(member);
 			}catch(Exception e) {
 				
 				e.printStackTrace();
 			}
-			session.setAttribute("userInfo",ms.login(member));
+			session.setAttribute("userInfo",ms.select(member));
 			return "redirect:/nhome";
 		}
 	
-	@RequestMapping(value = "/buisnesscheck", produces = "application/text; charset=UTF-8", method = RequestMethod.GET)
-	public ResponseEntity<String> buisnessCheck(String num,HttpServletResponse response) {
-		System.out.println(num);
-		GetBuisnessInfoService getBuisnessInfoService = new GetBuisnessInfoService();
-		//유저 정보가 포함된 JSON 을 받아온다.
-		org.json.JSONObject userInfo = getBuisnessInfoService.getUserInfo(num);
-		System.out.println(userInfo);
-		org.json.JSONObject responseJsonObject = (org.json.JSONObject) userInfo.get("response");
-		org.json.JSONObject bodyJsonObject = (org.json.JSONObject) responseJsonObject.get("body");
-		org.json.JSONObject itemsJsonObject = (org.json.JSONObject) bodyJsonObject.get("items");
-		org.json.JSONObject itemJsonObject = (org.json.JSONObject) itemsJsonObject.get("item");
-		System.out.println(itemJsonObject);
-		String company = itemJsonObject.get("company").toString();
-		System.out.println(company);
-		return new ResponseEntity<>(company,HttpStatus.OK);
-	}	
-	
-	@RequestMapping(value = "/makename", produces = "application/text; charset=UTF-8", method = RequestMethod.GET)
-	public ResponseEntity<String> makename(HttpServletResponse response) {
-		final String HTTP_REQUEST = "https://nickname.hwanmoo.kr/?format=json&count=2";
-		 try {
-		String info = "";
-		URL url = new URL(HTTP_REQUEST);
-		BufferedReader bf;
-        bf = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));
-        String line;
-        while((line = bf.readLine()) != null){
-        	info+=line;
-        	System.out.println(info);
-        	
-        	String makename=info;
-        	return new ResponseEntity<>(makename,HttpStatus.OK);
-        }
-	} catch(Exception e) {
-        return null;
-    }
-		 return null; 
-	}
+
 	
 }

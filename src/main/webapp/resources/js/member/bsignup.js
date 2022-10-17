@@ -1,10 +1,12 @@
 /**
  * 
  */
+let bnn = false;
 let bn = false;
-$("#buisness_num").on("click",function(e){
+
+$("#email_btn").on("click",function(e){
 	e.preventDefault();
-	$("#bnomsg").text("사업자 등록번호 조회중...").css("color","green");
+	$("#email_msg").text("잠시만 기다려주세요...").css("color","green");
 	let num=$("#bno").val();
 	let company=$("#bname").val();
 	$.ajax({
@@ -14,17 +16,21 @@ $("#buisness_num").on("click",function(e){
 		contentType: "application/json; charset=utf8",
 		success : function (data) {
 			console.log("data="+data);
-			if(data==company){
-				$("#bnamsg").text("인증완료").css("color","green");
-				bn = true;
+			
+			if(data!=""){
+				if(data==company){
+					bn = true;
+					emcheck(data);
+				}else{
+					$("#email_msg").text("입력한 상호명과 등록된 상호명이 다르다.").css("color","red");
+				}
 			}else{
-				$("#bnamsg").text("입력한 상호명과 등록된 상호명이 다르다.").css("color","red");
+				$("#email_msg").text("사업자 정보를 입력하세요.").css("color","red");
 			}
-//			$("#bname").val(data);
 		}
 	})
 	.fail(function(){
-		$("#bnomsg").text("사업자 등록번호를 다시 확인하세요.").css("color","red");
+		$("#email_msg").text("사업자 등록번호를 다시 확인하세요.").css("color","red");
 		
 	})
 })
@@ -120,9 +126,11 @@ $("#email").on("keyup",function(){
 	}
 })
 
-$("#email_btn").on("click",function(e){
+//$("#email_btn").on("click",function(e){
+function emcheck(data){	
 	const Email_check= /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
-	e.preventDefault();
+//	e.preventDefault();
+//	$("#bnomsg").text("사업자 등록번호 조회중...").css("color","green");
 	
 	if($("#direct").val()==""){
 		$("#email_msg").text("이메일을 입력해주세요.").css("color","red");
@@ -134,7 +142,7 @@ $("#email_btn").on("click",function(e){
 		if(Email_check.test($("#direct").val())){
 			
 			$("#email_msg").text("이메일 전송중...").css("color","green");
-			emcheck(emc);
+			emnumcheck(emc,data);
 		}else{
 			$("#email_msg").text("이메일 주소를 다시 확인해 주세요.").css("color","red");
 		}
@@ -142,22 +150,22 @@ $("#email_btn").on("click",function(e){
 		$("#email_msg").text("이메일 주소를 다시 확인해 주세요.").css("color","red");
 //		alert("부적절한 이메일 입니다.")
 	}
-	
-})
+}
+//})
 
 const checkInput = $('.mail_check_input') // 인증번호 입력하는곳 
-function emcheck(email){
-	console.log(email);
+function emnumcheck(email,data){
+	console.log(email,data);
 	$.ajax({
 		type : 'get',
-		url: "/member/emailchk/"+email+"/",
-		data:email,
+		url: "/member/bemailchk/",
+		data:{"email":email,"bname":data},
 		contentType: "application/json; charset=utf-8",
-		success : function (data) {
+		success : function (res) {
 			$("#email_msg").text("");
-			console.log("data : " +  data);
+			console.log("data : " +  res);
 			checkInput.attr('disabled',false);
-			code =data;
+			code =res;
 			alert('인증번호가 전송되었습니다.')
 		}
 	})

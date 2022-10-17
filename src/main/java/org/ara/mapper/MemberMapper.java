@@ -3,13 +3,8 @@ package org.ara.mapper;
 import org.ara.model.MemberVO;
 
 public interface MemberMapper {
-	// 회원가입
+	// 사업자 회원가입, 일반 회원가입, 소셜 회원가입
 	public void signUp(MemberVO member);
-
-	public MemberVO login(MemberVO member);
-	// 닉네임 중복확인
-	public MemberVO nachk(String str);
-	// 이메일 중복확인
-	public MemberVO emchk(String str);
-	public MemberVO snsCheck(String email);
+	// 로그인, 닉네임 중복 확인, 이메일 중복 확인
+	public MemberVO select(MemberVO member);
 }

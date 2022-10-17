@@ -11,8 +11,18 @@
 				<div id="signup_box">
 					<input type="text" name="admin" value="true">
 					<div id="signup_box_text">
-						<h4 class="signup_text" id="text_email">이메일</h4>
-						<input type="text" name="email">
+						<h4 class="signup_text" id="text_email">사업자 이메일 인증</h4>
+<!-- 						<h4 class="signup_text" id="text_b_num">사업자등록번호</h4> -->
+						<p>test: 3988701116 (주)우리금융지주</p>
+						<input class="signup_input" type="text" placeholder="사업자등록번호" name="bno" id="bno">
+<!-- 						<p class="signup_msg" id="bnomsg"></p> -->
+						
+<!-- 						<h4 class="signup_text" id="text_b_name">상호명</h4> -->
+						<input class="signup_input" type="text" placeholder="상호명" name="bname" id="bname">
+<!-- 						<button id="buisness_num">인증</button> -->
+<!-- 						<p class="signup_msg" id="bnamsg"></p> -->
+						<input type="hidden" name="email">
+						<p>이메일</p>
 						<input class="e_input" type="text" id="email">@<input class="e_input" type="text" id="direct"> 
 						<select class="e_select" id="email_address">
 							<option id="user_email" value="@user">직접입력</option>
@@ -38,14 +48,6 @@
 						<input class="signup_input" type="text" name="name" id="name">
 						<p class="signup_msg" id="namsg"></p>
 						
-						<h4 class="signup_text" id="text_b_num">사업자등록번호</h4><p>test: 3988701116</p>
-						<input class="signup_input" type="text" name="bno" id="bno">
-						<button id="buisness_num">인증</button>
-						<p class="signup_msg" id="bnomsg"></p>
-						
-						<h4 class="signup_text" id="text_b_name">상호명</h4><p>test: (주)우리금융지주</p>
-						<input class="signup_input" type="text" name="bname" id="bname">
-						<p class="signup_msg" id="bnamsg"></p>
 						
 						<h4 class="signup_text" id="text_phone">연락처</h4>
 						<input class="signup_input" type="text" name="phone" id="phone">

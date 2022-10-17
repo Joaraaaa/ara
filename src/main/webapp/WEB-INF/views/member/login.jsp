@@ -29,7 +29,7 @@
 						class="loginInput" id="password"></td>
 				</tr>
 				<tr>
-					<td><input type="text" placeholder="사업자 등록번호" name="name"
+					<td><input type="text" placeholder="사업자 등록번호" name="bno"
 						class="loginInput" id="buisness_num" style="display:none"></td>
 				</tr>
 				<tr>
