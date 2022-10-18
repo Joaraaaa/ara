@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.ara.model.MemberVO;
+import org.ara.model.StoreVO;
 import org.ara.service.MemberService;
 import org.json.XML;
 import org.json.simple.JSONObject;
@@ -21,6 +22,7 @@ import org.json.simple.parser.ParseException;
 import org.ara.service.GetBuisnessInfoService;
 import org.ara.service.GetUserInfoService;
 import org.ara.service.RestJsonService;
+import org.ara.service.StoreService;
 import org.ara.service.MailSendService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -42,6 +44,9 @@ import com.google.api.client.json.gson.GsonFactory;
 public class MemberController {
 	@Autowired
 	MemberService ms;
+	
+	@Autowired
+	StoreService ss;
 
 	@Autowired
 	private MailSendService mailService;
@@ -134,7 +139,7 @@ public class MemberController {
 	// js에서 확인 절차를 통해 바르게 입력된 (일반/사업자)회원가입 정보를 이곳으로 모두 받아옴.
 	@RequestMapping(value = "/member/signup", method = RequestMethod.POST)
 	                                     // 회원가입 후 별도의 로그인 절차 없이 바로 로그인
-	public String signup(MemberVO member,HttpSession session) {
+	public String signup(MemberVO member, HttpSession session) {
 		// 일반 또는 사업자의 정보가 들어왔는지 확인용
 		System.out.println("member="+member);
 		try {
@@ -173,13 +178,16 @@ public class MemberController {
 	}
 
 	@RequestMapping(value = "/member/login", method = RequestMethod.POST)
-	public String loginPost(MemberVO member, HttpSession session) {
+	public String loginPost(MemberVO member, StoreVO store, HttpSession session) {
 		System.out.println(member);
-		System.out.println(ms.select(member));
+		System.out.println("여기"+ms.select(member));
 		session.setAttribute("userInfo", ms.select(member));
 		System.out.println(session.getAttribute("userInfo"));
 		if (session.getAttribute("userInfo") != null) {
 			if(member.isAdmin()==true) {
+				store.setBno(ms.select(member).getBno());
+				System.out.println(store.getBno());
+				session.setAttribute("storeInfo", ss.select(store));
 				return "redirect:/bhome";
 			}else {
 				return "redirect:/nhome";

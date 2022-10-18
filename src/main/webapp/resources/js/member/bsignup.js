@@ -7,7 +7,7 @@ let bn = false;
 $("#email_btn").on("click",function(e){
 	e.preventDefault();
 	$("#email_msg").text("잠시만 기다려주세요...").css("color","green");
-	let num=$("#bno").val();
+	let num=$("#crno").val();
 	let company=$("#bname").val();
 	$.ajax({
 		type : 'get',

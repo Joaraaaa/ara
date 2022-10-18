@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.ara.mapper.StoreMapper">
+	
+	<insert id="insert">
+	insert into store(bno, store, address, open_time, close_time, first, last, cycle, table_no)
+	values(#{bno}, #{store}, #{address}, #{open_time}, #{close_time}, #{first}, #{last}, #{cycle}, #{table_no});
+	</insert>
+	<select id="select" resultType="org.ara.model.StoreVO">
+	select * from store where bno = #{bno};
+	</select>
+	<update id="update">
+	update store
+	set store=#{store},address=#{address},open_time=#{open_time},close_time=#{close_time},first=#{first},last=#{last},cycle=#{cycle},table_no=#{table_no}
+	where bno=#{bno};
+	</update>
+</mapper>

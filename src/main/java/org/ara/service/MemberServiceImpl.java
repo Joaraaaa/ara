@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 public class MemberServiceImpl implements MemberService {
 	@Autowired
 	MemberMapper mm;
+
+	
 	// 사업자 회원가입, 일반 회원가입, 소셜 회원가입
 	public void signUp(MemberVO member) {
 		mm.signUp(member);
@@ -17,4 +19,5 @@ public class MemberServiceImpl implements MemberService {
 	public MemberVO select(MemberVO member) {
 		return mm.select(member);
 	}	
+
 }

@@ -14,7 +14,7 @@
 						<h4 class="signup_text" id="text_email">사업자 이메일 인증</h4>
 <!-- 						<h4 class="signup_text" id="text_b_num">사업자등록번호</h4> -->
 						<p>test: 3988701116 (주)우리금융지주</p>
-						<input class="signup_input" type="text" placeholder="사업자등록번호" name="bno" id="bno">
+						<input class="signup_input" type="text" placeholder="사업자등록번호" name="crno" id="crno">
 <!-- 						<p class="signup_msg" id="bnomsg"></p> -->
 						
 <!-- 						<h4 class="signup_text" id="text_b_name">상호명</h4> -->

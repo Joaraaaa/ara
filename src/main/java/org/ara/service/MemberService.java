@@ -7,4 +7,5 @@ public interface MemberService {
 	public void signUp(MemberVO member);
 	// 로그인, 닉네임 중복 확인, 이메일 중복 확인
 	public MemberVO select(MemberVO member);
+
 }
