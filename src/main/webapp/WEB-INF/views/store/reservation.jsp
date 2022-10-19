@@ -7,11 +7,12 @@
 <title>Insert title here</title>
 </head>
 <body>
-${storeInfo}
-<input type="text" value="${storeInfo.first}" id="first">
-<input type="text" value="${storeInfo.last}" id="last">
-<input type="text" value="${storeInfo.cycle}" id="cycle">
-<input type="text" value="${storeInfo.table_no}" id="table_no">
+
+<input type="hidden" value="${storeInfo.bno}" id="bno">
+<input type="hidden" value="${storeInfo.first}" id="first">
+<input type="hidden" value="${storeInfo.last}" id="last">
+<input type="hidden" value="${storeInfo.cycle}" id="cycle">
+<input type="hidden" value="${storeInfo.table_no}" id="table_no">
 <input type="date" id="date">
 <div id="r_list">
 
