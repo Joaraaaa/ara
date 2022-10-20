@@ -14,9 +14,24 @@
 <input type="hidden" value="${storeInfo.cycle}" id="cycle">
 <input type="hidden" value="${storeInfo.table_no}" id="table_no">
 <input type="date" id="date">
-<div id="r_list">
-
-</div>
+<table border="1">
+	<thead>
+		<tr>
+			<th>예약 상태</th>
+			<th>예약번호</th>
+			<th>예약날짜</th>
+			<th>예약시간</th>
+			<th>테이블 번호</th>
+			<th>예약자 이메일</th>
+			<th>예약자 이름</th>
+			<th>예약자 번호</th>
+			<th>수정</th>
+			<th>삭제</th>
+		</tr>
+	</thead>
+	<tbody id="r_list">
+	</tbody>
+</table>
 
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 <script src="../resources/js/store/reservation.js?ver=1"></script>

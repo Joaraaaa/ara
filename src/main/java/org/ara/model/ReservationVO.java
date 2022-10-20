@@ -1,6 +1,7 @@
 package org.ara.model;
 
 public class ReservationVO {
+	private boolean r_status;
 	private String rno;
 	private int bno;
 	private String date;
@@ -10,6 +11,12 @@ public class ReservationVO {
 	private int r_name;
 	private int r_phone;
 
+	public boolean isR_status() {
+		return r_status;
+	}
+	public void setR_status(boolean r_status) {
+		this.r_status = r_status;
+	}
 	public String getRno() {
 		return rno;
 	}
@@ -60,8 +67,8 @@ public class ReservationVO {
 	}
 	@Override
 	public String toString() {
-		return "ReservationVO [rno=" + rno + ", bno=" + bno + ", date=" + date + ", tno=" + tno + ", r_time=" + r_time
-				+ ", email=" + email + ", r_name=" + r_name + ", r_phone=" + r_phone + "]";
+		return "ReservationVO [r_status=" + r_status + ", rno=" + rno + ", bno=" + bno + ", date=" + date + ", tno="
+				+ tno + ", r_time=" + r_time + ", email=" + email + ", r_name=" + r_name + ", r_phone=" + r_phone + "]";
 	}
 	
 }

@@ -1,5 +1,7 @@
 package org.ara.service;
 
+import java.util.ArrayList;
+
 import org.ara.mapper.ReservationMapper;
 import org.ara.model.ReservationVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +15,10 @@ public class ReservationserviceImpl implements ReservationService{
 	public void insert(ReservationVO rvo) {
 		rm.insert(rvo);
 	}
-	public ReservationVO select(String bno) {
+	public ArrayList<ReservationVO> select(int bno) {
 		return rm.select(bno);
+	}
+	public void delete(ReservationVO rvo) {
+		rm.delete(rvo);
 	}
 }

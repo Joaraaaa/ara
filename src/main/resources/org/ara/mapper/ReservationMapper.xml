@@ -11,4 +11,15 @@
 	<select id="select" resultType="org.ara.model.ReservationVO">
 	select * from r_setting where bno = #{bno};
 	</select>
+	<delete id="delete">
+	delete from r_setting where 
+	<choose>
+		<when test="bno==0">
+		rno=#{rno};
+		</when>
+		<otherwise>
+		bno=#{bno};
+		</otherwise>
+		</choose>
+	</delete>
 </mapper>
