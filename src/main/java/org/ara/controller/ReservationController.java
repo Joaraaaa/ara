@@ -29,19 +29,32 @@ public class ReservationController {
 	@RequestMapping(value = "/reslist", method = RequestMethod.GET)
 	public ResponseEntity<ArrayList<ReservationVO>> reslist(int bno) {
 		System.out.println(bno);
+//		System.out.println(rs.select(bno));
 		return new ResponseEntity<>(rs.select(bno), HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/store/delete/{rno}", method = RequestMethod.GET)
-	public String delete(ReservationVO rvo) {
+	@RequestMapping(value = "/reservation/delete", method = RequestMethod.DELETE)
+	public ResponseEntity<String> delete(@RequestBody ReservationVO rvo) {
 		System.out.println(rvo);
-		rs.delete(rvo);
-		return "redirect:/store/reservation";
+		int result = rs.delete(rvo);
+		return result == 1 ? new ResponseEntity<>("success", HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
-	@RequestMapping(value = "/store/rmodify/{rno}", method = RequestMethod.GET)
-	public String rmodify(@RequestBody int rno) {
-		return "store/rmodify";
+	@RequestMapping(value = "reservation/update", method = RequestMethod.PUT)
+	public ResponseEntity<String> rmodify(@RequestBody ReservationVO rvo) {
+		System.out.println(rvo.getR_name());
+		if(rvo.getR_name()==null) {
+			rvo.setR_status(false);
+		}else {
+			rvo.setR_status(true);
+			
+		}
+		System.out.println(rvo.isR_status());
+		System.out.println("수정할 번호="+rvo);
+		int result = rs.update(rvo);
+		return result == 1 ? new ResponseEntity<>("success", HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
 	@RequestMapping(value = "/reservationsetting", method = RequestMethod.GET)

@@ -8,8 +8,8 @@ public class ReservationVO {
 	private int tno;
 	private int r_time;
 	private String email;
-	private int r_name;
-	private int r_phone;
+	private String r_name;
+	private String r_phone;
 
 	public boolean isR_status() {
 		return r_status;
@@ -53,16 +53,16 @@ public class ReservationVO {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public int getR_name() {
+	public String getR_name() {
 		return r_name;
 	}
-	public void setR_name(int r_name) {
+	public void setR_name(String r_name) {
 		this.r_name = r_name;
 	}
-	public int getR_phone() {
+	public String getR_phone() {
 		return r_phone;
 	}
-	public void setR_phone(int r_phone) {
+	public void setR_phone(String r_phone) {
 		this.r_phone = r_phone;
 	}
 	@Override

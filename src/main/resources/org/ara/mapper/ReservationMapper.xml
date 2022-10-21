@@ -22,4 +22,10 @@
 		</otherwise>
 		</choose>
 	</delete>
+	
+	<update id="update">
+	update r_setting 
+	set r_status=#{r_status},r_name=#{r_name},r_phone=#{r_phone}
+	where rno=#{rno};
+	</update>
 </mapper>

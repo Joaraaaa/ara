@@ -74,7 +74,7 @@ public class StoreController {
 			}
 		}
 		session.setAttribute("storeInfo", ss.select(store));
-		return "store/restaurant";
+		return "redirect:/store/reservation";
 	}
 	
 	

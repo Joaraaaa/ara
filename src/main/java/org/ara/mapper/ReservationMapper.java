@@ -7,5 +7,6 @@ import org.ara.model.ReservationVO;
 public interface ReservationMapper {
 	public void insert(ReservationVO rvo);
 	public ArrayList<ReservationVO> select(int bno);
-	public void delete(ReservationVO rvo);
+	public int delete(ReservationVO rvo);
+	public int update(ReservationVO rvo);
 }
