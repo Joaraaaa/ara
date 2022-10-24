@@ -1,5 +1,7 @@
 package org.ara.mapper;
 
+import java.util.ArrayList;
+
 import org.ara.model.StoreVO;
 
 public interface StoreMapper {
@@ -9,5 +11,7 @@ public interface StoreMapper {
 	public StoreVO select(StoreVO store);
 	
 	public void update(StoreVO store);
+
+	public ArrayList<StoreVO> selectAll();
 }
 

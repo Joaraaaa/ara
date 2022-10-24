@@ -173,7 +173,7 @@ public class MemberController {
 	// 로그인
 	@RequestMapping(value = "/member/login", method = RequestMethod.GET)
 	public String login(HttpSession session,Model model) {
-//		session.invalidate();
+		session.invalidate();
 		return "member/login";
 	}
 

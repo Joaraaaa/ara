@@ -10,5 +10,6 @@
 <h1>일반회원 페이지</h1>
 아이디:${userInfo.name}
 <a href="/">초기화면</a>
+<a href="/normal/storelist">가게목록</a>
 </body>
 </html>

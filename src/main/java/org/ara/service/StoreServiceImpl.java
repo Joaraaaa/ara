@@ -1,6 +1,9 @@
 package org.ara.service;
 
 import org.ara.service.StoreService;
+
+import java.util.ArrayList;
+
 import org.ara.mapper.StoreMapper;
 import org.ara.model.StoreVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,5 +22,8 @@ public class StoreServiceImpl implements StoreService{
 	}
 	public void update(StoreVO store) {
 		sm.update(store);
+	}
+	public ArrayList<StoreVO> selectAll(){
+		return sm.selectAll();
 	}
 }

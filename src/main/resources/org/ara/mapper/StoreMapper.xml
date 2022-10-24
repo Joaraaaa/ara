@@ -12,6 +12,9 @@
 	<select id="select" resultType="org.ara.model.StoreVO">
 	select * from store where bno = #{bno};
 	</select>
+	<select id="selectAll" resultType="org.ara.model.StoreVO">
+	select * from store;
+	</select>
 	<update id="update">
 	update store
 	set store=#{store},address=#{address},open_time=#{open_time},close_time=#{close_time},first=#{first},last=#{last},cycle=#{cycle},table_no=#{table_no}

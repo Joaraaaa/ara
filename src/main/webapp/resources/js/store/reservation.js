@@ -31,8 +31,8 @@ function r_list(bno){
 					<td><input type="text" value="${r.r_phone}" id="${r.rno}_phone" disabled></td>
 					<td id="${r.rno}">
 						<button class="modi_btn">수정</button>
-						<button class="d_btn">삭제</button>
 						<button class="c_btn">취소</button>
+						<button class="d_btn">삭제</button>
 					</td>
 					</tr>`
 		})

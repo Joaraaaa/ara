@@ -12,7 +12,7 @@ bno : ${userInfo.bno}
 상호명 : ${userInfo.bname}
 가게 전화 : ${userInfo.phone}
 <form action="/store/restaurant" method="post">
-<input type="hidden" name="bno" value="${userInfo.bno}">
+<input type="text" name="bno" value="${userInfo.bno}">
 <h6>가게이름</h6>
 <input type="text" name="store" value="${storeInfo.store}">
 <h6>가게 주소</h6>

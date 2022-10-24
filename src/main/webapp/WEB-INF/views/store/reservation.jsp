@@ -25,7 +25,7 @@
 			<th>예약자 이메일</th>
 			<th>예약자 이름</th>
 			<th>예약자 번호</th>
-			<th>수정/삭제/취소</th>
+			<th>수정/취소/삭제</th>
 		</tr>
 	</thead>
 	<tbody id="r_list">

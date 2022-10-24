@@ -57,9 +57,11 @@ public class StoreController {
 				}
 			}
 		}else {
+			System.out.println("바꾼다");
 			ss.update(store);
 //			rvo.setBno(store.getBno());
 			rs.delete(rvo);
+			System.out.println("지운다");
 			for(int i=first; i<=last; i+=cycle) {
 				System.out.println(i+"시 예약");
 				for(int j=1; j<=table_no; j++) {
