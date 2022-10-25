@@ -23,12 +23,12 @@ public class StoreController {
 	ReservationService rs;
 
 	
-	@RequestMapping(value = "/store/restaurant", method = RequestMethod.GET)
+	@RequestMapping(value = "/store/restaurantsetting", method = RequestMethod.GET)
 	public String restaurantGet() {
-		return "store/restaurant";
+		return "store/restaurantsetting";
 	}
 	
-	@RequestMapping(value = "/store/restaurant", method = RequestMethod.POST)
+	@RequestMapping(value = "/store/restaurantsetting", method = RequestMethod.POST)
 	public String restaurant(StoreVO store, HttpSession session,ReservationVO rvo) {
 		System.out.println(store);
 		int first=store.getFirst();
@@ -76,7 +76,7 @@ public class StoreController {
 			}
 		}
 		session.setAttribute("storeInfo", ss.select(store));
-		return "redirect:/store/reservation";
+		return "redirect:/store/reservationsetting";
 	}
 	
 	

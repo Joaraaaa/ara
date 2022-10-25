@@ -22,7 +22,7 @@ public class ReservationController {
 	@Autowired
 	ReservationService rs;
 	
-	@RequestMapping(value = "/store/reservation", method = RequestMethod.GET)
+	@RequestMapping(value = "/store/reservationsetting", method = RequestMethod.GET)
 	public void reservationGet() {
 	}
 	
@@ -57,18 +57,7 @@ public class ReservationController {
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
-	@RequestMapping(value = "/reservationsetting", method = RequestMethod.GET)
-	public ResponseEntity<ReservationVO> reservationsetting(ReservationVO rvo) {
-		try {
 
-			
-		}catch(Exception e){
-			
-		}
+	
 
-//		System.out.println(rvo);
-
-		
-		return null;
-	}
 }

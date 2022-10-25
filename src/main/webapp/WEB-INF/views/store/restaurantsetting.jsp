@@ -32,6 +32,6 @@ bno : ${userInfo.bno}
 <input type="submit" value="등록하기">
 </form>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
-<script src="../resources/js/store/restaurant.js?ver=1"></script>
+<script src="../resources/js/store/restaurantsetting.js?ver=1"></script>
 </body>
 </html>
