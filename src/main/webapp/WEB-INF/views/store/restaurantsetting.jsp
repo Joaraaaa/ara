@@ -11,7 +11,7 @@ bno : ${userInfo.bno}
 사업자 등록번호 : ${userInfo.crno}
 상호명 : ${userInfo.bname}
 가게 전화 : ${userInfo.phone}
-<form action="/store/restaurant" method="post">
+<form action="/store/restaurantsetting" method="post">
 <input type="text" name="bno" value="${userInfo.bno}">
 <h6>가게이름</h6>
 <input type="text" name="store" value="${storeInfo.store}">

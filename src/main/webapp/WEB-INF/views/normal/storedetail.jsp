@@ -28,7 +28,7 @@ ${store.store}의 예약목록
 			<td>예약불가</td>
 			</c:when>
 			<c:otherwise>
-			<td><a href="/normal/reservation?rno=${list.rno}">예약하기</a></td>
+			<td><a href="/normal/reservation?rno=${list.rno}&bno=${list.bno}">예약하기</a></td>
 			</c:otherwise>
 			</c:choose>
 		</tr>

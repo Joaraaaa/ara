@@ -26,35 +26,38 @@ public class NormalController {
 	
 	@RequestMapping(value = "normal/storelist", method = RequestMethod.GET)
 	public String storeList(Model model,StoreVO store) {
-		System.out.println(store);
 		model.addAttribute("list",ss.selectAll());
-		System.out.println(ss.select(store));
 		return "normal/storelist";
 	}
 	
 	@RequestMapping(value = "normal/storedetail", method = RequestMethod.GET)
-	public String storeDetail(Model model, int bno, StoreVO store) {
+	public String storeDetail(Model model, int bno, StoreVO store, ReservationVO rvo) {
+		System.out.println("확인"+store);
+		System.out.println("확인"+rvo);
 		store.setBno(bno);
 		model.addAttribute("store", ss.select(store));
-		model.addAttribute("rlist", rs.select(bno));
+		model.addAttribute("rlist", rs.select(rvo));
 		
 		return "normal/storedetail";
 		
 	}
 	
 	@RequestMapping(value = "normal/reservation", method = RequestMethod.GET)
-	public String reservation (ReservationVO rvo) {
+	public String reservation (Model model, ReservationVO rvo) {
 		System.out.println(rvo);
+		model.addAttribute("rno", rvo.getRno());
+		
 		return "normal/reservation";
 	}
 	
 	@RequestMapping(value = "normal/reservation", method = RequestMethod.POST)
-	public String reservationPost (ReservationVO rvo) {
-		rvo.setR_status(true);
-		System.out.println(rvo);
+	public String reservationPost (ReservationVO rvo, StoreVO store) {
+		System.out.println("rvo확인 : "+rvo);
 		rs.update(rvo);
-		System.out.println(rs.update(rvo));
-		return "redirect:/normal/storedetail";
+		rvo.setR_status(true);
+		rs.status(rvo);
+//		System.out.println(rs.update(rvo));
+		return "redirect:/normal/storelist";
 	}
 	
 }

@@ -15,8 +15,8 @@ public class ReservationserviceImpl implements ReservationService{
 	public void insert(ReservationVO rvo) {
 		rm.insert(rvo);
 	}
-	public ArrayList<ReservationVO> select(int bno) {
-		return rm.select(bno);
+	public ArrayList<ReservationVO> select(ReservationVO rvo) {
+		return rm.select(rvo);
 	}
 	public int delete(ReservationVO rvo) {
 		return rm.delete(rvo);
@@ -24,4 +24,11 @@ public class ReservationserviceImpl implements ReservationService{
 	public int update(ReservationVO rvo) {
 		return rm.update(rvo);
 	}
+	public void rnoInsert(ReservationVO rvo) {
+		rm.rnoInsert(rvo);
+	}
+	public void status(ReservationVO rvo) {
+		rm.status(rvo);
+	}
+
 }

@@ -8,8 +8,12 @@
 	insert into r_setting(rno, date, bno, tno, r_time)
 	values(#{rno}, #{date}, #{bno}, #{tno}, #{r_time});
 	</insert>
-	<select id="select" resultType="org.ara.model.ReservationVO">
-	select * from r_setting where bno = #{bno};
+	<select id="select" resultType="org.ara.model.ReservationVO">	
+	select * 
+	from r_setting rs
+	join reservation r
+	on rs.rno = r.rno
+	where bno = #{bno};
 	</select>
 	<delete id="delete">
 	delete from r_setting where 
@@ -24,8 +28,17 @@
 	</delete>
 	
 	<update id="update">
-	update r_setting 
-	set r_status=#{r_status},email=#{email},r_name=#{r_name},r_phone=#{r_phone}
+	update reservation 
+	set email=#{email},r_name=#{r_name},r_phone=#{r_phone}
+	where rno=#{rno};
+	</update>
+	<insert id="rnoInsert">
+	insert into reservation(rno,email,r_name,r_phone)
+	values(#{rno},"예약가능","예약가능","예약가능")
+	</insert>
+	<update id="status">
+	update r_setting
+	set r_status=#{r_status}
 	where rno=#{rno};
 	</update>
 </mapper>

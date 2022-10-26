@@ -54,12 +54,12 @@ public class StoreController {
 					rvo.setR_time(i);
 					rvo.setTno(j);
 					rs.insert(rvo);
+					rs.rnoInsert(rvo);
 				}
 			}
 		}else {
 			System.out.println("바꾼다");
 			ss.update(store);
-//			rvo.setBno(store.getBno());
 			rs.delete(rvo);
 			System.out.println("지운다");
 			for(int i=first; i<=last; i+=cycle) {
@@ -72,6 +72,7 @@ public class StoreController {
 					rvo.setR_time(i);
 					rvo.setTno(j);
 					rs.insert(rvo);
+					rs.rnoInsert(rvo);
 				}
 			}
 		}
