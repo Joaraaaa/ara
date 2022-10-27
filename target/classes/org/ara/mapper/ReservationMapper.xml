@@ -29,7 +29,15 @@
 	
 	<update id="update">
 	update reservation 
-	set email=#{email},r_name=#{r_name},r_phone=#{r_phone}
+	set r_name=#{r_name},r_phone=#{r_phone},
+	<choose>
+	<when test="email==''">
+	email="비회원"
+	</when>
+	<otherwise>
+	email=#{email}
+	</otherwise>
+	</choose>
 	where rno=#{rno};
 	</update>
 	<insert id="rnoInsert">

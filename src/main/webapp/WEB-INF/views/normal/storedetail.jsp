@@ -8,7 +8,20 @@
 <title>Insert title here</title>
 </head>
 <body>
+<p style="margin-top:-12px">
+    <em class="link">
+        <a href="javascript:void(0);" onclick="window.open('http://fiy.daum.net/fiy/map/CsGeneral.daum', '_blank', 'width=981, height=650')">
+            혹시 주소 결과가 잘못 나오는 경우에는 여기에 제보해주세요.
+        </a>
+    </em>
+</p>
+<div id="map" style="width:100%;height:350px;"></div>
+
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=5293487c7cb7f1e2d87c3a1ee57bcf63&libraries=services"></script>
+
 ${store.store}의 예약목록
+<input type="text" value="${store.address}" id="address">
+<input type="text" value="${store.store}" id="store">
 <table border="1">
 	<thead>
 		<tr>
