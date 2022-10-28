@@ -24,11 +24,11 @@
 	</thead>
 	<tbody>
 		<c:forEach items="${list}" var="store">
-		<div class="address">${store.address}</div>
-		<div class="store">${store.store}</div>
+		
+		
 		<tr>
-			<td><a href="/normal/storedetail?bno=${store.bno}">${store.store}</a></td>
-			<td>${store.address}</td>
+			<td><div class="bno">${store.bno}</div><a href="/normal/storedetail?bno=${store.bno}"><div class="store">${store.store}</div></a></td>
+			<td><div class="address">${store.address}</div></td>
 		</tr>
 		</c:forEach>
 		
