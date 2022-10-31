@@ -30,5 +30,7 @@ public class ReservationserviceImpl implements ReservationService{
 	public void status(ReservationVO rvo) {
 		rm.status(rvo);
 	}
-
+	public ArrayList<ReservationVO> r_select(ReservationVO rvo){
+		return rm.r_select(rvo);
+	}
 }

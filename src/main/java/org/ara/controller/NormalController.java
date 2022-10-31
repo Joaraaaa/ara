@@ -1,5 +1,7 @@
 package org.ara.controller;
 
+import java.util.ArrayList;
+
 import javax.servlet.http.HttpSession;
 
 import org.ara.model.ReservationVO;
@@ -59,5 +61,23 @@ public class NormalController {
 //		System.out.println(rs.update(rvo));
 		return "redirect:/normal/storelist";
 	}
+	
+	@RequestMapping(value = "normal/myreservation", method = RequestMethod.GET)
+	public String myReservation () {
+	
+		
+		return "normal/myreservation";
+	}
+	
+	@RequestMapping(value = "findreservation", method = RequestMethod.GET)
+	public ResponseEntity<ArrayList<ReservationVO>> findreservation (ReservationVO rvo,Model model) {
+		System.out.println(rvo);
+		System.out.println(rs.r_select(rvo));
+//		model.addAttribute("reservation", rs.r_select(rvo));
+		return new ResponseEntity<>(rs.r_select(rvo), HttpStatus.OK);
+//		return "normal/myreservation";
+	}
+	
+	
 	
 }

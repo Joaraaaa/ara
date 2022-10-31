@@ -11,4 +11,5 @@ public interface ReservationMapper {
 	public int update(ReservationVO rvo);
 	public void rnoInsert(ReservationVO rvo);
 	public void status(ReservationVO rvo);
+	public ArrayList<ReservationVO> r_select(ReservationVO rvo);
 }

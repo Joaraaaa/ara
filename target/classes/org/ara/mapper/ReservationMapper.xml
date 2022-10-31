@@ -49,4 +49,30 @@
 	set r_status=#{r_status}
 	where rno=#{rno};
 	</update>
+	<resultMap type="org.ara.model.ReservationVO" id="ReservationVO">
+		<result column="rno" property="rno"/>
+		<result column="date" property="date"/>
+		<result column="email" property="email"/>
+		<result column="r_name" property="r_name"/>
+		<result column="r_phone" property="r_phone"/>
+		<collection property="svo" resultMap="StoreVO" />
+	</resultMap>
+	<resultMap type="org.ara.model.StoreVO" id="StoreVO">
+		<result column="store" property="store"/>
+		<result column="bno" property="bno"/>
+	</resultMap>
+	<select id="r_select" resultMap="ReservationVO">
+	select rv.rno, date, email, r_name, r_phone, store, bno
+	from reservation rv
+	join(
+	select rno, date, store, r.bno
+	from r_setting r
+	join store s
+	on r.bno=s.bno
+	)sr
+	on rv.rno=sr.rno
+	where r_name=#{r_name}
+	and r_phone=#{r_phone};
+	
+	</select>
 </mapper>

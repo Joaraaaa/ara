@@ -10,6 +10,7 @@ public class ReservationVO {
 	private String email;
 	private String r_name;
 	private String r_phone;
+	private StoreVO svo;
 
 	public boolean isR_status() {
 		return r_status;
@@ -65,10 +66,17 @@ public class ReservationVO {
 	public void setR_phone(String r_phone) {
 		this.r_phone = r_phone;
 	}
+	public StoreVO getSvo() {
+		return svo;
+	}
+	public void setSvo(StoreVO svo) {
+		this.svo = svo;
+	}
 	@Override
 	public String toString() {
 		return "ReservationVO [r_status=" + r_status + ", rno=" + rno + ", bno=" + bno + ", date=" + date + ", tno="
-				+ tno + ", r_time=" + r_time + ", email=" + email + ", r_name=" + r_name + ", r_phone=" + r_phone + "]";
+				+ tno + ", r_time=" + r_time + ", email=" + email + ", r_name=" + r_name + ", r_phone=" + r_phone
+				+ ", svo=" + svo + "]";
 	}
 	
 }

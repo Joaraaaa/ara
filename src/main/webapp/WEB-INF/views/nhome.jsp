@@ -11,5 +11,7 @@
 아이디:${userInfo.name}
 <a href="/">초기화면</a>
 <a href="/normal/storelist">가게목록</a>
+<a href="/normal/myreservation">예약조회</a>
+
 </body>
 </html>
