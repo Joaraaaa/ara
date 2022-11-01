@@ -78,6 +78,11 @@ public class NormalController {
 //		return "normal/myreservation";
 	}
 	
+	@RequestMapping(value = "normal/mypage", method = RequestMethod.GET)
+	public String mypage () {
 	
+		
+		return "normal/mypage";
+	}
 	
 }
