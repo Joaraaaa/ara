@@ -9,6 +9,8 @@
 <body>
 아이디:${userInfo.name}
 <input type="text" value="${userInfo.name}" name='name'>
-
+${pday}
+${day}
+<input type="date" value="${day}" min="${day}" max="${pday}">
 </body>
 </html>

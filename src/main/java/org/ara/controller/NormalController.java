@@ -1,5 +1,7 @@
 package org.ara.controller;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpSession;
@@ -79,9 +81,15 @@ public class NormalController {
 	}
 	
 	@RequestMapping(value = "normal/mypage", method = RequestMethod.GET)
-	public String mypage () {
-	
-		
+	public String mypage (Model model) {
+		LocalDate localDate = LocalDate.now();
+		DateTimeFormatter d= DateTimeFormatter.ISO_LOCAL_DATE;
+		String date = localDate.format(d);
+		System.out.println(date);
+		String plusdays=localDate.plusDays(6).format(d);
+		System.out.println(plusdays);
+		model.addAttribute("day", date);
+		model.addAttribute("pday", plusdays);
 		return "normal/mypage";
 	}
 	
