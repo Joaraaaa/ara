@@ -5,8 +5,8 @@
   
 <mapper namespace="org.ara.mapper.ReservationMapper">
 	<insert id="insert">
-	insert into r_setting(rno, date, bno, tno, r_time)
-	values(#{rno}, #{date}, #{bno}, #{tno}, #{r_time});
+	insert into res_set(bno, date, r_time, people, rno)
+	values(#{bno}, #{date}, #{r_time}, #{people}, #{rno});
 	</insert>
 	
 	<select id="select" resultType="org.ara.model.ReservationVO">	
@@ -60,7 +60,7 @@
 		<result column="email" property="email"/>
 		<result column="r_name" property="r_name"/>
 		<result column="r_phone" property="r_phone"/>
-		<collection property="svo" resultMap="StoreVO" />
+		<collection property="svo" resultMap="StoreVO"/>
 	</resultMap>
 	<resultMap type="org.ara.model.StoreVO" id="StoreVO">
 		<result column="store" property="store"/>

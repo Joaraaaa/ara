@@ -27,8 +27,9 @@ bno : ${userInfo.bno}
 <input type="text" name="last" value="${storeInfo.last}">
 <h6>테이블 회전 시간</h6>
 <input type="text" name="cycle" value="${storeInfo.cycle}">
-<h6>예약 가능 테이블 수</h6>
-<input type="text" name="table_no" value="${storeInfo.table_no}">
+<h6>수용 인원 수</h6>
+<input type="text" name="people">
+
 <input type="submit" value="등록하기">
 </form>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>

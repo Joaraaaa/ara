@@ -5,6 +5,8 @@ import java.time.format.DateTimeFormatter;
 
 import javax.servlet.http.HttpSession;
 
+import org.ara.model.RUserInfoVO;
+import org.ara.model.ResSetVO;
 import org.ara.model.ReservationVO;
 import org.ara.model.StoreVO;
 import org.ara.service.ReservationService;
@@ -21,6 +23,8 @@ public class StoreController {
 	StoreService ss;
 	@Autowired
 	ReservationService rs;
+	
+	
 
 	
 	@RequestMapping(value = "/store/restaurantsetting", method = RequestMethod.GET)
@@ -29,56 +33,80 @@ public class StoreController {
 	}
 	
 	@RequestMapping(value = "/store/restaurantsetting", method = RequestMethod.POST)
-	public String restaurant(StoreVO store, HttpSession session,ReservationVO rvo) {
-		System.out.println(store);
-		int first=store.getFirst();
-		int last=store.getLast();
-		int cycle=store.getCycle();
-		int table_no=store.getTable_no();
-		int bno=store.getBno();
-		String rno="";
-		LocalDate localDate = LocalDate.now();
-		DateTimeFormatter d= DateTimeFormatter.BASIC_ISO_DATE;
-		String date = localDate.format(d);
-		System.out.println(date);
-		System.out.println(rvo);
-		if(session.getAttribute("storeInfo")==null) {
-			ss.insert(store);
+	public String restaurant(StoreVO svo, ResSetVO rsvo, HttpSession session) {
+		System.out.println(svo);
+		int bno=svo.getBno();
+		int first=svo.getFirst();
+		int last=svo.getLast();
+		int cycle=svo.getCycle();
+		for(int j=0;j<7;j+=1) {
+			LocalDate localDate = LocalDate.now();
+			DateTimeFormatter d= DateTimeFormatter.ISO_LOCAL_DATE;
+			
+			String date=localDate.plusDays(j).format(d);
+			System.out.println(date);
 			for(int i=first; i<=last; i+=cycle) {
 				System.out.println(i+"시 예약");
-				for(int j=1; j<=table_no; j++) {
-					rno= date+Integer.toString(bno)+i+j;
-					System.out.println(rno);
-					rvo.setDate(date);
-					rvo.setRno(rno);
-					rvo.setR_time(i);
-					rvo.setTno(j);
-					rs.insert(rvo);
-					rs.rnoInsert(rvo);
-				}
-			}
-		}else {
-			System.out.println("바꾼다");
-			ss.update(store);
-			rs.delete(rvo);
-			System.out.println("지운다");
-			for(int i=first; i<=last; i+=cycle) {
-				System.out.println(i+"시 예약");
-				for(int j=1; j<=table_no; j++) {
-					rno= date+Integer.toString(bno)+i+j;
-					System.out.println(rno);
-					rvo.setDate(date);
-					rvo.setRno(rno);
-					rvo.setR_time(i);
-					rvo.setTno(j);
-					rs.insert(rvo);
-					rs.rnoInsert(rvo);
-				}
+				rsvo.setR_time(i);
+				rsvo.setDate(date);
+				rsvo.setRno('D'+date+'T'+i+'N'+bno);
+				System.out.println(rsvo);
+				rs.insert(rsvo);
 			}
 		}
-		session.setAttribute("storeInfo", ss.select(store));
-		return "redirect:/store/reservationsetting";
+		return null;
+		
 	}
+//	public String restaurant(StoreVO store, HttpSession session,ReservationVO rvo) {
+//		System.out.println(store);
+//		int first=store.getFirst();
+//		int last=store.getLast();
+//		int cycle=store.getCycle();
+//		int table_no=store.getTable_no();
+//		int bno=store.getBno();
+//		String rno="";
+//		LocalDate localDate = LocalDate.now();
+//		DateTimeFormatter d= DateTimeFormatter.BASIC_ISO_DATE;
+//		String date = localDate.format(d);
+//		System.out.println(date);
+//		System.out.println(rvo);
+//		if(session.getAttribute("storeInfo")==null) {
+//			ss.insert(store);
+//			for(int i=first; i<=last; i+=cycle) {
+//				System.out.println(i+"시 예약");
+//				for(int j=1; j<=table_no; j++) {
+//					rno= date+Integer.toString(bno)+i+j;
+//					System.out.println(rno);
+//					rvo.setDate(date);
+//					rvo.setRno(rno);
+//					rvo.setR_time(i);
+//					rvo.setTno(j);
+//					rs.insert(rvo);
+//					rs.rnoInsert(rvo);
+//				}
+//			}
+//		}else {
+//			System.out.println("바꾼다");
+//			ss.update(store);
+//			rs.delete(rvo);
+//			System.out.println("지운다");
+//			for(int i=first; i<=last; i+=cycle) {
+//				System.out.println(i+"시 예약");
+//				for(int j=1; j<=table_no; j++) {
+//					rno= date+Integer.toString(bno)+i+j;
+//					System.out.println(rno);
+//					rvo.setDate(date);
+//					rvo.setRno(rno);
+//					rvo.setR_time(i);
+//					rvo.setTno(j);
+//					rs.insert(rvo);
+//					rs.rnoInsert(rvo);
+//				}
+//			}
+//		}
+//		session.setAttribute("storeInfo", ss.select(store));
+//		return "redirect:/store/reservationsetting";
+//	}
 	
 	
 }

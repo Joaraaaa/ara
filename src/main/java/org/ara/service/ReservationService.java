@@ -2,10 +2,12 @@ package org.ara.service;
 
 import java.util.ArrayList;
 
+import org.ara.model.ResSetVO;
 import org.ara.model.ReservationVO;
 
 public interface ReservationService {
-	public void insert(ReservationVO rvo);
+	public void insert(ResSetVO rsvo);
+//	public void insert(ReservationVO rvo);
 	public ArrayList<ReservationVO> select(ReservationVO rvo);
 	public int delete(ReservationVO rvo);
 	public int update(ReservationVO rvo);
