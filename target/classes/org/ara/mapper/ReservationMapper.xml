@@ -9,12 +9,18 @@
 	values(#{bno}, #{date}, #{r_time}, #{people}, #{rno});
 	</insert>
 	
-	<select id="select" resultType="org.ara.model.ReservationVO">	
+	<select id="select" resultType="org.ara.model.ResSetVO">	
+	select *
+	from res_set
+	where bno=#{bno}
+	and date=#{date}
+	<!-- 
 	select * 
 	from r_setting rs
 	join reservation r
 	on rs.rno = r.rno
 	where bno = #{bno};
+	 -->
 	</select>
 	
 	<delete id="delete">

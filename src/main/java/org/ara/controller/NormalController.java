@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import javax.servlet.http.HttpSession;
 
+import org.ara.model.ResSetVO;
 import org.ara.model.ReservationVO;
 import org.ara.model.StoreVO;
 import org.ara.service.ReservationService;
@@ -35,13 +36,22 @@ public class NormalController {
 	}
 	
 	@RequestMapping(value = "normal/storedetail", method = RequestMethod.GET)
-	public String storeDetail(Model model, int bno, StoreVO store, ReservationVO rvo) {
+	public String storeDetail(Model model, int bno, StoreVO store, ResSetVO rsvo) {
+		
+		LocalDate localDate = LocalDate.now();
+		DateTimeFormatter d= DateTimeFormatter.ISO_LOCAL_DATE;
+		String date = localDate.format(d);
+		System.out.println(date);
+		String plusdays=localDate.plusDays(6).format(d);
+		System.out.println(plusdays);
+		model.addAttribute("day", date);
+		model.addAttribute("pday", plusdays);
+		rsvo.setDate(date);
 		System.out.println("확인"+store);
-		System.out.println("확인"+rvo);
+		System.out.println("확인"+rsvo);
 		store.setBno(bno);
 		model.addAttribute("store", ss.select(store));
-		model.addAttribute("rlist", rs.select(rvo));
-		
+		model.addAttribute("rlist", rs.select(rsvo));
 		return "normal/storedetail";
 		
 	}

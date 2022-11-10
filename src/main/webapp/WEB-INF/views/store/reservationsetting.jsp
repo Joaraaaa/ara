@@ -12,7 +12,7 @@
 <input type="hidden" value="${storeInfo.first}" id="first">
 <input type="hidden" value="${storeInfo.last}" id="last">
 <input type="hidden" value="${storeInfo.cycle}" id="cycle">
-<input type="hidden" value="${storeInfo.table_no}" id="table_no">
+<input type="hidden" value="${storeInfo.p_setting}" id="p_setting">
 <input type="date" id="date">
 <table border="1">
 	<thead>
@@ -21,7 +21,7 @@
 			<th>예약번호</th>
 			<th>예약날짜</th>
 			<th>예약시간</th>
-			<th>테이블 번호</th>
+			<th>예약가능인원</th>
 			<th>예약자 이메일</th>
 			<th>예약자 이름</th>
 			<th>예약자 번호</th>

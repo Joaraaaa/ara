@@ -6,11 +6,11 @@ import org.ara.model.StoreVO;
 
 public interface StoreMapper {
 
-	public void insert(StoreVO store);
+	public void insert(StoreVO svo);
 	
-	public StoreVO select(StoreVO store);
+	public StoreVO select(StoreVO svo);
 	
-	public void update(StoreVO store);
+	public void update(StoreVO svo);
 
 	public ArrayList<StoreVO> selectAll();
 }

@@ -2,6 +2,7 @@ package org.ara.controller;
 
 import java.util.ArrayList;
 
+import org.ara.model.ResSetVO;
 import org.ara.model.ReservationVO;
 import org.ara.model.StoreVO;
 import org.ara.service.ReservationService;
@@ -27,10 +28,10 @@ public class ReservationController {
 	}
 	
 	@RequestMapping(value = "/reslist", method = RequestMethod.GET)
-	public ResponseEntity<ArrayList<ReservationVO>> reslist(ReservationVO rvo) {
-		System.out.println("확인"+rvo);
+	public ResponseEntity<ArrayList<ResSetVO>> reslist(ResSetVO rsvo) {
+		System.out.println("확인"+rsvo);
 //		System.out.println(rs.select(bno));
-		return new ResponseEntity<>(rs.select(rvo), HttpStatus.OK);
+		return new ResponseEntity<>(rs.select(rsvo), HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/reservation/delete", method = RequestMethod.DELETE)

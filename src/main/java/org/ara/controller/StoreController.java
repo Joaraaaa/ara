@@ -39,21 +39,33 @@ public class StoreController {
 		int first=svo.getFirst();
 		int last=svo.getLast();
 		int cycle=svo.getCycle();
-		for(int j=0;j<7;j+=1) {
-			LocalDate localDate = LocalDate.now();
-			DateTimeFormatter d= DateTimeFormatter.ISO_LOCAL_DATE;
-			
-			String date=localDate.plusDays(j).format(d);
-			System.out.println(date);
-			for(int i=first; i<=last; i+=cycle) {
-				System.out.println(i+"시 예약");
-				rsvo.setR_time(i);
-				rsvo.setDate(date);
-				rsvo.setRno('D'+date+'T'+i+'N'+bno);
-				System.out.println(rsvo);
-				rs.insert(rsvo);
+		LocalDate localDate = LocalDate.now();
+		DateTimeFormatter d= DateTimeFormatter.ISO_LOCAL_DATE;
+		// 가게 설정 정보가 없다면 입력받아 저장하기(insert)
+		if(session.getAttribute("storeInfo")==null) {
+			ss.insert(svo);
+			// 예약 시간표 7일치 저장하기
+			for(int j=0;j<7;j+=1) {
+				String date=localDate.plusDays(j).format(d);
+				System.out.println(date);
+				for(int i=first; i<=last; i+=cycle) {
+					System.out.println(i+"시 예약");
+					rsvo.setR_time(i);
+					rsvo.setDate(date);
+					rsvo.setPeople(svo.getP_setting());
+					rsvo.setRno('D'+date+'T'+i+'N'+bno);
+					System.out.println(rsvo);
+					rs.insert(rsvo);
+				}
 			}
+		// 가게 설정 정보가 있다면 변경하기(update)
+		}else {
+			System.out.println("이미 있다.");
+			ss.update(svo);
 		}
+		
+		session.setAttribute("storeInfo", ss.select(svo));
+		
 		return null;
 		
 	}

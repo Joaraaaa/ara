@@ -9,7 +9,7 @@ public class StoreVO {
 	private int first;
 	private int last;
 	private int cycle;
-	private int table_no;
+	private int p_setting;
 	public int getBno() {
 		return bno;
 	}
@@ -58,17 +58,17 @@ public class StoreVO {
 	public void setCycle(int cycle) {
 		this.cycle = cycle;
 	}
-	public int getTable_no() {
-		return table_no;
+	public int getP_setting() {
+		return p_setting;
 	}
-	public void setTable_no(int table_no) {
-		this.table_no = table_no;
+	public void setP_setting(int p_setting) {
+		this.p_setting = p_setting;
 	}
 	@Override
 	public String toString() {
 		return "StoreVO [bno=" + bno + ", store=" + store + ", address=" + address + ", open_time=" + open_time
 				+ ", close_time=" + close_time + ", first=" + first + ", last=" + last + ", cycle=" + cycle
-				+ ", table_no=" + table_no + "]";
+				+ ", p_setting=" + p_setting + "]";
 	}
 	
 	

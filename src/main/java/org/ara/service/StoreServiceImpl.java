@@ -14,14 +14,14 @@ public class StoreServiceImpl implements StoreService{
 	@Autowired
 	StoreMapper sm;
 	
-	public void insert(StoreVO store) {
-		sm.insert(store);
+	public void insert(StoreVO svo) {
+		sm.insert(svo);
 	}
-	public StoreVO select(StoreVO store) {
-		return sm.select(store);
+	public StoreVO select(StoreVO svo) {
+		return sm.select(svo);
 	}
-	public void update(StoreVO store) {
-		sm.update(store);
+	public void update(StoreVO svo) {
+		sm.update(svo);
 	}
 	public ArrayList<StoreVO> selectAll(){
 		return sm.selectAll();

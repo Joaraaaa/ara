@@ -28,7 +28,7 @@ bno : ${userInfo.bno}
 <h6>테이블 회전 시간</h6>
 <input type="text" name="cycle" value="${storeInfo.cycle}">
 <h6>수용 인원 수</h6>
-<input type="text" name="people">
+<input type="text" name="p_setting" value="${storeInfo.p_setting}">
 
 <input type="submit" value="등록하기">
 </form>

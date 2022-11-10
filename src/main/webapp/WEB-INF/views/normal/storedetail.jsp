@@ -22,11 +22,14 @@
 ${store.store}의 예약목록
 <input type="text" value="${store.address}" id="address">
 <input type="text" value="${store.store}" id="store">
+${pday}
+${day}
+<input type="date" value="${day}" min="${day}" max="${pday}">
 <table border="1">
 	<thead>
 		<tr>
 			<td>예약 시간</td>
-			<td>테이블 번호</td>
+			<td>예약 날짜</td>
 			<td>예약</td>
 		</tr>
 	</thead>
@@ -34,10 +37,10 @@ ${store.store}의 예약목록
 		<c:forEach items="${rlist}" var="list">
 		<tr>
 			<td>${list.r_time}시</td>
-			<td>${list.tno}</td>
+			<td>${list.date}</td>
 			
 			<c:choose>
-			<c:when test="${list.r_status eq true}">
+			<c:when test="${list.r_status eq false}">
 			<td>예약불가</td>
 			</c:when>
 			<c:otherwise>
