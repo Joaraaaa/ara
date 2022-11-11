@@ -49,3 +49,23 @@ geocoder.addressSearch(add, function(result, status) {
         map.setCenter(coords);
     } 
 });    
+$("#r_btn").on("click",function(){
+	let date=$("#r_date").val();
+	let bno=$("#bno").val();
+	let str = '';
+	$.getJSON("/reservationlist",{"bno":bno,"date":date}, function(res) {
+		res.forEach(function(r,i){
+			console.log(r.r_time)
+			str+=`
+				<tr>
+					<td>${r.r_time}시</td>
+					<td>${r.date}</td>`
+			if(r.r_status==false){
+			str+=`	<td>예약불가</td></tr>`
+			}else{
+			str+=`	<td><a href="/normal/reservation?rno=${r.rno}&bno=${r.bno}">예약하기</a></td></tr>`	
+			}
+		})
+	$("#r_tbody").html(str);
+	})
+})

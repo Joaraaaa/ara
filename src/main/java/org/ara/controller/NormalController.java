@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 import org.ara.model.ResSetVO;
 import org.ara.model.ReservationVO;
 import org.ara.model.StoreVO;
+import org.ara.service.GetBuisnessInfoService;
 import org.ara.service.ReservationService;
 import org.ara.service.StoreService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,24 +38,50 @@ public class NormalController {
 	
 	@RequestMapping(value = "normal/storedetail", method = RequestMethod.GET)
 	public String storeDetail(Model model, int bno, StoreVO store, ResSetVO rsvo) {
-		
+		// 가게 상세 페이지 로드
+		System.out.println(bno);
+		// 날짜 선택 만들기
 		LocalDate localDate = LocalDate.now();
 		DateTimeFormatter d= DateTimeFormatter.ISO_LOCAL_DATE;
+		// 오늘 날짜
 		String date = localDate.format(d);
-		System.out.println(date);
+		// 오늘+6 날짜
 		String plusdays=localDate.plusDays(6).format(d);
-		System.out.println(plusdays);
+		// 날짜 두개 화면으로..
 		model.addAttribute("day", date);
 		model.addAttribute("pday", plusdays);
-		rsvo.setDate(date);
-		System.out.println("확인"+store);
-		System.out.println("확인"+rsvo);
-		store.setBno(bno);
+		
+		// 가게정보 검색해서 화면으로..
 		model.addAttribute("store", ss.select(store));
-		model.addAttribute("rlist", rs.select(rsvo));
+		
+		// 오늘 날짜 rsvo에 set해서
+//		rsvo.setDate(date);			
+		// 예약 시간표 목록 불러오기
+//		GetReservationDate grd = new GetReservationDate();
+//		model.addAttribute("rlist", grd.getReservationList(rsvo));
 		return "normal/storedetail";
 		
 	}
+	
+	@RequestMapping(value = "reservationlist", method = RequestMethod.GET)
+	public ResponseEntity<ArrayList<ResSetVO>> reservationlist(Model model, ResSetVO rsvo) {
+		// 
+		System.out.println("비동기 확인"+rsvo);
+//		GetReservationDate grd = new GetReservationDate();
+//		System.out.println(grd.getReservationList(rsvo));
+		return new ResponseEntity<>(rs.select(rsvo), HttpStatus.OK);
+					
+		
+//		return null;
+		
+	}
+	// 해당날짜의 예약 리스트 불러오기
+//	public class GetReservationDate {
+//		public ArrayList<ResSetVO> getReservationList(ResSetVO rsvo) {
+//			ArrayList<ResSetVO> list= rs.select(rsvo);
+//			return list;
+//		}
+//	}
 	
 	@RequestMapping(value = "normal/reservation", method = RequestMethod.GET)
 	public String reservation (Model model, ReservationVO rvo) {

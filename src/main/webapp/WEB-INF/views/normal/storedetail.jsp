@@ -22,9 +22,12 @@
 ${store.store}의 예약목록
 <input type="text" value="${store.address}" id="address">
 <input type="text" value="${store.store}" id="store">
+<input type="text" value="${store.bno}" id="bno">
+<button id="r_btn">예약 검색</button>
 ${pday}
 ${day}
-<input type="date" value="${day}" min="${day}" max="${pday}">
+<input type="date" id="r_date" value="${day}" min="${day}" max="${pday}">
+
 <table border="1">
 	<thead>
 		<tr>
@@ -33,22 +36,22 @@ ${day}
 			<td>예약</td>
 		</tr>
 	</thead>
-	<tbody>
-		<c:forEach items="${rlist}" var="list">
-		<tr>
-			<td>${list.r_time}시</td>
-			<td>${list.date}</td>
+	<tbody id="r_tbody">
+<%-- 		<c:forEach items="${rlist}" var="list"> --%>
+<!-- 		<tr> -->
+<%-- 			<td>${list.r_time}시</td> --%>
+<%-- 			<td>${list.date}</td> --%>
 			
-			<c:choose>
-			<c:when test="${list.r_status eq false}">
-			<td>예약불가</td>
-			</c:when>
-			<c:otherwise>
-			<td><a href="/normal/reservation?rno=${list.rno}&bno=${list.bno}">예약하기</a></td>
-			</c:otherwise>
-			</c:choose>
-		</tr>
-		</c:forEach>
+<%-- 			<c:choose> --%>
+<%-- 			<c:when test="${list.r_status eq false}"> --%>
+<!-- 			<td>예약불가</td> -->
+<%-- 			</c:when> --%>
+<%-- 			<c:otherwise> --%>
+<%-- 			<td><a href="/normal/reservation?rno=${list.rno}&bno=${list.bno}">예약하기</a></td> --%>
+<%-- 			</c:otherwise> --%>
+<%-- 			</c:choose> --%>
+<!-- 		</tr> -->
+<%-- 		</c:forEach> --%>
 		
 	</tbody>
 </table>
