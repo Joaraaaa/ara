@@ -13,7 +13,9 @@
 <input type="hidden" value="${storeInfo.last}" id="last">
 <input type="hidden" value="${storeInfo.cycle}" id="cycle">
 <input type="hidden" value="${storeInfo.p_setting}" id="p_setting">
-<input type="date" id="date">
+
+<input type="date" id="date" value="${day}" min="${day}" max="${pday}">
+<button id="r_btn">예약 검색</button>
 <table border="1">
 	<thead>
 		<tr>
@@ -22,7 +24,7 @@
 			<th>예약날짜</th>
 			<th>예약시간</th>
 			<th>예약가능인원</th>
-			<th>예약자 이메일</th>
+			<th>예약자 목록 보기</th>
 			<th>예약자 이름</th>
 			<th>예약자 번호</th>
 			<th>수정/취소/삭제</th>

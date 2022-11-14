@@ -44,8 +44,8 @@ public class StoreController {
 		// 가게 설정 정보가 없다면 입력받아 저장하기(insert)
 		if(session.getAttribute("storeInfo")==null) {
 			ss.insert(svo);
-			// 예약 시간표 7일치 저장하기
-			for(int j=0;j<7;j+=1) {
+			// 예약 시간표 14일치 저장하기
+			for(int j=0;j<14;j+=1) {
 				String date=localDate.plusDays(j).format(d);
 				System.out.println(date);
 				for(int i=first; i<=last; i+=cycle) {

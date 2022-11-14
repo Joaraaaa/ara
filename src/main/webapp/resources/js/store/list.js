@@ -1,20 +1,6 @@
 /**
- * 예약
+ * dd
  */
-
-
-let bno = Number($("#bno").val());
-let first = Number($("#first").val());
-let last = Number($("#last").val());
-let cycle = Number($("#cycle").val());
-let table_no = Number($("#table_no").val());
-
-$("#r_btn").on("click",function(){
-	let date = $("#date").val();
-	alert(bno+date);
-	r_list(bno,date);
-	
-})
 
 function r_list(bno,date){
 
@@ -33,7 +19,7 @@ function r_list(bno,date){
 					<td>${r.date}</td>
 					<td>${r.r_time}</td>
 					<td>${r.people}</td>
-					<td><a href="/store/list?rno=${r.rno}">예약자 목록</a></td>
+					<td>${r.email}</td>
 					<td><input type="text" value="${r.r_name}" id="${r.rno}_name" disabled></td>
 					<td><input type="text" value="${r.r_phone}" id="${r.rno}_phone" disabled></td>
 					<td id="${r.rno}">
@@ -118,4 +104,3 @@ function remove(a){
 		}
 	})
 }
-

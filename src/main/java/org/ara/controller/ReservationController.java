@@ -1,7 +1,10 @@
 package org.ara.controller;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
+import org.ara.model.RUserInfoVO;
 import org.ara.model.ResSetVO;
 import org.ara.model.ReservationVO;
 import org.ara.model.StoreVO;
@@ -24,14 +27,29 @@ public class ReservationController {
 	ReservationService rs;
 	
 	@RequestMapping(value = "/store/reservationsetting", method = RequestMethod.GET)
-	public void reservationGet() {
+	public void reservationGet(Model model) {
+		LocalDate localDate = LocalDate.now();
+		DateTimeFormatter d= DateTimeFormatter.ISO_LOCAL_DATE;
+		// 오늘 날짜
+		String date = localDate.format(d);
+		// 오늘+13 날짜
+		String plusdays=localDate.plusDays(13).format(d);
+		// 날짜 두개 화면으로..
+		model.addAttribute("day", date);
+		model.addAttribute("pday", plusdays);
 	}
 	
 	@RequestMapping(value = "/reslist", method = RequestMethod.GET)
 	public ResponseEntity<ArrayList<ResSetVO>> reslist(ResSetVO rsvo) {
 		System.out.println("확인"+rsvo);
-//		System.out.println(rs.select(bno));
+		System.out.println(rs.select(rsvo));
 		return new ResponseEntity<>(rs.select(rsvo), HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/store/list", method = RequestMethod.GET)
+	public ResponseEntity<ArrayList<RUserInfoVO>> list(RUserInfoVO ruivo) {
+		System.out.println(ruivo);
+		return null;
 	}
 	
 	@RequestMapping(value = "/reservation/delete", method = RequestMethod.DELETE)
