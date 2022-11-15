@@ -16,7 +16,7 @@
 <a href="/member/login">로그인</a>
 <a href="/signupcheck">회원가입</a>
 <a href="/nhome">비회원</a>
-
+<a href="/store/list">예약자 목록</a>
 
 </body>
 </html>

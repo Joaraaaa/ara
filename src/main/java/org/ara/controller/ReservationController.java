@@ -47,9 +47,11 @@ public class ReservationController {
 	}
 	
 	@RequestMapping(value = "/store/list", method = RequestMethod.GET)
-	public ResponseEntity<ArrayList<RUserInfoVO>> list(RUserInfoVO ruivo) {
+	public String list(RUserInfoVO ruivo, Model model) {
 		System.out.println(ruivo);
-		return null;
+		System.out.println(rs.list(ruivo));
+		model.addAttribute("list", rs.list(ruivo));
+		return "store/list";
 	}
 	
 	@RequestMapping(value = "/reservation/delete", method = RequestMethod.DELETE)
@@ -61,26 +63,36 @@ public class ReservationController {
 	}
 	
 	@RequestMapping(value = "reservation/update", method = RequestMethod.PUT)
-	public ResponseEntity<String> rmodify(@RequestBody ReservationVO rvo) {
-		System.out.println(rvo.getR_name());
-		if(rvo.getR_name()==null) {
-			rvo.setR_status(false);
-			rvo.setEmail("예약가능");
-			rvo.setR_name("예약가능");
-			rvo.setR_phone("예약가능");
-			
-		}else {
-			rvo.setR_status(true);	
-			if(rvo.getEmail()==null) {
-				rvo.setEmail("비회원");
-			}
-		}
-		rs.status(rvo);
-		System.out.println(rvo.isR_status());
-		System.out.println("수정할 번호="+rvo);
-		int result = rs.update(rvo);
-		return result == 1 ? new ResponseEntity<>("success", HttpStatus.OK)
-				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	public ResponseEntity<String> rmodify(@RequestBody RUserInfoVO ruivo) {
+		System.out.println(ruivo);
+		// 221115해야할 일
+		// 수정할때 이메일, 메모 안바꾼다.
+		// 이름 전화번호 사람 수는 비어있으면 안넘어오도록 js에서 막는다.
+		// rno rname rphone를 select해서 rpeople를 가져온다.
+		// 원래 저장되어 있던 rpeople와 화면에서 가져온 rpeople를 비교한다.
+		// 해당 rno의 res_set -> people를 가져온다.
+		// 같으면 가만히, 다르면 people-원rp+화rp후 다시 people에 저장
+		// where rno=#{rno} and cno=#{cno}인곳에 이름 전화번호 화rp 저장
+		
+//		if(rvo.getR_name()==null) {
+//			rvo.setR_status(false);
+//			rvo.setEmail("예약가능");
+//			rvo.setR_name("예약가능");
+//			rvo.setR_phone("예약가능");
+//			
+//		}else {
+//			rvo.setR_status(true);	
+//			if(rvo.getEmail()==null) {
+//				rvo.setEmail("비회원");
+//			}
+//		}
+//		rs.status(rvo);
+//		System.out.println(rvo.isR_status());
+//		System.out.println("수정할 번호="+rvo);
+//		int result = rs.update(rvo);
+//		return result == 1 ? new ResponseEntity<>("success", HttpStatus.OK)
+//				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		return null;
 	}
 	
 

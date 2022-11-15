@@ -85,4 +85,9 @@
 	where r_name=#{r_name}
 	and r_phone=#{r_phone};
 	</select>
+	<select id="list" resultType="org.ara.model.RUserInfoVO">
+	select * 
+	from r_user_info
+	where rno=#{rno};
+	</select>
 </mapper>

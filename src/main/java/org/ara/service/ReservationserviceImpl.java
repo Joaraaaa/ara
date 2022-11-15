@@ -3,6 +3,7 @@ package org.ara.service;
 import java.util.ArrayList;
 
 import org.ara.mapper.ReservationMapper;
+import org.ara.model.RUserInfoVO;
 import org.ara.model.ResSetVO;
 import org.ara.model.ReservationVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,5 +37,8 @@ public class ReservationserviceImpl implements ReservationService{
 	}
 	public ArrayList<ReservationVO> r_select(ReservationVO rvo){
 		return rm.r_select(rvo);
+	}
+	public ArrayList<RUserInfoVO> list(RUserInfoVO ruivo){
+		return rm.list(ruivo);
 	}
 }

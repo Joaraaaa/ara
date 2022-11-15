@@ -2,6 +2,7 @@ package org.ara.model;
 
 public class RUserInfoVO {
 	private String rno;
+	private int cno;
 	private String email;
 	private String r_name;
 	private String r_phone;
@@ -13,6 +14,12 @@ public class RUserInfoVO {
 	}
 	public void setRno(String rno) {
 		this.rno = rno;
+	}
+	public int getCno() {
+		return cno;
+	}
+	public void setCno(int cno) {
+		this.cno = cno;
 	}
 	public String getEmail() {
 		return email;
@@ -52,8 +59,8 @@ public class RUserInfoVO {
 	}
 	@Override
 	public String toString() {
-		return "RUserInfoVO [rno=" + rno + ", email=" + email + ", r_name=" + r_name + ", r_phone=" + r_phone
-				+ ", r_people=" + r_people + ", r_memo=" + r_memo + ", v_status=" + v_status + "]";
+		return "RUserInfoVO [rno=" + rno + ", cno=" + cno + ", email=" + email + ", r_name=" + r_name + ", r_phone="
+				+ r_phone + ", r_people=" + r_people + ", r_memo=" + r_memo + ", v_status=" + v_status + "]";
 	}
 	
 }

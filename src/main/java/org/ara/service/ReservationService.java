@@ -2,6 +2,7 @@ package org.ara.service;
 
 import java.util.ArrayList;
 
+import org.ara.model.RUserInfoVO;
 import org.ara.model.ResSetVO;
 import org.ara.model.ReservationVO;
 
@@ -14,4 +15,5 @@ public interface ReservationService {
 	public void rnoInsert(ReservationVO rvo);
 	public void status(ReservationVO rvo);
 	public ArrayList<ReservationVO> r_select(ReservationVO rvo);
+	public ArrayList<RUserInfoVO> list(RUserInfoVO ruivo);
 }
