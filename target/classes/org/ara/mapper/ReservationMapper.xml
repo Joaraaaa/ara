@@ -90,4 +90,15 @@
 	from r_user_info
 	where rno=#{rno};
 	</select>
+	<select id="rpselect" resultType="int">
+	select r_people
+	from r_user_info
+	where rno=#{rno}
+	and cno=#{cno};
+	</select>
+	<select id="pselect" resultType="int">
+	select people
+	from res_set
+	where rno=#{rno};
+	</select>
 </mapper>

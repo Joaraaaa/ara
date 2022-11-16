@@ -63,15 +63,29 @@ public class ReservationController {
 	}
 	
 	@RequestMapping(value = "reservation/update", method = RequestMethod.PUT)
-	public ResponseEntity<String> rmodify(@RequestBody RUserInfoVO ruivo) {
+	public ResponseEntity<String> rmodify(@RequestBody RUserInfoVO ruivo, ResSetVO rsvo) {
 		System.out.println(ruivo);
 		// 221115해야할 일
 		// 수정할때 이메일, 메모 안바꾼다.
 		// 이름 전화번호 사람 수는 비어있으면 안넘어오도록 js에서 막는다.
-		// rno rname rphone를 select해서 rpeople를 가져온다.
+		// rno cno를 select해서 rpeople를 가져온다.
+		int n_rp = ruivo.getR_people();
+		int p_rp = rs.rpselect(ruivo);
 		// 원래 저장되어 있던 rpeople와 화면에서 가져온 rpeople를 비교한다.
+		System.out.println(n_rp);
+		System.out.println(p_rp);
 		// 해당 rno의 res_set -> people를 가져온다.
-		// 같으면 가만히, 다르면 people-원rp+화rp후 다시 people에 저장
+		rsvo.setRno(ruivo.getRno());
+		System.out.println(rsvo);
+		int n_p = rs.pselect(rsvo);
+		System.out.println(n_p);
+		// people + 원rp - 화rp후 다시 people에 저장
+		rsvo.setPeople(n_p + p_rp - n_rp);
+		System.out.println(rsvo.getPeople());
+		
+		// 221116해야할 일
+		// 여기부터 다시하기 
+		// res_set에 people다시 저장하기(update)
 		// where rno=#{rno} and cno=#{cno}인곳에 이름 전화번호 화rp 저장
 		
 //		if(rvo.getR_name()==null) {

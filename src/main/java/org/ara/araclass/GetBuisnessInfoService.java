@@ -1,4 +1,4 @@
-package org.ara.service;
+package org.ara.araclass;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

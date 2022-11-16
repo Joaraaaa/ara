@@ -1,4 +1,4 @@
-package org.ara.service;
+package org.ara.araclass;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;

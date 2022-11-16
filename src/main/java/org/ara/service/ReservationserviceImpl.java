@@ -41,4 +41,10 @@ public class ReservationserviceImpl implements ReservationService{
 	public ArrayList<RUserInfoVO> list(RUserInfoVO ruivo){
 		return rm.list(ruivo);
 	}
+	public int rpselect(RUserInfoVO ruivo) {
+		return rm.rpselect(ruivo);
+	}
+	public int pselect(ResSetVO rsvo) {
+		return rm.pselect(rsvo);
+	}
 }

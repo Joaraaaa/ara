@@ -50,4 +50,5 @@
 	
 	<mybatis-spring:scan base-package="org.ara.mapper"/>	
 	<context:component-scan base-package="org.ara.service"></context:component-scan>
+	<context:component-scan base-package="org.ara.araclass"></context:component-scan>
 </beans>
