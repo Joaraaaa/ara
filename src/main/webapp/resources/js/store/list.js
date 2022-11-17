@@ -31,8 +31,8 @@
 //		})
 //		$("#r_list").html(list);
 		$(".m_btn").on("click",function(){
-			console.log($("#"+$(this).parent().attr("id")+"_cno").val());
-			console.log("rno="+$(this).parent().attr("id"));
+			console.log("rno="+$("#"+$(this).parent().attr("id")+"_rno").val());
+			console.log("cno="+$(this).parent().attr("id"));
 			$("#"+$(this).parent().attr("id")+"_name").attr("disabled",false);
 			$("#"+$(this).parent().attr("id")+"_phone").attr("disabled",false);
 			$("#"+$(this).parent().attr("id")+"_people").attr("disabled",false);
@@ -43,15 +43,16 @@
 			}else {
 				if(confirm("수정?")){
 				const values={
-						"rno":$(this).parent().attr("id"),
+						"rno":$("#"+$(this).parent().attr("id")+"_rno").val(),
 						// r_name의 id = rno_name
 						// 선택자 $("#rno_name").val()
 						// $("#"+$(this).attr("id")+"_name").val()
-						"cno":$("#"+$(this).parent().attr("id")+"_cno").val(),
+						"cno":$(this).parent().attr("id"),
 						"r_name":$("#"+$(this).parent().attr("id")+"_name").val(),
 						"r_phone":$("#"+$(this).parent().attr("id")+"_phone").val(),
 						"r_people":$("#"+$(this).parent().attr("id")+"_people").val()
 				}
+//				console.log(values);
 				update(values);
 				$(this).html('수정');
 //			    $("#"+$(this).parent().attr("id")).attr("class","modi_btn");
@@ -65,7 +66,8 @@
 		$(".d_btn").on("click",function(){
 			if(confirm("삭제?")){
 			const values={
-					"rno":$(this).parent().attr("id"),
+					"rno":$("#"+$(this).parent().attr("id")+"_rno").val(),
+					"cno":$(this).parent().attr("id"),
 					"r_name":$("#"+$(this).parent().attr("id")+"_name").val(),
 					"r_phone":$("#"+$(this).parent().attr("id")+"_phone").val(),
 					"r_people":$("#"+$(this).parent().attr("id")+"_people").val()
@@ -90,14 +92,14 @@ function update(a){
 }
 function remove(a){
 	console.log("a="+a)
-//	$.ajax({
-//		type:"delete",
-//		url:"/reservation/delete",
-//		data:JSON.stringify(a),
-//		contentType:"application/json; charset=utf-8",
-//		success:function(){
-//			alert("삭제성공");
+	$.ajax({
+		type:"delete",
+		url:"/reservation/delete",
+		data:JSON.stringify(a),
+		contentType:"application/json; charset=utf-8",
+		success:function(){
+			alert("삭제성공");
 //			r_list(bno);
-//		}
-//	})
+		}
+	})
 }

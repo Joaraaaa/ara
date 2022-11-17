@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import javax.servlet.http.HttpSession;
 
 import org.ara.araclass.GetBuisnessInfoService;
+import org.ara.model.RUserInfoVO;
 import org.ara.model.ResSetVO;
 import org.ara.model.ReservationVO;
 import org.ara.model.StoreVO;
@@ -84,21 +85,33 @@ public class NormalController {
 //	}
 	
 	@RequestMapping(value = "normal/reservation", method = RequestMethod.GET)
-	public String reservation (Model model, ReservationVO rvo) {
-		System.out.println(rvo);
-		model.addAttribute("rno", rvo.getRno());
+	public String reservation (Model model, ResSetVO rsvo) {
+		System.out.println(rsvo);
+		model.addAttribute("rno", rsvo.getRno());
 		
 		return "normal/reservation";
 	}
 	
 	@RequestMapping(value = "normal/reservation", method = RequestMethod.POST)
-	public String reservationPost (ReservationVO rvo, StoreVO store) {
-		System.out.println("rvo확인 : "+rvo);
-		rs.update(rvo);
-		rvo.setR_status(true);
-		rs.status(rvo);
+	public String reservationPost (RUserInfoVO ruivo, ResSetVO rsvo) {
+		// 예약자 정보가 들어오면 
+		System.out.println("ruivo확인 : "+ruivo);
+		// res_set의 people를 rno로 select해온뒤
+		int n_p = rs.pselect(rsvo);
+		System.out.println("가게의 예약 가능 인원 확인 : "+n_p);
+		// people == people - r_people하고
+		rsvo.setPeople(n_p - ruivo.getR_people());
+		System.out.println("바뀐 people확인 : "+rsvo.getPeople());
+		// res_set을 update해준다.
+		rs.update(rsvo);
+		// r_user_info에 ruivo를 insert해준다.
+		rs.addres(ruivo);
+//		rs.update(rvo);
+//		rvo.setR_status(true);
+//		rs.status(rvo);
 //		System.out.println(rs.update(rvo));
 		return "redirect:/normal/storelist";
+//		return null;
 	}
 	
 	@RequestMapping(value = "normal/myreservation", method = RequestMethod.GET)

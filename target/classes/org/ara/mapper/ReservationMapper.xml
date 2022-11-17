@@ -9,11 +9,19 @@
 	values(#{bno}, #{date}, #{r_time}, #{people}, #{rno});
 	</insert>
 	
+	<update id="update">
+	update res_set
+	set people=#{people}
+	where rno=#{rno}
+	</update>
+	
 	<select id="select" resultType="org.ara.model.ResSetVO">	
 	select *
 	from res_set
 	where bno=#{bno}
 	and date=#{date}
+	</select>
+
 	<!-- 
 	select * 
 	from r_setting rs
@@ -21,7 +29,6 @@
 	on rs.rno = r.rno
 	where bno = #{bno};
 	 -->
-	</select>
 	
 	<delete id="delete">
 	delete from r_setting where 
@@ -35,19 +42,19 @@
 		</choose>
 	</delete>
 	
-	<update id="update">
-	update reservation 
-	set r_name=#{r_name},r_phone=#{r_phone},
-	<choose>
-	<when test="email==''">
-	email="비회원"
-	</when>
-	<otherwise>
-	email=#{email}
-	</otherwise>
-	</choose>
-	where rno=#{rno};
-	</update>
+<!-- 	<update id="update"> -->
+<!-- 	update reservation  -->
+<!-- 	set r_name=#{r_name},r_phone=#{r_phone}, -->
+<!-- 	<choose> -->
+<!-- 	<when test="email==''"> -->
+<!-- 	email="비회원" -->
+<!-- 	</when> -->
+<!-- 	<otherwise> -->
+<!-- 	email=#{email} -->
+<!-- 	</otherwise> -->
+<!-- 	</choose> -->
+<!-- 	where rno=#{rno}; -->
+<!-- 	</update> -->
 	
 	<insert id="rnoInsert">
 	insert into reservation(rno,email,r_name,r_phone)
@@ -101,4 +108,14 @@
 	from res_set
 	where rno=#{rno};
 	</select>
+	<insert id="addres">
+	insert into r_user_info(rno,email,r_name,r_phone,r_people,r_memo)
+	values(#{rno},#{email},#{r_name},#{r_phone},#{r_people},#{r_memo})
+	</insert>
+	<update id="upres">
+	update r_user_info
+	set r_name=#{r_name},r_phone=#{r_phone},r_people=#{r_people}
+	where rno=#{rno}
+	and cno=#{cno};
+	</update>
 </mapper>

@@ -8,14 +8,17 @@ import org.ara.model.ReservationVO;
 
 public interface ReservationService {
 	public void insert(ResSetVO rsvo);
+	public void update(ResSetVO rsvo);
 //	public void insert(ReservationVO rvo);
 	public ArrayList<ResSetVO> select(ResSetVO rsvo);
-	public int delete(ReservationVO rvo);
-	public int update(ReservationVO rvo);
+	public int delete(RUserInfoVO ruivo);
+//	public int update(ReservationVO rvo);
 	public void rnoInsert(ReservationVO rvo);
 	public void status(ReservationVO rvo);
 	public ArrayList<ReservationVO> r_select(ReservationVO rvo);
 	public ArrayList<RUserInfoVO> list(RUserInfoVO ruivo);
 	public int rpselect(RUserInfoVO ruivo);
 	public int pselect(ResSetVO rsvo);
+	public void addres(RUserInfoVO ruivo);
+	public void upres(RUserInfoVO ruivo);
 }

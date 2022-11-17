@@ -55,17 +55,24 @@ public class ReservationController {
 	}
 	
 	@RequestMapping(value = "/reservation/delete", method = RequestMethod.DELETE)
-	public ResponseEntity<String> delete(@RequestBody ReservationVO rvo) {
-		System.out.println(rvo);
-		int result = rs.delete(rvo);
-		return result == 1 ? new ResponseEntity<>("success", HttpStatus.OK)
-				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	public ResponseEntity<String> delete(@RequestBody RUserInfoVO ruivo, ResSetVO rsvo) {
+		System.out.println("삭제 컨트롤러 : "+ruivo);
+		
+		// 여기 해야한다.
+		// 221117
+		// 삭제 하기 전에 res_set의 people을  rno로 select해온다.
+		// people = people + ruivo.getPeople() 로 set하고 update해준다.
+		// 해당 rno와 cno의 데이터를 삭제한다.(삭제하는게 맞는지 취소가 맞는지 생각해보기)
+//		int result = rs.delete(ruivo);
+		return null;
+//		return result == 1 ? new ResponseEntity<>("success", HttpStatus.OK)
+//				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
 	@RequestMapping(value = "reservation/update", method = RequestMethod.PUT)
 	public ResponseEntity<String> rmodify(@RequestBody RUserInfoVO ruivo, ResSetVO rsvo) {
 		System.out.println(ruivo);
-		// 221115해야할 일
+		
 		// 수정할때 이메일, 메모 안바꾼다.
 		// 이름 전화번호 사람 수는 비어있으면 안넘어오도록 js에서 막는다.
 		// rno cno를 select해서 rpeople를 가져온다.
@@ -78,16 +85,15 @@ public class ReservationController {
 		rsvo.setRno(ruivo.getRno());
 		System.out.println(rsvo);
 		int n_p = rs.pselect(rsvo);
-		System.out.println(n_p);
+		System.out.println("수정 전의 예약 가능 인원 : "+n_p);
 		// people + 원rp - 화rp후 다시 people에 저장
 		rsvo.setPeople(n_p + p_rp - n_rp);
-		System.out.println(rsvo.getPeople());
-		
-		// 221116해야할 일
-		// 여기부터 다시하기 
+		System.out.println("수정 후의 예약 가능 인원 : "+rsvo.getPeople());
 		// res_set에 people다시 저장하기(update)
+		rs.update(rsvo);
 		// where rno=#{rno} and cno=#{cno}인곳에 이름 전화번호 화rp 저장
-		
+		System.out.println("update전 확인 : "+ruivo);
+		rs.upres(ruivo);
 //		if(rvo.getR_name()==null) {
 //			rvo.setR_status(false);
 //			rvo.setEmail("예약가능");

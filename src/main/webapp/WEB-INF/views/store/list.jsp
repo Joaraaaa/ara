@@ -15,12 +15,13 @@ ${list}
 
 <tr>
 <td>${list.email}</td>
-<td><input type="hidden" value="${list.cno}" id="${list.rno}_cno" ></td>
-<td><input type="text" value="${list.r_name}" id="${list.rno}_name" disabled></td>
-<td><input type="text" value="${list.r_phone}" id="${list.rno}_phone" disabled></td>
-<td><input type="text" value="${list.r_people}" id="${list.rno}_people" disabled></td>
+<td><input type="hidden" value="${list.rno}" id="${list.cno}_rno" ></td>
+
+<td><input type="text" value="${list.r_name}" id="${list.cno}_name" disabled></td>
+<td><input type="text" value="${list.r_phone}" id="${list.cno}_phone" disabled></td>
+<td><input type="text" value="${list.r_people}" id="${list.cno}_people" disabled></td>
 <td>${list.r_memo}</td>
-<td id="${list.rno}">
+<td id="${list.cno}">
 	<button class="m_btn">수정</button>
 	<button class="d_btn">삭제</button>
 </td>
