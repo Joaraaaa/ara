@@ -31,15 +31,10 @@
 	 -->
 	
 	<delete id="delete">
-	delete from r_setting where 
-	<choose>
-		<when test="bno==0">
-		rno=#{rno};
-		</when>
-		<otherwise>
-		bno=#{bno};
-		</otherwise>
-		</choose>
+	delete
+	from r_user_info
+	where rno=#{rno}
+	and cno=#{cno}
 	</delete>
 	
 <!-- 	<update id="update"> -->

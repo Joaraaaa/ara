@@ -86,6 +86,7 @@ function update(a){
 		contentType:"application/json; charset=utf-8",
 		success:function(){
 			alert("수정성공");
+			location.reload();
 //			r_list(bno);
 		}
 	})
@@ -99,6 +100,7 @@ function remove(a){
 		contentType:"application/json; charset=utf-8",
 		success:function(){
 			alert("삭제성공");
+			location.reload();
 //			r_list(bno);
 		}
 	})

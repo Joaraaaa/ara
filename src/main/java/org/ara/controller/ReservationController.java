@@ -61,12 +61,19 @@ public class ReservationController {
 		// 여기 해야한다.
 		// 221117
 		// 삭제 하기 전에 res_set의 people을  rno로 select해온다.
-		// people = people + ruivo.getPeople() 로 set하고 update해준다.
-		// 해당 rno와 cno의 데이터를 삭제한다.(삭제하는게 맞는지 취소가 맞는지 생각해보기)
+		rsvo.setRno(ruivo.getRno());
+		int n_p = rs.pselect(rsvo);
+		System.out.println(n_p);
+		// people = people + ruivo.getR_people() 로 set하고 update해준다.
+		rsvo.setPeople(n_p + ruivo.getR_people());
+		System.out.println(rsvo.getPeople());
+		rs.update(rsvo);
+		// 해당 rno와 cno의 데이터를 삭제한다.
+		int result = rs.delete(ruivo);
 //		int result = rs.delete(ruivo);
-		return null;
-//		return result == 1 ? new ResponseEntity<>("success", HttpStatus.OK)
-//				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//		return null;
+		return result == 1 ? new ResponseEntity<>("success", HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
 	@RequestMapping(value = "reservation/update", method = RequestMethod.PUT)
@@ -93,7 +100,7 @@ public class ReservationController {
 		rs.update(rsvo);
 		// where rno=#{rno} and cno=#{cno}인곳에 이름 전화번호 화rp 저장
 		System.out.println("update전 확인 : "+ruivo);
-		rs.upres(ruivo);
+		int result = rs.upres(ruivo);
 //		if(rvo.getR_name()==null) {
 //			rvo.setR_status(false);
 //			rvo.setEmail("예약가능");
@@ -110,9 +117,9 @@ public class ReservationController {
 //		System.out.println(rvo.isR_status());
 //		System.out.println("수정할 번호="+rvo);
 //		int result = rs.update(rvo);
-//		return result == 1 ? new ResponseEntity<>("success", HttpStatus.OK)
-//				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-		return null;
+		return result == 1 ? new ResponseEntity<>("success", HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//		return null;
 	}
 	
 

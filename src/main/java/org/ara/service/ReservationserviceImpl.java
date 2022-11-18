@@ -50,7 +50,7 @@ public class ReservationserviceImpl implements ReservationService{
 	public void addres(RUserInfoVO ruivo) {
 		rm.addres(ruivo);
 	}
-	public void upres(RUserInfoVO ruivo) {
-		rm.upres(ruivo);
+	public int upres(RUserInfoVO ruivo) {
+		return rm.upres(ruivo);
 	}
 }

@@ -20,5 +20,5 @@ public interface ReservationService {
 	public int rpselect(RUserInfoVO ruivo);
 	public int pselect(ResSetVO rsvo);
 	public void addres(RUserInfoVO ruivo);
-	public void upres(RUserInfoVO ruivo);
+	public int upres(RUserInfoVO ruivo);
 }
