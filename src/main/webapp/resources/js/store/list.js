@@ -2,6 +2,8 @@
  * dd
  */
 
+
+
 //function r_list(bno,date){
 //
 //	$.getJSON("/reslist",{"bno":bno,"date":date}, function(res) {

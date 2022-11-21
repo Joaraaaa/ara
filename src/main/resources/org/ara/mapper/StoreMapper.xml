@@ -6,8 +6,8 @@
 <mapper namespace="org.ara.mapper.StoreMapper">
 	
 	<insert id="insert">
-	insert into store(bno, store, address, open_time, close_time, first, last, cycle, p_setting)
-	values(#{bno}, #{store}, #{address}, #{open_time}, #{close_time}, #{first}, #{last}, #{cycle}, #{p_setting});
+	insert into store(bno, store, address, open_time, close_time, first, last, cycle, p_setting, p_min, p_max)
+	values(#{bno}, #{store}, #{address}, #{open_time}, #{close_time}, #{first}, #{last}, #{cycle}, #{p_setting}, #{p_min}, #{p_max});
 	</insert>
 	<select id="select" resultType="org.ara.model.StoreVO">
 	select * from store where bno = #{bno};

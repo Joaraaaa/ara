@@ -19,6 +19,7 @@
 
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=5293487c7cb7f1e2d87c3a1ee57bcf63&libraries=services"></script>
 
+
 ${store.store}의 예약목록
 <input type="text" value="${store.address}" id="address">
 <input type="text" value="${store.store}" id="store">

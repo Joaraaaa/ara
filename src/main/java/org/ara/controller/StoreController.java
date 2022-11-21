@@ -69,6 +69,41 @@ public class StoreController {
 		return null;
 		
 	}
+	
+	// 매일 업데이트 돼야한다.
+	@RequestMapping(value = "/updatesetting", method = RequestMethod.POST)
+	public String updateSetting(StoreVO svo, ResSetVO rsvo, HttpSession session) {
+		// 가입된 모든 가게 정보를 가져온다.
+		ss.selectAll();
+		// for문으로 bno가 1번인것부터 끝번인것까지 반복한다.
+		for (int j=1; j<10; j+=1) {
+			// i번째 bno로 가게 정보를 가져온다.
+			int bno=j;
+			svo.setBno(bno);
+			svo = ss.select(svo);
+			// 가져온 정보를 변수에 저장하고
+			System.out.println(svo);
+			int first=svo.getFirst();
+			int last=svo.getLast();
+			int cycle=svo.getCycle();
+			// 날짜는 +13으로 저장한다.
+			LocalDate localDate = LocalDate.now();
+			DateTimeFormatter d= DateTimeFormatter.ISO_LOCAL_DATE;
+			String date=localDate.plusDays(13).format(d);
+			// 해당 날짜의 해당 가게정보를 for문으로 insert한다.
+			System.out.println(date);
+			for(int i=first; i<=last; i+=cycle) {
+				System.out.println(i+"시 예약");
+				rsvo.setR_time(i);
+				rsvo.setDate(date);
+				rsvo.setPeople(svo.getP_setting());
+				rsvo.setRno('D'+date+'T'+i+'N'+bno);
+				System.out.println(rsvo);
+			}
+		}
+		return null;
+		
+	}
 //	public String restaurant(StoreVO store, HttpSession session,ReservationVO rvo) {
 //		System.out.println(store);
 //		int first=store.getFirst();

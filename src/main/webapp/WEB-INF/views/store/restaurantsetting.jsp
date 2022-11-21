@@ -29,7 +29,10 @@ bno : ${userInfo.bno}
 <input type="text" name="cycle" value="${storeInfo.cycle}">
 <h6>수용 인원 수</h6>
 <input type="text" name="p_setting" value="${storeInfo.p_setting}">
-
+<h6>예약 최소 인원 수</h6>
+<input type="text" name="p_min" value="${storeInfo.p_min}">
+<h6>예약 최대 인원 수</h6>
+<input type="text" name="p_max" value="${storeInfo.p_max}">
 <input type="submit" value="등록하기">
 </form>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>

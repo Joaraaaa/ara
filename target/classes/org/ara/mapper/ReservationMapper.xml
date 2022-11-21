@@ -57,7 +57,7 @@
 	</insert>
 	
 	<update id="status">
-	update r_setting
+	update res_set
 	set r_status=#{r_status}
 	where rno=#{rno};
 	</update>
@@ -100,6 +100,11 @@
 	</select>
 	<select id="pselect" resultType="int">
 	select people
+	from res_set
+	where rno=#{rno};
+	</select>
+	<select id="bselect" resultType="int">
+	select bno
 	from res_set
 	where rno=#{rno};
 	</select>

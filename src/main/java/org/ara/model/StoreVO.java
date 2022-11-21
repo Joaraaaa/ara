@@ -10,6 +10,8 @@ public class StoreVO {
 	private int last;
 	private int cycle;
 	private int p_setting;
+	private int p_min;
+	private int p_max;
 	public int getBno() {
 		return bno;
 	}
@@ -64,11 +66,23 @@ public class StoreVO {
 	public void setP_setting(int p_setting) {
 		this.p_setting = p_setting;
 	}
+	public int getP_min() {
+		return p_min;
+	}
+	public void setP_min(int p_min) {
+		this.p_min = p_min;
+	}
+	public int getP_max() {
+		return p_max;
+	}
+	public void setP_max(int p_max) {
+		this.p_max = p_max;
+	}
 	@Override
 	public String toString() {
 		return "StoreVO [bno=" + bno + ", store=" + store + ", address=" + address + ", open_time=" + open_time
 				+ ", close_time=" + close_time + ", first=" + first + ", last=" + last + ", cycle=" + cycle
-				+ ", p_setting=" + p_setting + "]";
+				+ ", p_setting=" + p_setting + ", p_min=" + p_min + ", p_max=" + p_max + "]";
 	}
 	
 	

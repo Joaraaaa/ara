@@ -9,6 +9,7 @@ import org.ara.model.ResSetVO;
 import org.ara.model.ReservationVO;
 import org.ara.model.StoreVO;
 import org.ara.service.ReservationService;
+import org.ara.service.StoreService;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class ReservationController {
 	@Autowired
 	ReservationService rs;
+	@Autowired
+	StoreService ss;
 	
 	@RequestMapping(value = "/store/reservationsetting", method = RequestMethod.GET)
 	public void reservationGet(Model model) {
@@ -77,12 +80,12 @@ public class ReservationController {
 	}
 	
 	@RequestMapping(value = "reservation/update", method = RequestMethod.PUT)
-	public ResponseEntity<String> rmodify(@RequestBody RUserInfoVO ruivo, ResSetVO rsvo) {
+	public ResponseEntity<String> rmodify(@RequestBody RUserInfoVO ruivo, StoreVO svo, ResSetVO rsvo) {
 		System.out.println(ruivo);
 		
 		// 수정할때 이메일, 메모 안바꾼다.
 		// 이름 전화번호 사람 수는 비어있으면 안넘어오도록 js에서 막는다.
-		// rno cno를 select해서 rpeople를 가져온다.
+		// rno cno를 select해서 r_people를 가져온다.
 		int n_rp = ruivo.getR_people();
 		int p_rp = rs.rpselect(ruivo);
 		// 원래 저장되어 있던 rpeople와 화면에서 가져온 rpeople를 비교한다.
@@ -93,14 +96,45 @@ public class ReservationController {
 		System.out.println(rsvo);
 		int n_p = rs.pselect(rsvo);
 		System.out.println("수정 전의 예약 가능 인원 : "+n_p);
-		// people + 원rp - 화rp후 다시 people에 저장
-		rsvo.setPeople(n_p + p_rp - n_rp);
-		System.out.println("수정 후의 예약 가능 인원 : "+rsvo.getPeople());
-		// res_set에 people다시 저장하기(update)
-		rs.update(rsvo);
-		// where rno=#{rno} and cno=#{cno}인곳에 이름 전화번호 화rp 저장
-		System.out.println("update전 확인 : "+ruivo);
-		int result = rs.upres(ruivo);
+		svo.setBno(rs.bselect(rsvo));
+		svo = ss.select(svo);
+		System.out.println(svo);
+		// if n_p + p_rp - n_rp >= 0 이면 people저장 가능
+		int result = 0;
+		if (n_p + p_rp - n_rp >= 0) {
+			// people + 원rp - 화rp후 다시 people에 저장
+			rsvo.setPeople(n_p + p_rp - n_rp);
+			int people = rsvo.getPeople();
+			System.out.println("수정 후의 예약 가능 인원 : "+ people);
+			// if rsvo.getPeople < r_min 이면 r_status -> false
+			int min = svo.getP_min();
+			System.out.println(min);
+			if (rsvo.getPeople() < svo.getP_min()) {
+				rsvo.setR_status(false);
+				System.out.println(rsvo);
+				rs.status(rsvo);
+			}else {
+				rsvo.setR_status(true);
+				System.out.println(rsvo);
+				rs.status(rsvo);
+			}
+			// res_set에 people다시 저장하기(update)
+			rs.update(rsvo);
+			// where rno=#{rno} and cno=#{cno}인곳에 이름 전화번호 화rp 저장
+			System.out.println("update전 확인 : "+ruivo);
+			result = rs.upres(ruivo);
+			
+			
+		}else {
+			System.out.println("예약 다참");
+			
+		}
+		
+		
+		
+		
+		
+		
 //		if(rvo.getR_name()==null) {
 //			rvo.setR_status(false);
 //			rvo.setEmail("예약가능");
@@ -117,6 +151,9 @@ public class ReservationController {
 //		System.out.println(rvo.isR_status());
 //		System.out.println("수정할 번호="+rvo);
 //		int result = rs.update(rvo);
+		
+		
+		
 		return result == 1 ? new ResponseEntity<>("success", HttpStatus.OK)
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 //		return null;
