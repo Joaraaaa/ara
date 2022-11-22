@@ -13,5 +13,7 @@ public interface StoreMapper {
 	public void update(StoreVO svo);
 
 	public ArrayList<StoreVO> selectAll();
+	
+	public int bno_s();
 }
 

@@ -10,4 +10,5 @@ public interface StoreService {
 	public StoreVO select(StoreVO svo);
 	public void update(StoreVO svo);
 	public ArrayList<StoreVO> selectAll();
+	public int bno_s();
 }

@@ -14,8 +14,8 @@ public class ReservationserviceImpl implements ReservationService{
 	@Autowired
 	ReservationMapper rm;
 	
-	public void insert(ResSetVO rsvo) {
-		rm.insert(rsvo);
+	public int insert(ResSetVO rsvo) {
+		return rm.insert(rsvo);
 	}
 	public void update(ResSetVO rsvo) {
 		rm.update(rsvo);

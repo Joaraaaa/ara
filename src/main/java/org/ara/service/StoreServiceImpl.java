@@ -26,5 +26,8 @@ public class StoreServiceImpl implements StoreService{
 	public ArrayList<StoreVO> selectAll(){
 		return sm.selectAll();
 	}
+	public int bno_s() {
+		return sm.bno_s();
+	}
 	
 }

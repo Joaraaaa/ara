@@ -7,7 +7,7 @@ import org.ara.model.ResSetVO;
 import org.ara.model.ReservationVO;
 
 public interface ReservationService {
-	public void insert(ResSetVO rsvo);
+	public int insert(ResSetVO rsvo);
 	public void update(ResSetVO rsvo);
 //	public void insert(ReservationVO rvo);
 	public ArrayList<ResSetVO> select(ResSetVO rsvo);

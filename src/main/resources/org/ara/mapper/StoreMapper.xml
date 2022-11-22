@@ -20,4 +20,8 @@
 	set store=#{store},address=#{address},open_time=#{open_time},close_time=#{close_time},first=#{first},last=#{last},cycle=#{cycle},p_setting=#{p_setting}
 	where bno=#{bno};
 	</update>
+	<select id="bno_s" resultType="int">
+	select max(bno)
+	from store;
+	</select>
 </mapper>
