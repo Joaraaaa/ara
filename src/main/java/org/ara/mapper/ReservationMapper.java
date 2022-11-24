@@ -14,7 +14,7 @@ public interface ReservationMapper {
 //	public int update(ReservationVO rvo);
 	public void rnoInsert(ReservationVO rvo);
 	public void status(ResSetVO rsvo);
-	public ArrayList<ReservationVO> r_select(ReservationVO rvo);
+	public ArrayList<ReservationVO> r_select(RUserInfoVO ruivo);
 	public ArrayList<RUserInfoVO> list(RUserInfoVO ruivo);
 	public int rpselect(RUserInfoVO ruivo);
 	public int pselect(ResSetVO rsvo);

@@ -122,12 +122,11 @@ public class NormalController {
 	}
 	
 	@RequestMapping(value = "findreservation", method = RequestMethod.GET)
-	public ResponseEntity<ArrayList<ReservationVO>> findreservation (ReservationVO rvo,Model model) {
-		System.out.println(rvo);
-		System.out.println(rs.r_select(rvo));
-//		model.addAttribute("reservation", rs.r_select(rvo));
-		return new ResponseEntity<>(rs.r_select(rvo), HttpStatus.OK);
-//		return "normal/myreservation";
+	public ResponseEntity<ArrayList<ReservationVO>> findreservation (RUserInfoVO ruivo,Model model) {
+		System.out.println(ruivo);
+		
+		System.out.println(rs.r_select(ruivo));
+		return new ResponseEntity<>(rs.r_select(ruivo), HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "normal/mypage", method = RequestMethod.GET)

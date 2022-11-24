@@ -13,7 +13,7 @@ $("#find_r").on("click",function(){
 		res.forEach(function(r){
 			list+=`<div>
 				<a href="/normal/storedetail?bno=${r.svo.bno}">${r.svo.store} 바로가기</a>
-				<p>예약일 : ${r.date}</p>
+				<p>예약일 : ${r.rsvo.date}</p>
 				<p>${r.email}</p>
 				<p>${r.r_name}</p>
 				<p>${r.r_phone}</p>

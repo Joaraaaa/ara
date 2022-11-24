@@ -35,8 +35,8 @@ public class ReservationserviceImpl implements ReservationService{
 	public void status(ResSetVO rsvo) {
 		rm.status(rsvo);
 	}
-	public ArrayList<ReservationVO> r_select(ReservationVO rvo){
-		return rm.r_select(rvo);
+	public ArrayList<ReservationVO> r_select(RUserInfoVO ruivo){
+		return rm.r_select(ruivo);
 	}
 	public ArrayList<RUserInfoVO> list(RUserInfoVO ruivo){
 		return rm.list(ruivo);

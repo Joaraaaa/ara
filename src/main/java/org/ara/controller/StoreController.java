@@ -78,7 +78,7 @@ public class StoreController {
 		// 날짜는 +13으로 저장한다.
 		LocalDate localDate = LocalDate.now();
 		DateTimeFormatter d= DateTimeFormatter.ISO_LOCAL_DATE;
-		String date=localDate.plusDays(14).format(d);
+		String date=localDate.plusDays(13).format(d);
 		int result = 0;
 		// 가입된 모든 가게의 bno의 최대값을 가져온다.
 		int max_bno = ss.bno_s();
