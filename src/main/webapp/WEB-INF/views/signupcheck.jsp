@@ -11,6 +11,6 @@
 
 <a href="/member/nsignup">회원가입</a>
 <a href="/member/bsignup">사업자 회원가입</a>
-
+<a href="/member/login">로그인</a>
 </body>
 </html>

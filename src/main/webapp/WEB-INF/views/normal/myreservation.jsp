@@ -13,6 +13,8 @@
 <input type="text" id="r_phone" name="r_phone" placeholder="예약자 번호">
 <button id="find_r">예약 조회하기</button>
 <div id="r_list"></div>
+<h1 class = "h1-clock"></h1>
+    
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 	<script src="../resources/js/normal/myreservation.js?ver=1"></script>
 </body>

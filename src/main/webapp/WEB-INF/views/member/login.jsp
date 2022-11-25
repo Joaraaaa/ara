@@ -69,7 +69,7 @@
 					<a href="/member/findId"><h5>아이디/비밀번호 찾기</h5></a>
 				</div>
 				<div id="link_signup">
-					<a href="/member/signup"><h5>회원가입</h5></a>
+					<a href="/signupcheck"><h5>회원가입</h5></a>
 				</div>
 			</div>
 		</div>
