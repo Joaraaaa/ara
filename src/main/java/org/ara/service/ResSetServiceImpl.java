@@ -1,5 +1,5 @@
 package org.ara.service;
 
-public class ResSetServiceImpl {
+public class ResSetServiceImpl implements ResSetService{
 
 }

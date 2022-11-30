@@ -10,14 +10,55 @@ public class MemberServiceImpl implements MemberService {
 	@Autowired
 	MemberMapper mm;
 
-	
-	// 사업자 회원가입, 일반 회원가입, 소셜 회원가입
-	public void signUp(MemberVO member) {
-		mm.signUp(member);
+//insert
+	// 일반 회원가입, 소셜 회원가입
+	public void signUp(MemberVO mvo){
+		mm.insert(mvo);
 	}
-	// 로그인, 닉네임 중복 확인, 이메일 중복 확인
-	public MemberVO select(MemberVO member) {
-		return mm.select(member);
-	}	
+	
+//select
+	// 로그인
+	public MemberVO login(MemberVO mvo){
+		return mm.select(mvo);
+	}
+	// 비밀번호 확인
+	public MemberVO select_pw(MemberVO mvo) {
+		return mm.select(mvo);
+	}
+	// 닉네임 중복 확인
+	public MemberVO select_n_name(MemberVO mvo){
+		return mm.select(mvo);
+	}
+	// 이메일 중복 확인
+	public MemberVO select_email(MemberVO mvo){
+		return mm.select(mvo);
+	}
+	
+//update
+	// 닉네임 수정
+	public void update_n_name(MemberVO mvo){
+		mm.update(mvo);
+	}
+	// 비밀번호 수정
+	public void update_pw(MemberVO mvo){
+		mm.update(mvo);
+	}
+	
+//delete
+	// 회원 탈퇴
+	public void delete_user(MemberVO mvo){
+		mm.delete(mvo);
+	}
+	
+	
+	
+//	// 사업자 회원가입, 일반 회원가입, 소셜 회원가입
+//	public void signUp(MemberVO member) {
+//		mm.signUp(member);
+//	}
+//	// 로그인, 닉네임 중복 확인, 이메일 중복 확인
+//	public MemberVO select(MemberVO member) {
+//		return mm.select(member);
+//	}	
 
 }

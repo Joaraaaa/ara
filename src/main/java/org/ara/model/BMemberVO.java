@@ -1,6 +1,6 @@
 package org.ara.model;
 
-public class M_BMemberVO {
+public class BMemberVO {
 	private int s_no;
 	private String c_no;
 	private String c_name;

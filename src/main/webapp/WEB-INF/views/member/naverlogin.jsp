@@ -37,7 +37,7 @@
 	<form action="/member/naverlogin" method="post">
 		<input type="hidden" name="password" id="password"> 
 		<input type="hidden" name="email" id="email"> 
-		<input type="hidden" name="name" id="name"> 
+		<input type="hidden" name="n_name" id="name"> 
 		<input type="submit" id="submit">
 	</form>
 	

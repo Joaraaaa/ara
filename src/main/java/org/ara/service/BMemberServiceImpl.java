@@ -1,5 +1,5 @@
 package org.ara.service;
 
-public class BMemberServiceImpl {
+public class BMemberServiceImpl implements BMemberService {
 
 }

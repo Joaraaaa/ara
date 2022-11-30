@@ -14,11 +14,11 @@
 						<h4 class="signup_text" id="text_email">사업자 이메일 인증</h4>
 <!-- 						<h4 class="signup_text" id="text_b_num">사업자등록번호</h4> -->
 						<p>test: 3988701116&emsp;(주)우리금융지주&emsp;2208162517&emsp;네이버(주)</p>
-						<input class="signup_input" type="text" placeholder="사업자등록번호" name="crno" id="crno">
+						<input class="signup_input" type="text" placeholder="사업자등록번호" name="c_no" id="crno">
 <!-- 						<p class="signup_msg" id="bnomsg"></p> -->
 						
 <!-- 						<h4 class="signup_text" id="text_b_name">상호명</h4> -->
-						<input class="signup_input" type="text" placeholder="상호명" name="bname" id="bname">
+						<input class="signup_input" type="text" placeholder="상호명" name="c_name" id="bname">
 <!-- 						<button id="buisness_num">인증</button> -->
 <!-- 						<p class="signup_msg" id="bnamsg"></p> -->
 						<input type="hidden" name="email">

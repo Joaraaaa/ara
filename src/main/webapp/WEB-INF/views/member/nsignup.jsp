@@ -10,7 +10,7 @@
 	<form action="/member/signup" method="post">
 				<div id="signup_box">
 					<div id="signup_box_text">
-						<input type="text" name="admin" value="false">
+<!-- 						<input type="text" name="admin" value="false"> -->
 						<h4 class="signup_text" id="text_email">이메일</h4>
 						<input type="text" name="email">
 						<input class="e_input" type="text" id="email">@<input class="e_input" type="text" id="direct"> 
@@ -35,7 +35,7 @@
 						<p class="signup_msg" id="pwmsg2"></p>
 						
 						<h4 class="signup_text" id="text_name">닉네임</h4>
-						<input class="signup_input" type="text" name="name" id="nachk">
+						<input class="signup_input" type="text" name="n_name" id="nachk">
 						<button id="make_name">닉네임 만들기</button>
 						<p class="signup_msg" id="namsg"></p>
 						

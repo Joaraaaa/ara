@@ -16,6 +16,7 @@ import org.ara.araclass.GetBuisnessInfoService;
 import org.ara.araclass.GetUserInfoService;
 import org.ara.araclass.MailSendService;
 import org.ara.araclass.RestJsonService;
+import org.ara.model.BMemberVO;
 import org.ara.model.MemberVO;
 import org.ara.model.StoreVO;
 import org.ara.service.MemberService;
@@ -56,6 +57,7 @@ public class MemberController {
 	// 일반 회원가입 화면
 	@RequestMapping(value = "/member/nsignup", method = RequestMethod.GET)
 	public String signup(HttpSession session) {
+		// 회원가입 화면으로 이동 시 로그아웃 된다.
 		session.invalidate();
 		return "member/nsignup";
 	}
@@ -63,6 +65,7 @@ public class MemberController {
 	// 사업자 회원가입 화면
 	@RequestMapping(value = "/member/bsignup", method = RequestMethod.GET)
 	public String signupB(HttpSession session) {
+		// 회원가입 화면으로 이동 시 로그아웃 된다.
 		session.invalidate();
 		return "member/bsignup";
 	}
@@ -80,23 +83,25 @@ public class MemberController {
 	// 사업자 이메일 인증
 	@RequestMapping(value = "/member/bemailchk/", method = RequestMethod.GET)
 	@ResponseBody
-	public String bMailCheck(MemberVO member) {
+	public String bMailCheck(BMemberVO bvo) {
 		System.out.println("이메일 인증 요청이 들어옴!");
-		System.out.println("이메일 인증 이메일 : " + member);
-		return mailService.bJoinEmail(member);
+		System.out.println("이메일 인증 이메일 : " + bvo);
+		return mailService.bJoinEmail(bvo);
 	}
 	
 	// 이메일, 닉네임 중복체크
 	@RequestMapping(value = "/member/signup/{str}", method = RequestMethod.GET)
-	public ResponseEntity<String> emchk(@PathVariable String str, MemberVO member) {
+	public ResponseEntity<String> emchk(@PathVariable String str, MemberVO mvo) {
 		System.out.println(str);
 		try {
 			if (str.contains("@")) {
-				member.setEmail(str);
+				mvo.setEmail(str);
+				return new ResponseEntity<>(ms.select_email(mvo).getEmail(), HttpStatus.OK);
 			} else {
-				member.setName(str);
+				mvo.setN_name(str);
+				return new ResponseEntity<>(ms.select_n_name(mvo).getN_name(), HttpStatus.OK);
 			}
-			return new ResponseEntity<>(ms.select(member).getEmail(), HttpStatus.OK);
+			
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -139,31 +144,24 @@ public class MemberController {
 	// js에서 확인 절차를 통해 바르게 입력된 (일반/사업자)회원가입 정보를 이곳으로 모두 받아옴.
 	@RequestMapping(value = "/member/signup", method = RequestMethod.POST)
 	                                     // 회원가입 후 별도의 로그인 절차 없이 바로 로그인
-	public String signup(MemberVO member, HttpSession session) {
+	public String signup(MemberVO mvo, HttpSession session) {
 		// 일반 또는 사업자의 정보가 들어왔는지 확인용
-		System.out.println("member="+member);
+		System.out.println("member="+mvo);
 		try {
-			ms.signUp(member); // 가입을 시키고 바로 로그인시킴.
-			// 일반은 VO에서 admin false고
-			// 사업자는 VO에서 admin true다
-			session.setAttribute("userInfo", ms.select(member));
-			// admin으로 사업자와 일반회원을 구분해준다.
-			if(member.isAdmin()==true) {
-				// 사업자면 사업자 홈 화면으로 로그인 된채로 이동
-				return "redirect:/bhome";
-			}else {
-				// 일반회원이면 기본 홈 화면으로 로그인 된채로 이동
-				return "redirect:/nhome";
-			}
+			ms.signUp(mvo); // 가입을 시키고 바로 로그인시킴.
+			
+			session.setAttribute("userInfo", ms.login(mvo));
+			
+			
+			return "redirect:/nhome";
 		} catch (Exception e) {
 			e.printStackTrace();
-			if(member.isAdmin()==true) {
-				return "member/bsignup";
-			}else {
-				return "member/nsignup";
-			}
+			
+			return "member/nsignup";
+			
 		}
 	}
+	
 	
 
 	
@@ -180,18 +178,18 @@ public class MemberController {
 	@RequestMapping(value = "/member/login", method = RequestMethod.POST)
 	public String loginPost(MemberVO member, StoreVO store, HttpSession session) {
 		System.out.println(member);
-		System.out.println("여기"+ms.select(member));
-		session.setAttribute("userInfo", ms.select(member));
+		System.out.println("여기"+ms.login(member));
+		session.setAttribute("userInfo", ms.login(member));
 		System.out.println(session.getAttribute("userInfo"));
 		if (session.getAttribute("userInfo") != null) {
-			if(member.isAdmin()==true) {
-				store.setBno(ms.select(member).getBno());
-				System.out.println(store.getBno());
-				session.setAttribute("storeInfo", ss.select(store));
-				return "redirect:/bhome";
-			}else {
+//			if(member.isAdmin()==true) {
+//				store.setBno(ms.select(member).getBno());
+//				System.out.println(store.getBno());
+//				session.setAttribute("storeInfo", ss.select(store));
+//				return "redirect:/bhome";
+//			}else {
 				return "redirect:/nhome";
-			}
+//			}
 		} else {
 			return "member/login";
 		}
@@ -245,14 +243,14 @@ public class MemberController {
 			member.setSns(true);
 			member.setEmail("K+"+email);
 			member.setPassword(id);
-			member.setName("K+"+nickname);
+			member.setN_name("K+"+nickname);
 			System.out.println(member);
 			try {
 				ms.signUp(member);
 			}catch(Exception e) {
 				System.out.println("이미 회원이다.");
 			}
-			session.setAttribute("userInfo",ms.select(member));
+			session.setAttribute("userInfo",ms.login(member));
 
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -299,7 +297,7 @@ public class MemberController {
 				  	member.setSns(true);
 					member.setEmail("G+"+email);
 					member.setPassword(userId);
-					member.setName("G+"+name);
+					member.setN_name("G+"+name);
 					System.out.println(member);
 					
 					try {
@@ -308,7 +306,7 @@ public class MemberController {
 
 						e.printStackTrace();
 					}
-					session.setAttribute("userInfo",ms.select(member));
+					session.setAttribute("userInfo",ms.login(member));
 					System.out.println("session : "+session.getAttribute("userInfo"));
 					return "redirect:/nhome";
 				  
@@ -342,7 +340,7 @@ public class MemberController {
 				
 				e.printStackTrace();
 			}
-			session.setAttribute("userInfo",ms.select(member));
+			session.setAttribute("userInfo",ms.login(member));
 			return "redirect:/nhome";
 		}
 	

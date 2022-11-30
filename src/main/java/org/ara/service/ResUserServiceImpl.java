@@ -1,5 +1,5 @@
 package org.ara.service;
 
-public class ResUserServiceImpl {
+public class ResUserServiceImpl implements ResUserService {
 
 }

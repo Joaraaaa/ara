@@ -268,7 +268,7 @@ $("#signsub").on("click", function(e) {
 
 	if (!(pw && pw2 && na && em)) {
 
-		alert('입력해');
+		alert('입력');
 	} else {
 //		$("input[name='email']").val();
 		alert('가입됨');
