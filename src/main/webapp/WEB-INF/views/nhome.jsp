@@ -8,8 +8,8 @@
 </head>
 <body>
 <h1>일반회원 페이지</h1>
-아이디:${userInfo.name}
-<input type="text" value="${userInfo.name}" name='name'>
+닉네임 : ${userInfo.n_name}
+<input type="text" value="${userInfo.n_name}" name='n_name'>
 <a href="/">초기화면</a>
 <a href="/normal/storelist">가게목록</a>
 <a href="/normal/myreservation">예약조회</a>

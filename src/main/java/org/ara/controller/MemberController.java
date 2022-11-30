@@ -59,6 +59,7 @@ public class MemberController {
 	public String signup(HttpSession session) {
 		// 회원가입 화면으로 이동 시 로그아웃 된다.
 		session.invalidate();
+		
 		return "member/nsignup";
 	}
 

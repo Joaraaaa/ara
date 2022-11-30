@@ -52,7 +52,7 @@ public class MemberVO {
 	}
 	@Override
 	public String toString() {
-		return "M_MemberVO [sns=" + sns + ", email=" + email + ", password=" + password + ", n_name=" + n_name
+		return "MemberVO [sns=" + sns + ", email=" + email + ", password=" + password + ", n_name=" + n_name
 				+ ", gender=" + gender + ", birth_y=" + birth_y + ", sign_date=" + sign_date + "]";
 	}
 }
