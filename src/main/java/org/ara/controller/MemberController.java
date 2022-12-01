@@ -13,9 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.ara.araclass.GetBuisnessInfoService;
-import org.ara.araclass.GetUserInfoService;
 import org.ara.araclass.MailSendService;
-import org.ara.araclass.RestJsonService;
 import org.ara.araclass.SnsLogin;
 import org.ara.model.BMemberVO;
 import org.ara.model.MemberVO;
@@ -200,8 +198,8 @@ public class MemberController {
 	
 // 카카오 로그인(js에서 js키 사용해서 서버로 인증코드 보내기 -> 인증코드 사용해서 엑세스 코드 받기 -> 엑세스 토큰 사용해서 사용자 정보 받기)
 // login.js 확인, SnsLogin class 확인 , pom.xml의 문자열 json 변환(추가) 확인하기
-	@RequestMapping(value = "/snscheck", method = RequestMethod.GET)
-	public String snsCheck(String code,HttpSession session, MemberVO mvo) {
+	@RequestMapping(value = "/kakaologin", method = RequestMethod.GET)
+	public String kakaologin(String code,HttpSession session, MemberVO mvo) {
 
 		// js에서 인증 코드를 요청하여 이 주소로 인증 코드를 받았다.
 		System.out.println("js에서 요청한 주소로 코드를 받음 : " + code);
@@ -212,7 +210,7 @@ public class MemberController {
 		
 		
 		// SnsLogin클래스에 인증 코드를 보내고 사용자 정보가 담긴 VO를 리턴 받았다.
-		mvo = SnsLogin.kakaoLogin(code);
+		mvo = SnsLogin.kakao(code);
 		System.out.println("SnsLogin클래스에서 mvo를 리턴 함 : " + mvo);
 		
 		

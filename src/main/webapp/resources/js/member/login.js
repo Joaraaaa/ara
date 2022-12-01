@@ -58,8 +58,8 @@ $("#loginsub").on("click",function(e){
 	// 1. 카카오에 인증코드 요청
 function loginWithKakao() {
     Kakao.Auth.authorize({
-    	redirectUri:'http://localhost:8080/snscheck',
-    	scope:'profile_nickname,account_email,gender,birthday,openid',
+    	redirectUri:'http://localhost:8080/kakaologin'
+    	
         
     });
     
