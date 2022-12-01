@@ -16,6 +16,7 @@ import org.ara.araclass.GetBuisnessInfoService;
 import org.ara.araclass.GetUserInfoService;
 import org.ara.araclass.MailSendService;
 import org.ara.araclass.RestJsonService;
+import org.ara.araclass.SnsLogin;
 import org.ara.model.BMemberVO;
 import org.ara.model.MemberVO;
 import org.ara.model.StoreVO;
@@ -197,74 +198,44 @@ public class MemberController {
 	}
 	
 	
-	// 카카오 로그인(js에서 js키 사용해서 서버로 인증코드 보내기 -> 인증코드 사용해서 엑세스 코드 받기 -> 엑세스 토큰 사용해서 사용자 정보 받기)
-	// 1번-login.js 확인하기. RestJsonService.java , GetUserInfoService.java , pom.xml의 문자열json변환(추가) 확인하기
+// 카카오 로그인(js에서 js키 사용해서 서버로 인증코드 보내기 -> 인증코드 사용해서 엑세스 코드 받기 -> 엑세스 토큰 사용해서 사용자 정보 받기)
+// login.js 확인, SnsLogin class 확인 , pom.xml의 문자열 json 변환(추가) 확인하기
 	@RequestMapping(value = "/snscheck", method = RequestMethod.GET)
-	public String snsCheck(String code,HttpSession session,Model model) {
+	public String snsCheck(String code,HttpSession session, MemberVO mvo) {
 
-		// 2. 받은 인증코드를 카카오로 보내서 엑세스 토큰을 받아내는 클래스(서비스에 만들어져있음.)
-		RestJsonService restJsonService = new RestJsonService();
-
-		//access_token이 포함된 JSON String을 받아온다.
-		String accessTokenJsonData = restJsonService.getAccessTokenJsonData(code);
-		System.out.println(accessTokenJsonData);
-		if(accessTokenJsonData=="error") return "error";
-
-		//JSON String -> JSON Object
-
-		JSONParser parser = new JSONParser();
-		Object obj;
+		// js에서 인증 코드를 요청하여 이 주소로 인증 코드를 받았다.
+		System.out.println("js에서 요청한 주소로 코드를 받음 : " + code);
+		
+		// 이제 받은 인증 코드를 사용하여 엑세스 토큰을 받는다.
+		// araclass패키지에 있는 SnsLogin클래스(엑세스 토큰 발급, 사용자 정보 추출 기능)
+		SnsLogin SnsLogin = new SnsLogin();
+		
+		
+		// SnsLogin클래스에 인증 코드를 보내고 사용자 정보가 담긴 VO를 리턴 받았다.
+		mvo = SnsLogin.kakaoLogin(code);
+		System.out.println("SnsLogin클래스에서 mvo를 리턴 함 : " + mvo);
+		
+		
+		// 먼저 mvo에 담긴 정보를 회원가입 시킨다.(try)
+		// 이미 회원일 시 오류가 발생한다.(catch)
+		// 마지막으로 mvo에 담긴 정보로 로그인을 한다.(finally)
 		try {
-			obj = parser.parse(accessTokenJsonData);
-			JSONObject jsonObj = (JSONObject) obj;
-			System.out.println(jsonObj.get("access_token"));
-			String accessToken = (String) jsonObj.get("access_token");
-			session.setAttribute("accessToken",accessToken);
-
-			// 3. 받아낸 엑세스 토큰을 보내서 사용자 정보를 받아내는 클래스(서비스에 만들어져있음.)
-			GetUserInfoService getUserInfoService = new GetUserInfoService();
-			//유저 정보가 포함된 JSON String을 받아온다.
-			String userInfo = getUserInfoService.getUserInfo(accessToken);
-			System.out.println(userInfo);
-			//JSON String -> JSON Object
-			JSONParser userInfoParser = new JSONParser();
-			Object uobj = userInfoParser.parse(userInfo);
-			JSONObject userInfojsonObj = (JSONObject) uobj;
-			System.out.println(userInfojsonObj.get("id"));
-
-			// 4. 사용자 정보 추출
-			JSONObject kakaoAccountJsonObject = (JSONObject)userInfojsonObj.get("kakao_account");
-			JSONObject propertiesJsonObject = (JSONObject)userInfojsonObj.get("properties");
-			String email = kakaoAccountJsonObject.get("email").toString();
-			String id = userInfojsonObj.get("id").toString();
-			String nickname = propertiesJsonObject.get("nickname").toString();
-			
-			// 5. MemberVO에 담기. ---- 끝!
-			MemberVO member = new MemberVO();
-			member.setSns(true);
-			member.setEmail("K+"+email);
-			member.setPassword(id);
-			member.setN_name("K+"+nickname);
-			System.out.println(member);
-			try {
-				ms.signUp(member);
-			}catch(Exception e) {
-				System.out.println("이미 회원이다.");
-			}
-			session.setAttribute("userInfo",ms.login(member));
-
-		} catch (ParseException e) {
-			e.printStackTrace();
+			ms.signUp(mvo);
+		}catch(Exception e) {
+			System.out.println("이미 회원이다.");
+		}finally{
+			session.setAttribute("userInfo",ms.login(mvo));
 		}
-
-
+		
+		// 사용자 메인 화면으로 보냄.
 		return "redirect:/nhome";
 	}
+	
+
 	
 	// 구글 로그인(js에서 인증과정을 통해 아이디토큰까지 받음 -> 서버에서 아이디 토큰 검사후 사용자 정보 추출)
 	// login.js , pom.xml의 구글 소셜로그인(추가) 부분 확인하기
 		@RequestMapping(value="/googlelogin", method= RequestMethod.POST)
-
 		public String googleLogin(String idtoken, Model model, HttpSession session) throws GeneralSecurityException, IOException {
 	// 3. js에서 서버로 보낸 아이디 토큰에는 이미 사용자의 정보가 들어있다. 아이디 토큰 확인하기
 			System.out.println(idtoken);
