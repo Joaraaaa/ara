@@ -3,8 +3,10 @@ package org.ara.controller;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.math.BigInteger;
 import java.net.URL;
 import java.security.GeneralSecurityException;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -196,6 +198,8 @@ public class MemberController {
 	}
 	
 	
+	
+	
 // 카카오 로그인(js에서 js키 사용해서 서버로 인증코드 보내기 -> 인증코드 사용해서 엑세스 코드 받기 -> 엑세스 토큰 사용해서 사용자 정보 받기)
 // login.js 확인, SnsLogin class 확인 , pom.xml의 문자열 json 변환(추가) 확인하기
 	@RequestMapping(value = "/kakaologin", method = RequestMethod.GET)
@@ -231,86 +235,69 @@ public class MemberController {
 	
 
 	
-	// 구글 로그인(js에서 인증과정을 통해 아이디토큰까지 받음 -> 서버에서 아이디 토큰 검사후 사용자 정보 추출)
-	// login.js , pom.xml의 구글 소셜로그인(추가) 부분 확인하기
-		@RequestMapping(value="/googlelogin", method= RequestMethod.POST)
-		public String googleLogin(String idtoken, Model model, HttpSession session) throws GeneralSecurityException, IOException {
-	// 3. js에서 서버로 보낸 아이디 토큰에는 이미 사용자의 정보가 들어있다. 아이디 토큰 확인하기
-			System.out.println(idtoken);
-			GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), new GsonFactory())
-				    // Specify the CLIENT_ID of the app that accesses the backend:
-				    .setAudience(Collections.singletonList("1021807136832-ee5020m3rjgegr7phn8ki82n3rttnqcd.apps.googleusercontent.com"))
-				    // Or, if multiple clients access the backend:
-				    //.setAudience(Arrays.asList(CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3))
-				    .build();
+	
+// 구글 로그인(js에서 인증과정을 통해 아이디토큰까지 받음 -> 아이디 토큰 검사후 사용자 정보 추출)
+// login.js 확인, pom.xml의 구글 소셜로그인(추가) 부분 확인하기
+	@RequestMapping(value="/googlelogin", method= RequestMethod.POST)
+	public String googleLogin(String idtoken, MemberVO mvo, HttpSession session) throws GeneralSecurityException, IOException {
+		
+		// js에서 서버로 보낸 아이디 토큰에는 이미 사용자의 정보가 들어있다.
+		System.out.println(idtoken);
+		
+		// 이제 받은 아이디 토큰이 변조되지 않았는지 검증을 한다.
+		// araclass패키지에 있는 SnsLogin클래스(아이디 토큰 검증, 사용자 정보 추출 기능)
+		SnsLogin SnsLogin = new SnsLogin();
+		
+		// SnsLogin클래스에 아이디 토큰을 보내고 사용자 정보가 담긴 VO를 리턴 받았다.		
+		mvo = SnsLogin.google(idtoken);
+		System.out.println("SnsLogin클래스에서 mvo를 리턴 함 : " + mvo);
+				
+		// 먼저 mvo에 담긴 정보를 회원가입 시킨다.(try)
+		// 이미 회원일 시 오류가 발생한다.(catch)
+		// 마지막으로 mvo에 담긴 정보로 로그인을 한다.(finally)				
+		try {
+			ms.signUp(mvo);
+		}catch(Exception e) {
+			System.out.println("이미 회원이다.");
+		}finally{
+			session.setAttribute("userInfo",ms.login(mvo));
+		}
+				
+		// 사용자 메인 화면으로 보냄.
+		return "redirect:/nhome";
+	}//googleLogin
+	
 
-				// (Receive idTokenString by HTTPS POST)
-	// 4. 확인된 아이디 토큰으로 사용자 정보 추출
-				GoogleIdToken idToken = verifier.verify(idtoken);
-				if (idToken != null) {
-				  Payload payload = idToken.getPayload();
-
-				  // Print user identifier
-				  String userId = payload.getSubject();
-				  System.out.println("User ID: " + userId);
-
-				  // Get profile information from payload
-				  String email = payload.getEmail();
-				  String name = (String) payload.get("name");
-				  // Use or store profile information
-				  // ...
-
-				  
-				  
-	// 5. MemberVO에 담기 ---- 끝!
-				  MemberVO member = new MemberVO();
-				  	member.setSns(true);
-					member.setEmail("G+"+email);
-					member.setPassword(userId);
-					member.setN_name("G+"+name);
-					System.out.println(member);
-					
-					try {
-						ms.signUp(member);
-					}catch(Exception e) {
-
-						e.printStackTrace();
-					}
-					session.setAttribute("userInfo",ms.login(member));
-					System.out.println("session : "+session.getAttribute("userInfo"));
-					return "redirect:/nhome";
-				  
-				  
-				} else {
-				  System.out.println("Invalid ID token.");
-				  return "/member/login";
-				}		
-			//		return null;
-
-		}//googleLogin
 	
 	
 	// 네이버 로그인(인증부터 사용자 정보받는것까지 js에서 모두 처리)
 	// 1번-login.js , 2번3번-naverlogin.jsp 확인하기
 	// 4. login.js에서 인증요청할때의 주소. naverlogin.jsp의 js에서 받은 정보를 처리할것이다.
-		@RequestMapping(value="/member/naverlogin", method=RequestMethod.GET)
-		public String callBack(MemberVO member, HttpSession session){
+		@RequestMapping(value="member/naverlogin", method=RequestMethod.GET)
+		public String naverlogin(){
 			
+
 			return null;
 		}
+		
 	// 5. naverlogin.jsp의 input정보를 post로 받아서 MemberVO에 바로 넣어준다. ---- 끝!
 		@RequestMapping(value="/member/naverlogin", method=RequestMethod.POST)
-		public String callBackPost(MemberVO member, HttpSession session){
-			member.setSns(true);
-			System.out.println(member);
-
+		public String callBackPost(MemberVO mvo, String email, HttpSession session){
+			mvo.setSns(true);
+			System.out.println(mvo);
+			System.out.println(email);
+			// 먼저 mvo에 담긴 정보를 회원가입 시킨다.(try)
+			// 이미 회원일 시 오류가 발생한다.(catch)
+			// 마지막으로 mvo에 담긴 정보로 로그인을 한다.(finally)				
 			try {
-				ms.signUp(member);
+				ms.signUp(mvo);
 			}catch(Exception e) {
-				
-				e.printStackTrace();
+				System.out.println("이미 회원이다.");
+			}finally{
+				session.setAttribute("userInfo",ms.login(mvo));
 			}
-			session.setAttribute("userInfo",ms.login(member));
+					
+			// 사용자 메인 화면으로 보냄.
 			return "redirect:/nhome";
 		}
 	

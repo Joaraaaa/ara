@@ -25,21 +25,25 @@
 //   alert(naver_id_login.oauthParams.access_token);
   // 네이버 사용자 프로필 조회
   naver_id_login.get_naver_userprofile("naverSignInCallback()");
+  
   // 네이버 사용자 프로필 조회 이후 프로필 정보를 처리할 callback function
   function naverSignInCallback() {
-	  $("#password").val(naver_id_login.getProfileData('id'));
-	  $("#email").val("N+"+naver_id_login.getProfileData('email'));
-	  $("#name").val("N+"+naver_id_login.getProfileData('nickname'));
-	  
+// 	  $("#password").val(naver_id_login.getProfileData('id'));
+// 	  $("#email").val("N+"+naver_id_login.getProfileData('email'));
+// 	  $("#name").val("N+"+naver_id_login.getProfileData('email'));
+	  var email = naver_id_login.getProfileData('email');
+	  var id = naver_id_login.getProfileData('id');
+	  var data = {"email":email,"id":id}
+	  console.log(data)
 
   }
 </script>
-	<form action="/member/naverlogin" method="post">
-		<input type="hidden" name="password" id="password"> 
-		<input type="hidden" name="email" id="email"> 
-		<input type="hidden" name="n_name" id="name"> 
-		<input type="submit" id="submit">
-	</form>
+<!-- 	<form action="/member/naverlogin" method="post"> -->
+<!-- 		<input type="hidden" name="password" id="password">  -->
+<!-- 		<input type="hidden" name="email" id="email">  -->
+<!-- 		<input type="hidden" name="n_name" id="name">  -->
+<!-- 		<input type="submit" id="submit"> -->
+<!-- 	</form> -->
 	
 	<script>
 	
@@ -47,7 +51,7 @@
 	
 	window.addEventListener('load', function () {
 	if($("#id").val()!=""){
-		$("#submit").click();
+// 		$("#submit").click();
 		
 	}
 	})

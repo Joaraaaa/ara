@@ -1,8 +1,15 @@
 package org.ara.araclass;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.math.BigInteger;
 import java.net.URL;
+import java.security.GeneralSecurityException;
+import java.security.SecureRandom;
+import java.util.Collections;
+
+import javax.servlet.http.HttpSession;
 
 import org.ara.model.MemberVO;
 import org.json.simple.JSONObject;
@@ -14,9 +21,17 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.gson.GsonFactory;
 
 public class SnsLogin {
 	
@@ -64,12 +79,10 @@ public class SnsLogin {
 			Object uobj = userInfoParser.parse(userInfo);
 			JSONObject userInfojsonObj = (JSONObject) uobj;
 			JSONObject kakaoAccountJsonObject = (JSONObject)userInfojsonObj.get("kakao_account");
-			JSONObject propertiesJsonObject = (JSONObject)userInfojsonObj.get("properties");
 			
 			// 필요한 사용자 정보를 받았다!!!!!!!!!!
 			String email = kakaoAccountJsonObject.get("email").toString();
 			String id = userInfojsonObj.get("id").toString();
-			String nickname = propertiesJsonObject.get("nickname").toString();
 			
 
 			// 사용자 정보를 VO에 담아 한번에 이동하겠다.
@@ -83,7 +96,7 @@ public class SnsLogin {
 			mvo.setSns(true);
 			mvo.setEmail("K+"+email);
 			mvo.setPassword(id);
-			mvo.setN_name("K+"+nickname);
+			mvo.setN_name("K+"+email);
 			System.out.println(mvo);
 			
 			return mvo;
@@ -161,4 +174,56 @@ public class SnsLogin {
 			return "success";
 		}
 	}
+	
+	
+	
+	
+	
+	
+	
+// 구글 아이디로 로그인
+	
+	public MemberVO google(String idtoken) throws GeneralSecurityException, IOException {
+		
+		System.out.println(idtoken);
+		GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), new GsonFactory())
+				.setAudience(Collections.singletonList("1021807136832-ee5020m3rjgegr7phn8ki82n3rttnqcd.apps.googleusercontent.com"))
+				.build();
+
+		// 4. 확인된 아이디 토큰으로 사용자 정보 추출
+		GoogleIdToken idToken = verifier.verify(idtoken);
+		if (idToken != null) {
+			Payload payload = idToken.getPayload();
+
+			String userId = payload.getSubject();
+			System.out.println("User ID: " + userId);
+
+			String email = payload.getEmail();
+
+					 					  
+			// 5. MemberVO에 담기 ---- 끝!
+			MemberVO mvo = new MemberVO();
+			mvo.setSns(true);
+			mvo.setEmail("G+"+email);
+			mvo.setPassword(userId);
+			mvo.setN_name("G+"+email);
+			System.out.println(mvo);
+						
+			return mvo;
+					  
+		} else {
+			System.out.println("Invalid ID token.");
+			return null;
+		}		
+
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+
 }
