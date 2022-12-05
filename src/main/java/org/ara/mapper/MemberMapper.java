@@ -1,7 +1,6 @@
 package org.ara.mapper;
 
 import org.ara.model.MemberVO;
-import org.ara.model.StoreVO;
 
 public interface MemberMapper {
 	

@@ -1,6 +1,7 @@
 package org.ara.model;
-
-public class M_ResUserVO {
+// 이름 바꾸자 예약자 정보 VO
+public class ResUserVO {
+	private int s_no;
 	private String dt_no;
 	private int r_no;
 	private String email;
@@ -9,6 +10,12 @@ public class M_ResUserVO {
 	private int r_people;
 	private String r_memo;
 	private boolean v_status;
+	public int getS_no() {
+		return s_no;
+	}
+	public void setS_no(int s_no) {
+		this.s_no = s_no;
+	}
 	public String getDt_no() {
 		return dt_no;
 	}
@@ -59,9 +66,9 @@ public class M_ResUserVO {
 	}
 	@Override
 	public String toString() {
-		return "M_ResUserVO [dt_no=" + dt_no + ", r_no=" + r_no + ", email=" + email + ", r_name=" + r_name
-				+ ", r_phone=" + r_phone + ", r_people=" + r_people + ", r_memo=" + r_memo + ", v_status=" + v_status
-				+ "]";
+		return "ResUserVO [s_no=" + s_no + ", dt_no=" + dt_no + ", r_no=" + r_no + ", email=" + email + ", r_name="
+				+ r_name + ", r_phone=" + r_phone + ", r_people=" + r_people + ", r_memo=" + r_memo + ", v_status="
+				+ v_status + "]";
 	}
 	
 }

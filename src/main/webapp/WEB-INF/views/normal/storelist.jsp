@@ -27,7 +27,7 @@
 		
 		
 		<tr>
-			<td><div class="bno">${store.bno}</div><a href="/normal/storedetail?bno=${store.bno}"><div class="store">${store.store}</div></a></td>
+			<td><div class="bno">${store.s_no}</div><a href="/normal/storedetail?s_no=${store.s_no}"><div class="store">${store.s_name}</div></a></td>
 			<td><div class="address">${store.address}</div></td>
 		</tr>
 		</c:forEach>

@@ -8,13 +8,13 @@
 </head>
 <body>
 
-<input type="text" value="${storeInfo.bno}" id="bno">
-<input type="hidden" value="${storeInfo.first}" id="first">
-<input type="hidden" value="${storeInfo.last}" id="last">
+<input type="text" value="${storeInfo.s_no}" id="s_no">
+<input type="hidden" value="${storeInfo.f_time}" id="first">
+<input type="hidden" value="${storeInfo.l_time}" id="last">
 <input type="hidden" value="${storeInfo.cycle}" id="cycle">
-<input type="hidden" value="${storeInfo.p_setting}" id="p_setting">
+<input type="hidden" value="${storeInfo.p_set}" id="p_setting">
 
-<input type="date" id="date" value="${day}" min="${day}" max="${pday}">
+<input type="date" id="r_date" value="${day}" min="${day}" max="${pday}">
 <button id="r_btn">예약 검색</button>
 <table border="1">
 	<thead>
@@ -25,9 +25,9 @@
 			<th>예약시간</th>
 			<th>예약가능인원</th>
 			<th>예약자 목록 보기</th>
-			<th>예약자 이름</th>
-			<th>예약자 번호</th>
-			<th>수정/취소/삭제</th>
+<!-- 			<th>예약자 이름</th> -->
+<!-- 			<th>예약자 번호</th> -->
+			<th>예약가능 인원 수정</th>
 		</tr>
 	</thead>
 	<tbody id="r_list">

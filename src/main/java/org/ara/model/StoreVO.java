@@ -1,28 +1,28 @@
 package org.ara.model;
-
+// 가게 정보 VO
 public class StoreVO {
-	private int bno;
-	private String store;
+	private int s_no;
+	private String s_name;
 	private String address;
-	private int open_time;
-	private int close_time;
-	private int first;
-	private int last;
+	private int o_time;
+	private int c_time;
+	private int f_time;
+	private int l_time;
 	private int cycle;
-	private int p_setting;
+	private int p_set;
 	private int p_min;
 	private int p_max;
-	public int getBno() {
-		return bno;
+	public int getS_no() {
+		return s_no;
 	}
-	public void setBno(int bno) {
-		this.bno = bno;
+	public void setS_no(int s_no) {
+		this.s_no = s_no;
 	}
-	public String getStore() {
-		return store;
+	public String getS_name() {
+		return s_name;
 	}
-	public void setStore(String store) {
-		this.store = store;
+	public void setS_name(String s_name) {
+		this.s_name = s_name;
 	}
 	public String getAddress() {
 		return address;
@@ -30,29 +30,29 @@ public class StoreVO {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	public int getOpen_time() {
-		return open_time;
+	public int getO_time() {
+		return o_time;
 	}
-	public void setOpen_time(int open_time) {
-		this.open_time = open_time;
+	public void setO_time(int o_time) {
+		this.o_time = o_time;
 	}
-	public int getClose_time() {
-		return close_time;
+	public int getC_time() {
+		return c_time;
 	}
-	public void setClose_time(int close_time) {
-		this.close_time = close_time;
+	public void setC_time(int c_time) {
+		this.c_time = c_time;
 	}
-	public int getFirst() {
-		return first;
+	public int getF_time() {
+		return f_time;
 	}
-	public void setFirst(int first) {
-		this.first = first;
+	public void setF_time(int f_time) {
+		this.f_time = f_time;
 	}
-	public int getLast() {
-		return last;
+	public int getL_time() {
+		return l_time;
 	}
-	public void setLast(int last) {
-		this.last = last;
+	public void setL_time(int l_time) {
+		this.l_time = l_time;
 	}
 	public int getCycle() {
 		return cycle;
@@ -60,11 +60,11 @@ public class StoreVO {
 	public void setCycle(int cycle) {
 		this.cycle = cycle;
 	}
-	public int getP_setting() {
-		return p_setting;
+	public int getP_set() {
+		return p_set;
 	}
-	public void setP_setting(int p_setting) {
-		this.p_setting = p_setting;
+	public void setP_set(int p_set) {
+		this.p_set = p_set;
 	}
 	public int getP_min() {
 		return p_min;
@@ -80,9 +80,9 @@ public class StoreVO {
 	}
 	@Override
 	public String toString() {
-		return "StoreVO [bno=" + bno + ", store=" + store + ", address=" + address + ", open_time=" + open_time
-				+ ", close_time=" + close_time + ", first=" + first + ", last=" + last + ", cycle=" + cycle
-				+ ", p_setting=" + p_setting + ", p_min=" + p_min + ", p_max=" + p_max + "]";
+		return "StoreVO [s_no=" + s_no + ", s_name=" + s_name + ", address=" + address + ", o_time=" + o_time
+				+ ", c_time=" + c_time + ", f_time=" + f_time + ", l_time=" + l_time + ", cycle=" + cycle + ", p_set="
+				+ p_set + ", p_min=" + p_min + ", p_max=" + p_max + "]";
 	}
 	
 	

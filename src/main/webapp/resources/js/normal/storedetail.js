@@ -15,20 +15,20 @@
 
 
 $("#r_btn").on("click",function(){
-	let date=$("#r_date").val();
-	let bno=$("#bno").val();
+	let r_date=$("#r_date").val();
+	let s_no=$("#s_no").val();
 	let str = '';
-	$.getJSON("/reservationlist",{"bno":bno,"date":date}, function(res) {
+	$.getJSON("/reservationlist",{"s_no":s_no,"r_date":r_date}, function(res) {
 		res.forEach(function(r,i){
 			console.log(r.r_time)
 			str+=`
 				<tr>
 					<td>${r.r_time}시</td>
-					<td>${r.date}</td>`
+					<td>${r.r_date}</td>`
 			if(r.r_status==false){
 			str+=`	<td>예약불가</td></tr>`
 			}else{
-			str+=`	<td><a href="/normal/reservation?rno=${r.rno}&bno=${r.bno}">예약하기</a></td></tr>`	
+			str+=`	<td><a href="/normal/reservation?s_no=${r.s_no}&dt_no=${r.dt_no}">예약하기</a></td></tr>`	
 			}
 		})
 	$("#r_tbody").html(str);

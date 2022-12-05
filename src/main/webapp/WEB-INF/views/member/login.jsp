@@ -21,15 +21,15 @@
 		<div id="login_box">
 			<table id="login_table">
 				<tr>
-					<td><input type="text" placeholder="이메일" name="email" value="${userInfo.email}"
+					<td><input type="text" placeholder="이메일" name="email"
 						class="loginInput" id="email"></td>
 				</tr>
 				<tr>
-					<td><input type="password" placeholder="비밀번호" name="password" value="${userInfo.password}"
+					<td><input type="password" placeholder="비밀번호" name="password"
 						class="loginInput" id="password"></td>
 				</tr>
 				<tr>
-					<td><input type="text" placeholder="사업자 등록번호" name="crno" value="${userInfo.crno}"
+					<td><input type="text" placeholder="사업자 등록번호" name="c_no"
 						class="loginInput" id="buisness_num" style="display:none"></td>
 				</tr>
 				<tr>

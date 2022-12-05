@@ -4,5 +4,16 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="org.ara.mapper.ResUserMapper">
-
+	<select id="list" resultType="org.ara.model.ResUserVO">
+	select ru.dt_no, r_no, email, r_name, r_phone, r_people, r_memo
+	from res_user ru
+	join res_set rs
+	on ru.dt_no = rs.dt_no
+	where ru.dt_no=#{dt_no}
+	and s_no=#{s_no};
+	</select>
+	<insert id="addres">
+	insert into res_user(s_no, dt_no,email,r_name,r_phone,r_people,r_memo)
+	values(#{s_no}, #{dt_no},#{email},#{r_name},#{r_phone},#{r_people},#{r_memo})
+	</insert>	
 </mapper>

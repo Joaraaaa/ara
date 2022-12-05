@@ -4,5 +4,30 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="org.ara.mapper.ResSetMapper">
-
+	<insert id="insert">
+	insert into res_set(s_no, r_date, r_time, people, dt_no)
+	values(#{s_no}, #{r_date}, #{r_time}, #{people}, #{dt_no});
+	</insert>
+	<select id="select" resultType="org.ara.model.ResSetVO">	
+	select *
+	from res_set
+	where s_no=#{s_no}
+	and r_date=#{r_date}
+	</select>
+	<select id="pselect" resultType="int">
+	select people
+	from res_set
+	where s_no=#{s_no};
+	</select>
+	<update id="update">
+	update res_set
+	set people=#{people},r_status=#{r_status}
+	where s_no=#{s_no}
+	and dt_no=#{dt_no}
+	</update>
+<!-- 	<update id="status"> -->
+<!-- 	update res_set -->
+<!-- 	set r_status=#{r_status} -->
+<!-- 	where rno=#{rno}; -->
+<!-- 	</update> -->
 </mapper>

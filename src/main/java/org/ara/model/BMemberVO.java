@@ -1,5 +1,5 @@
 package org.ara.model;
-
+// 사업자 회원 정보 VO
 public class BMemberVO {
 	private int s_no;
 	private String c_no;

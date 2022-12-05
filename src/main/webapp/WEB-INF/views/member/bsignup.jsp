@@ -7,7 +7,7 @@
 <title>사업자 회원가입</title>
 </head>
 <body>
-	<form action="/member/signup" method="post">
+	<form action="/member/bsignup" method="post">
 				<div id="signup_box">
 					<input type="text" name="admin" value="true">
 					<div id="signup_box_text">

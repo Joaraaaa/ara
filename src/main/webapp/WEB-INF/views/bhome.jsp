@@ -8,8 +8,8 @@
 </head>
 <body>
 <h1>사업자 페이지</h1>
-아이디:${userInfo.bname}
-<input type="text" value="${userInfo.bno}">
+아이디:${userInfo.c_name}
+<input type="text" value="${userInfo.s_no}">
 <a href="/">초기화면</a>
 <a href="/store/restaurantsetting">가게 설정</a>
 <a href="/store/reservationsetting">예약 관리</a>

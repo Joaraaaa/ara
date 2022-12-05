@@ -20,6 +20,7 @@ import org.ara.araclass.SnsLogin;
 import org.ara.model.BMemberVO;
 import org.ara.model.MemberVO;
 import org.ara.model.StoreVO;
+import org.ara.service.BMemberService;
 import org.ara.service.MemberService;
 import org.json.XML;
 import org.json.simple.JSONObject;
@@ -46,6 +47,9 @@ import com.google.api.client.json.gson.GsonFactory;
 public class MemberController {
 	@Autowired
 	MemberService ms;
+	
+	@Autowired
+	BMemberService bs;
 	
 	@Autowired
 	StoreService ss;
@@ -143,23 +147,44 @@ public class MemberController {
 	}
 	
 // 최종 회원가입
-	// js에서 확인 절차를 통해 바르게 입력된 (일반/사업자)회원가입 정보를 이곳으로 모두 받아옴.
+	// 일반 회원가입
 	@RequestMapping(value = "/member/signup", method = RequestMethod.POST)
 	                                     // 회원가입 후 별도의 로그인 절차 없이 바로 로그인
 	public String signup(MemberVO mvo, HttpSession session) {
-		// 일반 또는 사업자의 정보가 들어왔는지 확인용
+		// 사용자 정보가 들어왔는지 확인용
 		System.out.println("member="+mvo);
 		try {
-			ms.signUp(mvo); // 가입을 시키고 바로 로그인시킴.
-			
+			ms.signUp(mvo); 
+			// 회원가입 후 바로 로그인.
 			session.setAttribute("userInfo", ms.login(mvo));
-			
 			
 			return "redirect:/nhome";
 		} catch (Exception e) {
 			e.printStackTrace();
 			
 			return "member/nsignup";
+			
+		}
+	}
+	
+	// 사업자 회원가입
+	@RequestMapping(value = "/member/bsignup", method = RequestMethod.POST)
+	                                     // 회원가입 후 별도의 로그인 절차 없이 바로 로그인
+	public String bsignup(BMemberVO bmvo, HttpSession session, StoreVO store) {
+		// 사용자 정보가 들어왔는지 확인용
+		System.out.println("bmember="+bmvo);
+		try {
+			bs.signUp(bmvo); 
+			// 회원가입 후 바로 로그인.
+			session.setAttribute("userInfo", bs.login(bmvo));
+			store.setS_no(bs.login(bmvo).getS_no());
+			System.out.println(store.getS_no());
+			session.setAttribute("storeInfo", ss.find_s_info(store));
+			return "redirect:/bhome";
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+			return "member/bsignup";
 			
 		}
 	}
@@ -178,23 +203,21 @@ public class MemberController {
 	}
 
 	@RequestMapping(value = "/member/login", method = RequestMethod.POST)
-	public String loginPost(MemberVO member, StoreVO store, HttpSession session) {
-		System.out.println(member);
-		System.out.println("여기"+ms.login(member));
-		session.setAttribute("userInfo", ms.login(member));
-		System.out.println(session.getAttribute("userInfo"));
-		if (session.getAttribute("userInfo") != null) {
-//			if(member.isAdmin()==true) {
-//				store.setBno(ms.select(member).getBno());
-//				System.out.println(store.getBno());
-//				session.setAttribute("storeInfo", ss.select(store));
-//				return "redirect:/bhome";
-//			}else {
-				return "redirect:/nhome";
-//			}
-		} else {
-			return "member/login";
+	public String loginPost(MemberVO mvo, BMemberVO bmvo, StoreVO store, HttpSession session) {
+		System.out.println(mvo);
+		System.out.println(bmvo);
+
+		if(mvo.isAdmin()==true) {
+			session.setAttribute("userInfo", bs.login(bmvo));
+			store.setS_no(bs.login(bmvo).getS_no());
+			System.out.println(store.getS_no());
+			session.setAttribute("storeInfo", ss.find_s_info(store));
+			return "redirect:/bhome";
+		}else {
+			session.setAttribute("userInfo", ms.login(mvo));
+			return "redirect:/nhome";
 		}
+
 	}
 	
 	

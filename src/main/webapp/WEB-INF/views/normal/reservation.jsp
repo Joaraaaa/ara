@@ -9,7 +9,8 @@
 <body>
 <form action="/normal/reservation" method="post">
 
-<input type="text" name="rno" value="${rno}">
+<input type="text" name="s_no" value="${s_no}">
+<input type="text" name="dt_no" value="${dt_no}">
 <input type="text" name="email" value="${userInfo.email}">
 <input type="text" placeholder="예약자 이름" name="r_name">
 <input type="text" placeholder="예약자 번호" name="r_phone">

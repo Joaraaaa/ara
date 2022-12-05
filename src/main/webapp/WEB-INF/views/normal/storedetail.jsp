@@ -20,10 +20,10 @@
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=5293487c7cb7f1e2d87c3a1ee57bcf63&libraries=services"></script>
 
 
-${store.store}의 예약목록
+${store.s_name}의 예약목록
 <input type="text" value="${store.address}" id="address">
-<input type="text" value="${store.store}" id="store">
-<input type="text" value="${store.bno}" id="bno">
+<input type="text" value="${store.s_name}" id="store">
+<input type="text" value="${store.s_no}" id="s_no">
 <button id="r_btn">예약 검색</button>
 ${pday}
 ${day}
@@ -41,14 +41,14 @@ ${day}
 <%-- 		<c:forEach items="${rlist}" var="list"> --%>
 <!-- 		<tr> -->
 <%-- 			<td>${list.r_time}시</td> --%>
-<%-- 			<td>${list.date}</td> --%>
+<%-- 			<td>${list.r_date}</td> --%>
 			
 <%-- 			<c:choose> --%>
 <%-- 			<c:when test="${list.r_status eq false}"> --%>
 <!-- 			<td>예약불가</td> -->
 <%-- 			</c:when> --%>
 <%-- 			<c:otherwise> --%>
-<%-- 			<td><a href="/normal/reservation?rno=${list.rno}&bno=${list.bno}">예약하기</a></td> --%>
+<%-- 			<td><a href="/normal/reservation?s_no=${list.s_no}&dt_no=${list.dt_no}">예약하기</a></td> --%>
 <%-- 			</c:otherwise> --%>
 <%-- 			</c:choose> --%>
 <!-- 		</tr> -->

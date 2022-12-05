@@ -1,6 +1,7 @@
 package org.ara.model;
-
+// 일반회원 정보 VO
 public class MemberVO {
+	private boolean admin;
 	private boolean sns;
 	private String email;
 	private String password;
@@ -8,6 +9,12 @@ public class MemberVO {
 	private String gender;
 	private String birth_y;
 	private java.sql.Timestamp sign_date;
+	public boolean isAdmin() {
+		return admin;
+	}
+	public void setAdmin(boolean admin) {
+		this.admin = admin;
+	}
 	public boolean isSns() {
 		return sns;
 	}
@@ -52,7 +59,7 @@ public class MemberVO {
 	}
 	@Override
 	public String toString() {
-		return "MemberVO [sns=" + sns + ", email=" + email + ", password=" + password + ", n_name=" + n_name
-				+ ", gender=" + gender + ", birth_y=" + birth_y + ", sign_date=" + sign_date + "]";
+		return "MemberVO [admin=" + admin + ", sns=" + sns + ", email=" + email + ", password=" + password + ", n_name="
+				+ n_name + ", gender=" + gender + ", birth_y=" + birth_y + ", sign_date=" + sign_date + "]";
 	}
 }

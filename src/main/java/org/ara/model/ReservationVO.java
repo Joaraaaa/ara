@@ -1,5 +1,5 @@
 package org.ara.model;
-
+// 없애자
 public class ReservationVO {
 	private boolean r_status;
 	private String rno;

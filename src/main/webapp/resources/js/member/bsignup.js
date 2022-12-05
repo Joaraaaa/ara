@@ -222,6 +222,6 @@ console.log(em);
 	}else{
 //		$("input[name='email']").val();
 		alert('가입됨');
-		$("form[action='/member/signup']").submit();
+		$("form[action='/member/bsignup']").submit();
 	}
 })

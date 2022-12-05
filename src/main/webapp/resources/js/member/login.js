@@ -20,32 +20,32 @@ let admin=$('input[name="admin"]:checked').val();
 let lchk=false;
 $("#loginsub").on("click",function(e){
 	e.preventDefault();
-//	if(admin=="false"){
-//		if($("#email").val()==""){
-//			$("#login_msg").text("이메일 입력").css("color","red");
-//		}else{
-//			if($("#password").val()==""){
-//				$("#login_msg").text("비밀번호 입력").css("color","red");
-//			}else{
-//				$("form[action='/member/login']").submit();
-//			}
-//		}
-//	}
-	
-	if($("#email").val()==""){
-		$("#login_msg").text("이메일 입력").css("color","red");
-	}else{
-		if($("#password").val()==""){
-			$("#login_msg").text("비밀번호 입력").css("color","red");
+	if($('input[name="admin"]:checked').val()!=true){
+		if($("#email").val()==""){
+			$("#login_msg").text("이메일 입력").css("color","red");
 		}else{
-			if($("input[name=admin]:checked").val()=="true"){
-				if($("#buisness_num").val()==""){
-					$("#login_msg").text("사업자 등록번호 입력").css("color","red");
-				}else{
-					$("form[action='/member/login']").submit();
-				}
+			if($("#password").val()==""){
+				$("#login_msg").text("비밀번호 입력").css("color","red");
 			}else{
 				$("form[action='/member/login']").submit();
+			}
+		}
+	}else{
+		if($("#email").val()==""){
+			$("#login_msg").text("이메일 입력").css("color","red");
+		}else{
+			if($("#password").val()==""){
+				$("#login_msg").text("비밀번호 입력").css("color","red");
+			}else{
+//				if($("input[name=admin]:checked").val()=="true"){
+					if($("#buisness_num").val()==""){
+						$("#login_msg").text("사업자 등록번호 입력").css("color","red");
+					}else{
+						$("form[action='/member/login']").submit();
+					}
+//				}else{
+//					$("form[action='/member/login']").submit();
+//				}
 			}
 		}
 	}
