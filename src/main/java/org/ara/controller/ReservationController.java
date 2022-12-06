@@ -39,6 +39,7 @@ public class ReservationController {
 		return "normal/storelist";
 	}
 	
+	
 	@RequestMapping(value = "normal/storedetail", method = RequestMethod.GET)
 	public String storeDetail(Model model, StoreVO svo, ResSetVO rsvo) {
 		// 가게 상세 페이지 로드
