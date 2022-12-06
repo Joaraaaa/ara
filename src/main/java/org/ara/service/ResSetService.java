@@ -5,22 +5,18 @@ import java.util.ArrayList;
 import org.ara.model.ResSetVO;
 
 public interface ResSetService {
-	public int insert(ResSetVO rsvo);
-	public int update(ResSetVO rsvo);
-//	public void status(ResSetVO rsvo);
-	public ArrayList<ResSetVO> select(ResSetVO rsvo);
-	public int pselect(ResSetVO rsvo);
-//	public int bselect(ResSetVO rsvo);
+
+// insert
+	// 예약 시간표 추가
+	public int add_schedule(ResSetVO rsvo);
 	
+// select
+	// 예약 시간표 검색
+	public ArrayList<ResSetVO> find_schedule(ResSetVO rsvo);
+	// 예약 인원 검색
+	public int find_people(ResSetVO rsvo);
 	
-	
-//	public void rnoInsert(ReservationVO rvo);
-//	public int delete(RUserInfoVO ruivo);
-////	public int update(ReservationVO rvo);
-////	public void insert(ReservationVO rvo);
-//	public ArrayList<ReservationVO> r_select(RUserInfoVO ruivo);
-//	public ArrayList<RUserInfoVO> list(RUserInfoVO ruivo);
-//	public int rpselect(RUserInfoVO ruivo);
-//	public void addres(RUserInfoVO ruivo);
-//	public int upres(RUserInfoVO ruivo);
+// update	
+	// 예약 시간표 수정
+	public int update_schedule(ResSetVO rsvo);
 }

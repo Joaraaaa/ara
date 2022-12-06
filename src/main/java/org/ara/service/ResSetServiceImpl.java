@@ -11,21 +11,26 @@ import org.springframework.stereotype.Service;
 public class ResSetServiceImpl implements ResSetService{
 	@Autowired
 	ResSetMapper rm;
-	
-	public int insert(ResSetVO rsvo) {
+
+// insert
+	// 예약 시간표 추가
+	public int add_schedule(ResSetVO rsvo) {
 		return rm.insert(rsvo);
 	}
 	
-	public ArrayList<ResSetVO> select(ResSetVO rsvo) {
-		return rm.select(rsvo);
+// select
+	// 예약 시간표 검색
+	public ArrayList<ResSetVO> find_schedule(ResSetVO rsvo) {
+		return rm.s_select(rsvo);
 	}
-	public int update(ResSetVO rsvo) {
+	// 예약 인원 검색
+	public int find_people(ResSetVO rsvo) {
+		return rm.p_select(rsvo);
+	}
+
+//update
+	// 예약 시간표 수정
+	public int update_schedule(ResSetVO rsvo) {
 		return rm.update(rsvo);
 	}
-	public int pselect(ResSetVO rsvo) {
-		return rm.pselect(rsvo);
-	}
-//	public void status(ResSetVO rsvo) {
-//		rm.status(rsvo);
-//	}
 }

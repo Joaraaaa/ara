@@ -78,7 +78,7 @@ public class StoreController {
 					System.out.println("예약 시간표 확인"+rsvo);
 					
 					// 예약 시간표 추가
-					rs.insert(rsvo);
+					rs.add_schedule(rsvo);
 				}
 			}
 			
@@ -139,7 +139,7 @@ public class StoreController {
 				System.out.println("예약 시간표 확인 : "+rsvo);
 				
 				// 예약 시간표 추가하기
-				result = rs.insert(rsvo);
+				result = rs.add_schedule(rsvo);
 			}
 		}
 		
@@ -179,7 +179,7 @@ public class StoreController {
 //		System.out.println(rs.select(rsvo));
 		
 		// 예약 시간표를 검색해 보낸다.
-		return new ResponseEntity<>(rs.select(rsvo), HttpStatus.OK);
+		return new ResponseEntity<>(rs.find_schedule(rsvo), HttpStatus.OK);
 	}
 	
 	// 예약 시간표의 예약 가능 인원 수정하기
@@ -203,45 +203,67 @@ public class StoreController {
 		}
 		
 		// 예약 가능 인원과 예약 상태를 수정한다.
-		int result = rs.update(rsvo);
+		int result = rs.update_schedule(rsvo);
 		
 	return result == 1 ? new ResponseEntity<>("success", HttpStatus.OK)
 	: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}	
 	
-	
+	// 예약자 목록
 	@RequestMapping(value = "/store/list", method = RequestMethod.GET)
 	public String list(ResUserVO ruvo, ResSetVO rsvo, Model model) {
+		
+		// 가게 고유 번호와 예약 시간표 고유번호를 받아온다.
 		System.out.println(ruvo);
+		
+		// 가게 고유 번호를 모델에 담는다.
 		model.addAttribute("s_no", ruvo.getS_no());
-		System.out.println(rus.list(ruvo));
-		model.addAttribute("list", rus.list(ruvo));
+		
+		// 예약자 목록을 모델에 담는다
+		model.addAttribute("list", rus.find_r_list(ruvo));
+		
 		return "store/list";
 	}
 	
 	
-	
+	// 예약자 정보 삭제
 	@RequestMapping(value = "/reservation/delete", method = RequestMethod.DELETE)
-	public ResponseEntity<String> delete(@RequestBody ResUserVO ruvo, ResSetVO rsvo) {
+	public ResponseEntity<String> delete(@RequestBody ResUserVO ruvo, StoreVO svo, ResSetVO rsvo) {
+		
 		System.out.println("삭제 컨트롤러 : "+ruvo);
 		
-		// 삭제 하기 전에 res_set의 people을  Dt_no로 select해온다.
-		rsvo.setDt_no(ruvo.getDt_no());
-		rsvo.setS_no(ruvo.getS_no());
-		int n_p = rs.pselect(rsvo);
-		System.out.println(n_p);
-		// people = people + ruvo.getR_people() 로 set하고 update해준다.
-		rsvo.setPeople(n_p + ruvo.getR_people());
-		System.out.println(rsvo.getPeople());
-		rs.update(rsvo);
+		rsvo.setDt_no(ruvo.getDt_no()); // 예약 시간표 번호
+		rsvo.setS_no(ruvo.getS_no()); // 가게 고유 번호
+		// 예약 가능 인원을 찾아온다.
+		int people = rs.find_people(rsvo);
+		System.out.println(people);
+		
+		// 예약 가능 최소 인원 찾아오기
+		svo.setS_no(ruvo.getS_no());
+		svo = ss.find_s_info(svo);
+		int p_min = svo.getP_min();
+		System.out.println("예약 가능 최소 인원 : "+ p_min);
+		
+		// 예약 가능 인원에 삭제하는 예약 인원을 더한다
+		int new_people = people + ruvo.getR_people();
+		
+		rsvo.setPeople(new_people); // 새로운 예약 가능 인원
+		rsvo.setR_status(true); // 무조건 예약 가능 상태로 변경
+		
+		// res_set에 예약 가능 인원과 예약 상태 다시 저장하기(update)
+		rs.update_schedule(rsvo);
+		
 		// 해당 r_no와 dt_no의 데이터를 삭제한다.
-		int result = rus.delete(ruvo);
+		int result = rus.delete_user_info(ruvo);
+		
 		return result == 1 ? new ResponseEntity<>("success", HttpStatus.OK)
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
+	// 예약자 정보 수정
 	@RequestMapping(value = "reservation/update", method = RequestMethod.PUT)
 	public ResponseEntity<String> rmodify(@RequestBody ResUserVO ruvo, StoreVO svo, ResSetVO rsvo) {
+		
 		System.out.println("수정 컨트롤러"+ruvo);
 		
 		// 수정 할 예약 인원
@@ -249,14 +271,14 @@ public class StoreController {
 		System.out.println(new_rp);
 		
 		// 기존의 예약 인원
-		int rp = rus.rpselect(ruvo);
+		int rp = rus.find_r_people(ruvo);
 		System.out.println(rp);
 		
 		// 해당 dt_no의 예약 가능 인원을 가져온다.
 		rsvo.setDt_no(ruvo.getDt_no());
 		rsvo.setS_no(ruvo.getS_no());
 		System.out.println(rsvo);
-		int people = rs.pselect(rsvo);
+		int people = rs.find_people(rsvo);
 		System.out.println("수정 전의 예약 가능 인원 : "+people);
 		
 		
@@ -269,7 +291,7 @@ public class StoreController {
 		int result = 0;
 		// 가게의 예약 가능 인원에서 기존의 예약 인원을 더하고, 수정 할 예약 인원을 빼준다.
 		int new_people = people + rp - new_rp;
-		// 만약 new_p_set >= 0 이면, 
+		// 만약 예약 가능 인원이 >= 0 이면, 
 		if (new_people >= 0) {
 			// 예약 가능 인원(people)에 저장
 			rsvo.setPeople(new_people);
@@ -284,11 +306,11 @@ public class StoreController {
 				rsvo.setR_status(true);
 			}
 			// res_set에 예약 가능 인원과 예약 상태 다시 저장하기(update)
-			rs.update(rsvo);
+			rs.update_schedule(rsvo);
 			
 			// 수정된 예약자 정보 저장
 			System.out.println("update전 확인 : "+ruvo);
-			result = rus.upres(ruvo);
+			result = rus.update_user_info(ruvo);
 			
 			
 		}else {

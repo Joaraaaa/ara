@@ -10,23 +10,36 @@ import org.springframework.stereotype.Service;
 public class ResUserServiceImpl implements ResUserService {
 	@Autowired
 	ResUserMapper rum;
+
+// insert
+	// 예약자 정보 추가
+	public void add_user_info(ResUserVO ruvo) {
+		rum.insert(ruvo);
+	}
 	
-	public ArrayList<ResUserVO> list(ResUserVO ruvo){
-		return rum.list(ruvo);
+// select
+	// 예약 시간표의 예약자 목록	
+	public ArrayList<ResUserVO> find_r_list(ResUserVO ruvo){
+		return rum.l_select(ruvo);
 	}
-	public void addres(ResUserVO ruvo) {
-		rum.addres(ruvo);
+	// 사용자의 예약 목록
+	public ArrayList<ResUserVO> user_r_list(ResUserVO ruvo){
+		return rum.u_select(ruvo);
 	}
-	public ArrayList<ResUserVO> r_select(ResUserVO ruvo){
-		return rum.r_select(ruvo);
+	// 예약 인원
+	public int find_r_people(ResUserVO ruvo) {
+		return rum.p_select(ruvo);
 	}
-	public int delete(ResUserVO ruvo) {
+	
+// update
+	// 예약자 정보 수정
+	public int update_user_info(ResUserVO ruvo) {
+		return rum.update(ruvo);
+	}
+	
+// delete
+	// 예약자 정보 삭제	
+	public int delete_user_info(ResUserVO ruvo) {
 		return rum.delete(ruvo);		
-	}
-	public int rpselect(ResUserVO ruvo) {
-		return rum.rpselect(ruvo);
-	}
-	public int upres(ResUserVO ruvo) {
-		return rum.upres(ruvo);
 	}
 }
