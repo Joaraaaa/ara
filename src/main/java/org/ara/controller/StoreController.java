@@ -32,84 +32,117 @@ public class StoreController {
 	ResUserService rus;
 	
 
-	
+	// 가게 정보 수정 화면
 	@RequestMapping(value = "/store/restaurantsetting", method = RequestMethod.GET)
-	public String restaurantGet() {
-		return "store/restaurantsetting";
+	public void restaurantGet() {
+
 	}
 	
+	// 사업자 회원에게 가게 정보를 입력 받음
 	@RequestMapping(value = "/store/restaurantsetting", method = RequestMethod.POST)
 	public String restaurant(StoreVO svo, ResSetVO rsvo, HttpSession session) {
-		System.out.println(svo);
-		int s_no=svo.getS_no();
-		int first=svo.getF_time();
-		int last=svo.getL_time();
-		int cycle=svo.getCycle();
+		
+		// 입력한 가게 정보 확인
+		System.out.println("가게 정보"+svo);
+		
+		// 예약 시간표를 만들기 위한 계산
+		int s_no=svo.getS_no(); // 가게 고유 번호
+		int first=svo.getF_time(); // 첫 예약 시간
+		int last=svo.getL_time(); // 마지막 예약 시간
+		int cycle=svo.getCycle(); // 예약 시간표를 만들기 위한 예약 주기
+
+		// 오늘 날짜를 불러오기
 		LocalDate localDate = LocalDate.now();
 		DateTimeFormatter d= DateTimeFormatter.ISO_LOCAL_DATE;
-		// 가게 설정 정보가 없다면 입력받아 저장하기(insert)
+		
+		// 만약 가게 정보 설정이 처음이라면,
 		if(session.getAttribute("storeInfo")==null) {
+			
+			// 가게 정보를 추가하기
 			ss.add_s_info(svo);
-			// 예약 시간표 14일치 저장하기
+			
+			// 동시에 예약 시간표 14일치 저장하기
 			for(int j=0;j<14;j+=1) {
+				
+				// 날짜 = 1일 ~ 14일
 				String date=localDate.plusDays(j).format(d);
 				System.out.println(date);
+				
+				// ex) 12시(first)부터 18시(last)까지 1시간(cycle)의 간격을 두고 시간표를 생성한다.
 				for(int i=first; i<=last; i+=cycle) {
-					System.out.println(i+"시 예약");
-					rsvo.setR_time(i);
-					rsvo.setR_date(date);
-					rsvo.setPeople(svo.getP_set());
-					rsvo.setDt_no('D'+date+'T'+i+'N'+s_no);
-					System.out.println(rsvo);
+					
+					rsvo.setR_time(i); // 예약 시간
+					rsvo.setR_date(date); // 예약 날짜
+					rsvo.setPeople(svo.getP_set()); // 예약 가능 인원
+					rsvo.setDt_no('D'+date+'T'+i+'N'+s_no); // 예약 시간표의 고유 번호(날짜+시간+가게고유번호)
+					System.out.println("예약 시간표 확인"+rsvo);
+					
+					// 예약 시간표 추가
 					rs.insert(rsvo);
 				}
 			}
-		// 가게 설정 정보가 있다면 변경하기(update)
+			
+		// 저장된 가게 정보가 이미 있다면,
 		}else {
-			System.out.println("이미 있다.");
+			
+			System.out.println("저장된 가게 정보가 이미 있다.");
+			
+			// 가게 정보 수정하기. 이미 만들어진 예약 시간표는 그대로 둔다.
 			ss.modify_s_info(svo);
 		}
 		
+		// 세션에 추가 또는 수정된 가게 정보 저장하기
 		session.setAttribute("storeInfo", ss.find_s_info(svo));
 		
+		// 예약 시간표 수정 페이지로 이동
 		return "redirect:/store/reservationsetting";
 		
 	}
 	
-	// 매일 업데이트 돼야한다.
+	
+	// 이미 저장 된 예약 시간표에 새로운 날짜의 시간표 추가 하기.
 	@RequestMapping(value = "/updatesetting", method = RequestMethod.PUT)
 	public ResponseEntity<String> updateSetting(StoreVO svo, ResSetVO rsvo, HttpSession session) {
+		
 		// 날짜는 +13으로 저장한다.
 		LocalDate localDate = LocalDate.now();
 		DateTimeFormatter d= DateTimeFormatter.ISO_LOCAL_DATE;
 		String date=localDate.plusDays(13).format(d);
+		System.out.println("예약 시간표에 추가 할 날짜 : "+date);
+		
 		int result = 0;
-		// 가입된 모든 가게의 bno의 최대값을 가져온다.
-		int max_bno = ss.find_s_num();
-		// for문으로 bno가 1번인것부터 끝번인것까지 반복한다.
-		for (int j=1; j<=max_bno; j+=1) {
-			// i번째 bno로 가게 정보를 가져온다.
+		
+		// 가입된 모든 가게의 수를 가져온다.
+		int max_no = ss.find_s_num();
+		
+		// 가게 고유번호 1번부터 마지막 번호까지 반복한다.
+		for (int j=1; j<=max_no; j+=1) {
+			
+			// j번째 s_no로 가게 정보를 가져온다.
 			svo.setS_no(j);
 			svo = ss.find_s_info(svo);
-			// 가져온 정보를 변수에 저장하고
-			System.out.println(svo);
-			int first=svo.getF_time();
-			int last=svo.getL_time();
-			int cycle=svo.getCycle();
-			// 해당 날짜의 해당 가게정보를 for문으로 insert한다.
-			System.out.println(date);
+			
+			// 가져온 가게 정보를 변수에 저장한다.
+			System.out.println("가게 정보 : "+svo);
+			int first=svo.getF_time(); // 첫 예약 시간 
+			int last=svo.getL_time(); // 마지막 예약 시간
+			int cycle=svo.getCycle(); // 예약 시간표를 만들기 위한 예약 주기
+			
+			// ex) 12시(first)부터 18시(last)까지 1시간(cycle)의 간격을 두고 시간표를 생성한다.
 			for(int i=first; i<=last; i+=cycle) {
-				System.out.println(i+"시 예약");
-				rsvo.setS_no(j);
-				rsvo.setR_time(i);
-				rsvo.setR_date(date);
-				rsvo.setPeople(svo.getP_set());
-				rsvo.setDt_no('D'+date+'T'+i+'N'+j);
-				System.out.println(rsvo);
+				rsvo.setS_no(j); // 가게 고유 번호
+				rsvo.setR_time(i); // 예약 시간
+				rsvo.setR_date(date); // 예약 날짜
+				rsvo.setPeople(svo.getP_set()); // 예약 가능 인원
+				rsvo.setDt_no('D'+date+'T'+i+'N'+j); // 예약 시간표 고유 번호
+				
+				System.out.println("예약 시간표 확인 : "+rsvo);
+				
+				// 예약 시간표 추가하기
 				result = rs.insert(rsvo);
 			}
 		}
-//		return null;
+		
 		return result == 1 ? new ResponseEntity<>("success", HttpStatus.OK)
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		
@@ -117,38 +150,61 @@ public class StoreController {
 
 
 	
-	
+	// 예약 시간표를 검색하기 위한 날짜 선택 범위 정하기 
 	@RequestMapping(value = "/store/reservationsetting", method = RequestMethod.GET)
 	public void reservationGet(Model model) {
+		
+		// 날짜 선택 범위 정하기
 		LocalDate localDate = LocalDate.now();
 		DateTimeFormatter d= DateTimeFormatter.ISO_LOCAL_DATE;
+		
 		// 오늘 날짜
 		String date = localDate.format(d);
+		
 		// 오늘+13 날짜
 		String plusdays=localDate.plusDays(13).format(d);
+		
 		// 날짜 두개 화면으로..
 		model.addAttribute("day", date);
 		model.addAttribute("pday", plusdays);
 	}
 	
+	// 특정 날짜의 예약 시간표 목록
 	@RequestMapping(value = "/reslist", method = RequestMethod.GET)
 	public ResponseEntity<ArrayList<ResSetVO>> reslist(ResSetVO rsvo) {
-		System.out.println("확인"+rsvo);
-		System.out.println(rs.select(rsvo));
+		
+		// 가게 고유 번호와 날짜를 받아온다.
+		System.out.println("검색 할 예약 시간표의 정보 : "+rsvo);
+		
+//		System.out.println(rs.select(rsvo));
+		
+		// 예약 시간표를 검색해 보낸다.
 		return new ResponseEntity<>(rs.select(rsvo), HttpStatus.OK);
 	}
 	
+	// 예약 시간표의 예약 가능 인원 수정하기
 	@RequestMapping(value = "reservation/peopleupdate", method = RequestMethod.PUT)
 	public ResponseEntity<String> modifyPeople(@RequestBody ResSetVO rsvo) {
-		System.out.println("여기"+rsvo);
-//		res_set에 people다시 저장하기(update)
+		
+		// 가게 고유 번호와 예약 시간표 고유 번호를 받아온다.
+		System.out.println("수정할 시간표 정보 : "+rsvo);
+		
+		// 만약 예약 가능 인원이 0명이면,
 		if(rsvo.getPeople()==0) {
+			
+			// 예약 불가능
 			rsvo.setR_status(false);
-//			rs.status(rsvo);
+
 		}else {
+			
+			// 여전히 예약 가능
 			rsvo.setR_status(true);
+			
 		}
+		
+		// 예약 가능 인원과 예약 상태를 수정한다.
 		int result = rs.update(rsvo);
+		
 	return result == 1 ? new ResponseEntity<>("success", HttpStatus.OK)
 	: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}	
@@ -182,7 +238,6 @@ public class StoreController {
 		int result = rus.delete(ruvo);
 		return result == 1 ? new ResponseEntity<>("success", HttpStatus.OK)
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//		return null;
 	}
 	
 	@RequestMapping(value = "reservation/update", method = RequestMethod.PUT)
@@ -218,22 +273,17 @@ public class StoreController {
 		if (new_people >= 0) {
 			// 예약 가능 인원(people)에 저장
 			rsvo.setPeople(new_people);
-//			int people = rsvo.getPeople();
 			System.out.println("수정 후의 예약 가능 인원 : "+ new_people);
 			
 			// 예약 가능 인원이 예약 가능 최소 인원보다 작으면,
 			if (new_people < p_min) {
 				// 더이상 예약 불가능.
 				rsvo.setR_status(false);
-				System.out.println(rsvo);
-//				rs.status(rsvo);
 			}else {
-				// 예약 가능
+				// 여전히 예약 가능
 				rsvo.setR_status(true);
-				System.out.println(rsvo);
-//				rs.status(rsvo);
 			}
-			// res_set에 people과 예약 상태 다시 저장하기(update)
+			// res_set에 예약 가능 인원과 예약 상태 다시 저장하기(update)
 			rs.update(rsvo);
 			
 			// 수정된 예약자 정보 저장
@@ -246,7 +296,6 @@ public class StoreController {
 		}
 	return result == 1 ? new ResponseEntity<>("success", HttpStatus.OK)
 	: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//return null;
 	}
 	
 }

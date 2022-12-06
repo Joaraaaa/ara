@@ -24,7 +24,7 @@
 
 	<!-- 총 가게 수 찾기	 -->
 	<select id="select_num" resultType="int">
-	select max(bno)
+	select max(s_no)
 	from store;
 	</select>
 	

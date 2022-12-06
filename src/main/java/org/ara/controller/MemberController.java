@@ -62,6 +62,7 @@ public class MemberController {
 	// 일반 회원가입 화면
 	@RequestMapping(value = "/member/nsignup", method = RequestMethod.GET)
 	public String signup(HttpSession session) {
+		
 		// 회원가입 화면으로 이동 시 로그아웃 된다.
 		session.invalidate();
 		
@@ -71,10 +72,14 @@ public class MemberController {
 	// 사업자 회원가입 화면
 	@RequestMapping(value = "/member/bsignup", method = RequestMethod.GET)
 	public String signupB(HttpSession session) {
+		
 		// 회원가입 화면으로 이동 시 로그아웃 된다.
 		session.invalidate();
+		
 		return "member/bsignup";
 	}
+
+// 회원가입 시 이메일 인증	
 	
 	// 일반 이메일 인증
 	// 이메일 컨트롤러에서는 js에서 받은 이메일 정보를 MailSendService로 연결만 시켜준다.
@@ -95,7 +100,8 @@ public class MemberController {
 		return mailService.bJoinEmail(bvo);
 	}
 	
-	// 이메일, 닉네임 중복체크
+	
+// 이메일, 닉네임 중복체크
 	@RequestMapping(value = "/member/signup/{str}", method = RequestMethod.GET)
 	public ResponseEntity<String> emchk(@PathVariable String str, MemberVO mvo) {
 		System.out.println(str);
@@ -113,7 +119,8 @@ public class MemberController {
 		}
 	}
 	
-	// 사업자 번호 조회
+	
+// 사업자 번호 조회
 	@RequestMapping(value = "/buisnesscheck", produces = "application/text; charset=UTF-8", method = RequestMethod.GET)
 	public ResponseEntity<String> buisnessCheck(String num,HttpServletResponse response) {
 		System.out.println(num);
@@ -123,7 +130,8 @@ public class MemberController {
 		return new ResponseEntity<>(company,HttpStatus.OK);
 	}	
 	
-	// 닉네임 만들기
+	
+// 닉네임 만들기
 	@RequestMapping(value = "/makename", produces = "application/text; charset=UTF-8", method = RequestMethod.GET)
 	public ResponseEntity<String> makename(HttpServletResponse response) {
 		final String HTTP_REQUEST = "https://nickname.hwanmoo.kr/?format=json&count=2";
@@ -146,7 +154,9 @@ public class MemberController {
 		 return null; 
 	}
 	
+	
 // 최종 회원가입
+	
 	// 일반 회원가입
 	@RequestMapping(value = "/member/signup", method = RequestMethod.POST)
 	                                     // 회원가입 후 별도의 로그인 절차 없이 바로 로그인
@@ -189,42 +199,59 @@ public class MemberController {
 		}
 	}
 	
-	
 
+// 로그인
 	
-
-
-	
-	// 로그인
+	// 로그인 화면
 	@RequestMapping(value = "/member/login", method = RequestMethod.GET)
 	public String login(HttpSession session,Model model) {
+		
+		// 로그인 화면에서는 로그아웃 된다.
 		session.invalidate();
+		
 		return "member/login";
 	}
 
+	// 일반 회원 / 사업자 회원 로그인
 	@RequestMapping(value = "/member/login", method = RequestMethod.POST)
 	public String loginPost(MemberVO mvo, BMemberVO bmvo, StoreVO store, HttpSession session) {
+		
+		// 일반 회원 정보
 		System.out.println(mvo);
+		// 사업자 회원 정보
 		System.out.println(bmvo);
 
+		// 만약 사업자라면,
 		if(mvo.isAdmin()==true) {
+			
+			// 세션에 회원 정보를 저장
 			session.setAttribute("userInfo", bs.login(bmvo));
+			
+			// 해당 회원의 가게 정보를 불러와 세션에 저장
 			store.setS_no(bs.login(bmvo).getS_no());
 			System.out.println(store.getS_no());
 			session.setAttribute("storeInfo", ss.find_s_info(store));
+			
+			// 사업자 페이지로
 			return "redirect:/bhome";
+			
 		}else {
+			
+			// 세션에 회원 정보를 저장
 			session.setAttribute("userInfo", ms.login(mvo));
+			
+			// 일반 회원 페이지로
 			return "redirect:/nhome";
+			
 		}
-
 	}
 	
 	
 	
+// 소셜 로그인
 	
-// 카카오 로그인(js에서 js키 사용해서 서버로 인증코드 보내기 -> 인증코드 사용해서 엑세스 코드 받기 -> 엑세스 토큰 사용해서 사용자 정보 받기)
-// login.js 확인, SnsLogin class 확인 , pom.xml의 문자열 json 변환(추가) 확인하기
+	// 카카오 로그인(js에서 js키 사용해서 서버로 인증코드 보내기 -> 인증코드 사용해서 엑세스 코드 받기 -> 엑세스 토큰 사용해서 사용자 정보 받기)
+	// login.js 확인, SnsLogin class 확인 , pom.xml의 문자열 json 변환(추가) 확인하기
 	@RequestMapping(value = "/kakaologin", method = RequestMethod.GET)
 	public String kakaologin(String code,HttpSession session, MemberVO mvo) {
 
@@ -259,8 +286,8 @@ public class MemberController {
 
 	
 	
-// 구글 로그인(js에서 인증과정을 통해 아이디토큰까지 받음 -> 아이디 토큰 검사후 사용자 정보 추출)
-// login.js 확인, pom.xml의 구글 소셜로그인(추가) 부분 확인하기
+	// 구글 로그인(js에서 인증과정을 통해 아이디토큰까지 받음 -> 아이디 토큰 검사후 사용자 정보 추출)
+	// login.js 확인, pom.xml의 구글 소셜로그인(추가) 부분 확인하기
 	@RequestMapping(value="/googlelogin", method= RequestMethod.POST)
 	public String googleLogin(String idtoken, MemberVO mvo, HttpSession session) throws GeneralSecurityException, IOException {
 		
@@ -288,7 +315,7 @@ public class MemberController {
 				
 		// 사용자 메인 화면으로 보냄.
 		return "redirect:/nhome";
-	}//googleLogin
+	}
 	
 
 	
