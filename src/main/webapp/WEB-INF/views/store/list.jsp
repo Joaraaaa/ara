@@ -9,19 +9,18 @@
 </head>
 <body>
 <p>예약자 목록</p>
-${list}
-<table>
+<%-- ${list} --%>
+<table border="1">
 <c:forEach items="${list}" var="list">
-
+<input type="hidden" value="${list.dt_no}" id="${list.r_no}_dt_no" >
+<input type="text" value="${s_no}" id="${list.r_no}_s_no" >
 <tr>
 <td>${list.email}</td>
-<td><input type="hidden" value="${list.dt_no}" id="${list.rno}_rno" ></td>
-
-<td><input type="text" value="${list.r_name}" id="${list.rno}_name" disabled></td>
-<td><input type="text" value="${list.r_phone}" id="${list.rno}_phone" disabled></td>
-<td><input type="text" value="${list.r_people}" id="${list.rno}_people" disabled></td>
-<td><input type="text" value="${list.r_memo}" id="${list.rno}_memo" disabled></td>
-<td id="${list.rno}">
+<td><input type="text" value="${list.r_name}" id="${list.r_no}_name" disabled></td>
+<td><input type="text" value="${list.r_phone}" id="${list.r_no}_phone" disabled></td>
+<td><input type="text" value="${list.r_people}" id="${list.r_no}_people" disabled></td>
+<td><input type="text" value="${list.r_memo}" id="${list.r_no}_memo" disabled></td>
+<td id="${list.r_no}">
 	<button class="m_btn">수정</button>
 	<button class="d_btn">삭제</button>
 </td>

@@ -3,7 +3,6 @@ package org.ara.service;
 import java.util.ArrayList;
 
 import org.ara.mapper.ResUserMapper;
-import org.ara.model.RUserInfoVO;
 import org.ara.model.ResUserVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,5 +16,11 @@ public class ResUserServiceImpl implements ResUserService {
 	}
 	public void addres(ResUserVO ruvo) {
 		rum.addres(ruvo);
+	}
+	public ArrayList<ResUserVO> r_select(ResUserVO ruvo){
+		return rum.r_select(ruvo);
+	}
+	public int delete(ResUserVO ruvo) {
+		return rum.delete(ruvo);		
 	}
 }

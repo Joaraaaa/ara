@@ -2,9 +2,7 @@ package org.ara.service;
 
 import java.util.ArrayList;
 
-import org.ara.model.RUserInfoVO;
 import org.ara.model.ResSetVO;
-import org.ara.model.ReservationVO;
 
 public interface ResSetService {
 	public int insert(ResSetVO rsvo);

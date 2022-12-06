@@ -10,6 +10,8 @@ public class ResUserVO {
 	private int r_people;
 	private String r_memo;
 	private boolean v_status;
+	private ResSetVO rsvo;
+	private StoreVO svo;
 	public int getS_no() {
 		return s_no;
 	}
@@ -64,11 +66,23 @@ public class ResUserVO {
 	public void setV_status(boolean v_status) {
 		this.v_status = v_status;
 	}
+	public ResSetVO getRsvo() {
+		return rsvo;
+	}
+	public void setRsvo(ResSetVO rsvo) {
+		this.rsvo = rsvo;
+	}
+	public StoreVO getSvo() {
+		return svo;
+	}
+	public void setSvo(StoreVO svo) {
+		this.svo = svo;
+	}
 	@Override
 	public String toString() {
 		return "ResUserVO [s_no=" + s_no + ", dt_no=" + dt_no + ", r_no=" + r_no + ", email=" + email + ", r_name="
 				+ r_name + ", r_phone=" + r_phone + ", r_people=" + r_people + ", r_memo=" + r_memo + ", v_status="
-				+ v_status + "]";
+				+ v_status + ", rsvo=" + rsvo + ", svo=" + svo + "]";
 	}
 	
 }

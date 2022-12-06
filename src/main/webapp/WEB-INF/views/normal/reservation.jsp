@@ -18,5 +18,6 @@
 <input type="text" placeholder="가게 전달 메모" name="r_memo">
 <input type="submit" value="예약확정하기">
 </form>
+<p>${error}</p>
 </body>
 </html>

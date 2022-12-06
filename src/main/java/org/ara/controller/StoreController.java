@@ -8,11 +8,9 @@ import javax.servlet.http.HttpSession;
 
 import org.ara.model.ResUserVO;
 import org.ara.model.ResSetVO;
-import org.ara.model.ReservationVO;
 import org.ara.model.StoreVO;
 import org.ara.service.ResSetService;
 import org.ara.service.ResUserService;
-import org.ara.service.ReservationService;
 import org.ara.service.StoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -159,36 +157,38 @@ public class StoreController {
 	@RequestMapping(value = "/store/list", method = RequestMethod.GET)
 	public String list(ResUserVO ruvo, ResSetVO rsvo, Model model) {
 		System.out.println(ruvo);
+		model.addAttribute("s_no", ruvo.getS_no());
 		System.out.println(rus.list(ruvo));
 		model.addAttribute("list", rus.list(ruvo));
 		return "store/list";
 	}
 	
-//	@RequestMapping(value = "/reservation/delete", method = RequestMethod.DELETE)
-//	public ResponseEntity<String> delete(@RequestBody RUserInfoVO ruivo, ResSetVO rsvo) {
-//		System.out.println("삭제 컨트롤러 : "+ruivo);
-//		
-//		// 삭제 하기 전에 res_set의 people을  rno로 select해온다.
-//		rsvo.setDt_no(ruivo.getRno());
-//		int n_p = rs.pselect(rsvo);
-//		System.out.println(n_p);
-//		// people = people + ruivo.getR_people() 로 set하고 update해준다.
-//		rsvo.setPeople(n_p + ruivo.getR_people());
-//		System.out.println(rsvo.getPeople());
-//		rs.update(rsvo);
-//		// 해당 rno와 cno의 데이터를 삭제한다.
-//		int result = rs.delete(ruivo);
-////		int result = rs.delete(ruivo);
-////		return null;
-//		return result == 1 ? new ResponseEntity<>("success", HttpStatus.OK)
-//				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//	}
-//	
-//	@RequestMapping(value = "reservation/update", method = RequestMethod.PUT)
-//	public ResponseEntity<String> rmodify(@RequestBody RUserInfoVO ruivo, StoreVO svo, ResSetVO rsvo) {
-//		System.out.println(ruivo);
-//		
-//		// 수정할때 이메일, 메모 안바꾼다.
+	
+	
+	@RequestMapping(value = "/reservation/delete", method = RequestMethod.DELETE)
+	public ResponseEntity<String> delete(@RequestBody ResUserVO ruvo, ResSetVO rsvo) {
+		System.out.println("삭제 컨트롤러 : "+ruvo);
+		
+		// 삭제 하기 전에 res_set의 people을  Dt_no로 select해온다.
+		rsvo.setDt_no(ruvo.getDt_no());
+		rsvo.setS_no(ruvo.getS_no());
+		int n_p = rs.pselect(rsvo);
+		System.out.println(n_p);
+		// people = people + ruvo.getR_people() 로 set하고 update해준다.
+		rsvo.setPeople(n_p + ruvo.getR_people());
+		System.out.println(rsvo.getPeople());
+		rs.update(rsvo);
+		// 해당 r_no와 dt_no의 데이터를 삭제한다.
+		int result = rus.delete(ruvo);
+		return result == 1 ? new ResponseEntity<>("success", HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//		return null;
+	}
+	
+	@RequestMapping(value = "reservation/update", method = RequestMethod.PUT)
+	public ResponseEntity<String> rmodify(@RequestBody ResUserVO ruvo, StoreVO svo, ResSetVO rsvo) {
+		System.out.println("수정 컨트롤러"+ruvo);
+		
 //		// 이름 전화번호 사람 수는 비어있으면 안넘어오도록 js에서 막는다.
 //		// rno cno를 select해서 r_people를 가져온다.
 //		int n_rp = ruivo.getR_people();
@@ -236,7 +236,7 @@ public class StoreController {
 //		}
 //	return result == 1 ? new ResponseEntity<>("success", HttpStatus.OK)
 //	: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-////return null;
-//	}
+return null;
+	}
 	
 }

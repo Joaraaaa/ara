@@ -33,45 +33,44 @@
 //		})
 //		$("#r_list").html(list);
 		$(".m_btn").on("click",function(){
-			console.log("rno="+$("#"+$(this).parent().attr("id")+"_rno").val());
-			console.log("cno="+$(this).parent().attr("id"));
+			console.log("dt_no="+$("#"+$(this).parent().attr("id")+"_dt_no").val());
+			console.log("r_no="+$(this).parent().attr("id"));
 			$("#"+$(this).parent().attr("id")+"_name").attr("disabled",false);
 			$("#"+$(this).parent().attr("id")+"_phone").attr("disabled",false);
 			$("#"+$(this).parent().attr("id")+"_people").attr("disabled",false);
+			$("#"+$(this).parent().attr("id")+"_memo").attr("disabled",false);
 			
 			if($(this).html() == '수정' ) {
 				$(this).html('확인');
 //			    $("#"+$(this).parent().attr("id")).attr("class","mody_check");
 			}else {
-				if(confirm("수정?")){
+				if(confirm("수정하시겠습니까?")){
 				const values={
-						"rno":$("#"+$(this).parent().attr("id")+"_rno").val(),
-						// r_name의 id = rno_name
-						// 선택자 $("#rno_name").val()
-						// $("#"+$(this).attr("id")+"_name").val()
-						"cno":$(this).parent().attr("id"),
+						"s_no":$("#"+$(this).parent().attr("id")+"_s_no").val(),
+						"dt_no":$("#"+$(this).parent().attr("id")+"_dt_no").val(),
+						"r_no":$(this).parent().attr("id"),
 						"r_name":$("#"+$(this).parent().attr("id")+"_name").val(),
 						"r_phone":$("#"+$(this).parent().attr("id")+"_phone").val(),
-						"r_people":$("#"+$(this).parent().attr("id")+"_people").val()
+						"r_people":$("#"+$(this).parent().attr("id")+"_people").val(),
+						"r_memo":$("#"+$(this).parent().attr("id")+"_memo").val()
 				}
 //				console.log(values);
 				update(values);
 				$(this).html('수정');
-//			    $("#"+$(this).parent().attr("id")).attr("class","modi_btn");
 				$("#"+$(this).parent().attr("id")+"_name").attr("disabled",true);
 				$("#"+$(this).parent().attr("id")+"_phone").attr("disabled",true);
 				$("#"+$(this).parent().attr("id")+"_people").attr("disabled",true);
+				$("#"+$(this).parent().attr("id")+"_memo").attr("disabled",true);
 				}
 			}
 		})
 
 		$(".d_btn").on("click",function(){
-			if(confirm("삭제?")){
+			if(confirm("삭제하시겠습니까?")){
 			const values={
-					"rno":$("#"+$(this).parent().attr("id")+"_rno").val(),
-					"cno":$(this).parent().attr("id"),
-					"r_name":$("#"+$(this).parent().attr("id")+"_name").val(),
-					"r_phone":$("#"+$(this).parent().attr("id")+"_phone").val(),
+					"s_no":$("#"+$(this).parent().attr("id")+"_s_no").val(),
+					"dt_no":$("#"+$(this).parent().attr("id")+"_dt_no").val(),
+					"r_no":$(this).parent().attr("id"),
 					"r_people":$("#"+$(this).parent().attr("id")+"_people").val()
 			}
 			remove(values);

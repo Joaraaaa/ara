@@ -17,7 +17,8 @@
 	<select id="pselect" resultType="int">
 	select people
 	from res_set
-	where s_no=#{s_no};
+	where s_no=#{s_no}
+	and dt_no=#{dt_no};
 	</select>
 	<update id="update">
 	update res_set

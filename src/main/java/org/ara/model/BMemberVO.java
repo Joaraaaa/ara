@@ -52,7 +52,7 @@ public class BMemberVO {
 	}
 	@Override
 	public String toString() {
-		return "M_BMemberVO [s_no=" + s_no + ", c_no=" + c_no + ", c_name=" + c_name + ", name=" + name + ", email="
+		return "BMemberVO [s_no=" + s_no + ", c_no=" + c_no + ", c_name=" + c_name + ", name=" + name + ", email="
 				+ email + ", password=" + password + ", phone=" + phone + "]";
 	}
 }

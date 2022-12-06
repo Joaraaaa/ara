@@ -12,7 +12,7 @@
 <input type="text" value="${userInfo.n_name}" name='n_name'>
 <a href="/">초기화면</a>
 <a href="/normal/storelist">가게목록</a>
-<a href="/normal/myreservation">예약조회</a>
+<a href="/normal/myreservation?email=${userInfo.email}">예약조회</a>
 <a href="/normal/mypage">회원 페이지</a>
 </body>
 </html>

@@ -4,14 +4,13 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-import org.ara.model.RUserInfoVO;
+import javax.servlet.http.HttpSession;
+
 import org.ara.model.ResSetVO;
 import org.ara.model.ResUserVO;
-import org.ara.model.ReservationVO;
 import org.ara.model.StoreVO;
 import org.ara.service.ResSetService;
 import org.ara.service.ResUserService;
-import org.ara.service.ReservationService;
 import org.ara.service.StoreService;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -59,34 +58,18 @@ public class ReservationController {
 		// 가게정보 검색해서 화면으로..
 		model.addAttribute("store", ss.find_s_info(svo));
 		
-		// 오늘 날짜 rsvo에 set해서
-//		rsvo.setDate(date);			
-		// 예약 시간표 목록 불러오기
-//		GetReservationDate grd = new GetReservationDate();
-//		model.addAttribute("rlist", grd.getReservationList(rsvo));
 		return "normal/storedetail";
-//		return null;
 	}
 	
 	@RequestMapping(value = "reservationlist", method = RequestMethod.GET)
 	public ResponseEntity<ArrayList<ResSetVO>> reservationlist(Model model, ResSetVO rsvo) {
 		// 
 		System.out.println("비동기 확인"+rsvo);
-//		GetReservationDate grd = new GetReservationDate();
-//		System.out.println(grd.getReservationList(rsvo));
 		return new ResponseEntity<>(rs.select(rsvo), HttpStatus.OK);
 					
 		
-//		return null;
 		
 	}
-//	// 해당날짜의 예약 리스트 불러오기
-////	public class GetReservationDate {
-////		public ArrayList<ResSetVO> getReservationList(ResSetVO rsvo) {
-////			ArrayList<ResSetVO> list= rs.select(rsvo);
-////			return list;
-////		}
-////	}
 	
 	@RequestMapping(value = "normal/reservation", method = RequestMethod.GET)
 	public String reservation (Model model, ResSetVO rsvo) {
@@ -97,58 +80,47 @@ public class ReservationController {
 	}
 	
 	@RequestMapping(value = "normal/reservation", method = RequestMethod.POST)
-	public String reservationPost (ResUserVO ruvo, ResSetVO rsvo) {
+	public String reservationPost (ResUserVO ruvo, ResSetVO rsvo, Model model) {
 		// 예약자 정보가 들어오면 
 		System.out.println("ruvo확인 : "+ruvo);
 		// res_set의 people를 s_no로 select해온뒤
-		
-		
-		
-		// 여기부터 확인하기
 		int n_p = rs.pselect(rsvo);
 		System.out.println("가게의 예약 가능 인원 확인 : "+n_p);
 		// people == people - r_people하고
 		rsvo.setPeople(n_p - ruvo.getR_people());
 		System.out.println("바뀐 people확인 : "+rsvo.getPeople());
-		// res_set을 update해준다.
-		rs.update(rsvo);
-		// r_user_info에 ruivo를 insert해준다.
-		rus.addres(ruvo);
-//		rs.update(rvo);
-//		rvo.setR_status(true);
-//		rs.status(rvo);
-//		System.out.println(rs.update(rvo));
-		return "redirect:/normal/storelist";
-//		return null;
+		if(rsvo.getPeople()>=0) {
+			// res_set을 update해준다.
+			rs.update(rsvo);
+			// 예약자 정보도 추가
+			rus.addres(ruvo);
+			return "redirect:/normal/storelist";
+		}else {
+			System.out.println("예약 가능 인원 초과");
+			String msg = "예약 가능 인원을 초과했습니다.";
+			// 화면에서 사용자가 확인할 수 있도록 추가하기
+			model.addAttribute("error", msg);
+			return "normal/reservation";
+		}
 	}
-//	
-//	@RequestMapping(value = "normal/myreservation", method = RequestMethod.GET)
-//	public String myReservation () {
-//	
-//		
-//		return "normal/myreservation";
-//	}
-//	
-//	@RequestMapping(value = "findreservation", method = RequestMethod.GET)
-//	public ResponseEntity<ArrayList<ReservationVO>> findreservation (RUserInfoVO ruivo,Model model) {
-//		System.out.println(ruivo);
-//		
-//		System.out.println(rs.r_select(ruivo));
-//		return new ResponseEntity<>(rs.r_select(ruivo), HttpStatus.OK);
-//	}
-//	
-//	@RequestMapping(value = "normal/mypage", method = RequestMethod.GET)
-//	public String mypage (Model model) {
-//		LocalDate localDate = LocalDate.now();
-//		DateTimeFormatter d= DateTimeFormatter.ISO_LOCAL_DATE;
-//		String date = localDate.format(d);
-//		System.out.println(date);
-//		String plusdays=localDate.plusDays(6).format(d);
-//		System.out.println(plusdays);
-//		model.addAttribute("day", date);
-//		model.addAttribute("pday", plusdays);
-//		return "normal/mypage";
-//	}
-//	
+	
+	@RequestMapping(value = "normal/myreservation", method = RequestMethod.GET)
+	public String myReservation (ResUserVO ruvo, Model model) {
+		System.out.println(ruvo);
+	
+		model.addAttribute("my_r_list", rus.r_select(ruvo));
+		return "normal/myreservation";
+	}
+	
+
+	
+	@RequestMapping(value = "normal/mypage", method = RequestMethod.GET)
+	public String mypage (Model model) {
+		// 개인정보 수정 페이지
+		// 닉네임과 비밀번호 수정
+		// 출생년도, 성별 추가
+		return "normal/mypage";
+	}
+	
 
 }
