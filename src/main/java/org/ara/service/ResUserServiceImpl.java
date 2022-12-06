@@ -23,4 +23,10 @@ public class ResUserServiceImpl implements ResUserService {
 	public int delete(ResUserVO ruvo) {
 		return rum.delete(ruvo);		
 	}
+	public int rpselect(ResUserVO ruvo) {
+		return rum.rpselect(ruvo);
+	}
+	public int upres(ResUserVO ruvo) {
+		return rum.upres(ruvo);
+	}
 }

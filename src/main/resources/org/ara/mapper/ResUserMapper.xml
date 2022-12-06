@@ -51,4 +51,16 @@
 	where r_no=#{r_no}
 	and dt_no=#{dt_no}
 	</delete>
+	<select id="rpselect" resultType="int">
+	select r_people
+	from res_user
+	where r_no=#{r_no}
+	and dt_no=#{dt_no}
+	</select>
+	<update id="upres">
+	update res_user
+	set r_name=#{r_name},r_phone=#{r_phone},r_people=#{r_people},r_memo=#{r_memo}
+	where r_no=#{r_no}
+	and dt_no=#{dt_no}
+	</update>
 </mapper>

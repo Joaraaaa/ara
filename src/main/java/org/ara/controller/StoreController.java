@@ -189,54 +189,64 @@ public class StoreController {
 	public ResponseEntity<String> rmodify(@RequestBody ResUserVO ruvo, StoreVO svo, ResSetVO rsvo) {
 		System.out.println("수정 컨트롤러"+ruvo);
 		
-//		// 이름 전화번호 사람 수는 비어있으면 안넘어오도록 js에서 막는다.
-//		// rno cno를 select해서 r_people를 가져온다.
-//		int n_rp = ruivo.getR_people();
-//		int p_rp = rs.rpselect(ruivo);
-//		// 원래 저장되어 있던 rpeople와 화면에서 가져온 rpeople를 비교한다.
-//		System.out.println(n_rp);
-//		System.out.println(p_rp);
-//		// 해당 rno의 res_set -> people를 가져온다.
-//		rsvo.setRno(ruivo.getRno());
-//		System.out.println(rsvo);
-//		int n_p = rs.pselect(rsvo);
-//		System.out.println("수정 전의 예약 가능 인원 : "+n_p);
-//		svo.setBno(rs.bselect(rsvo));
-//		svo = ss.select(svo);
-//		System.out.println(svo);
-//		// if n_p + p_rp - n_rp >= 0 이면 people저장 가능
-//		int result = 0;
-//		if (n_p + p_rp - n_rp >= 0) {
-//			// people + 원rp - 화rp후 다시 people에 저장
-//			rsvo.setPeople(n_p + p_rp - n_rp);
+		// 수정 할 예약 인원
+		int new_rp = ruvo.getR_people();
+		System.out.println(new_rp);
+		
+		// 기존의 예약 인원
+		int rp = rus.rpselect(ruvo);
+		System.out.println(rp);
+		
+		// 해당 dt_no의 예약 가능 인원을 가져온다.
+		rsvo.setDt_no(ruvo.getDt_no());
+		rsvo.setS_no(ruvo.getS_no());
+		System.out.println(rsvo);
+		int people = rs.pselect(rsvo);
+		System.out.println("수정 전의 예약 가능 인원 : "+people);
+		
+		
+		// 예약 가능 최소 인원 찾아오기
+		svo.setS_no(ruvo.getS_no());
+		svo = ss.find_s_info(svo);
+		int p_min = svo.getP_min();
+		System.out.println("예약 가능 최소 인원 : "+ p_min);
+		
+		int result = 0;
+		// 가게의 예약 가능 인원에서 기존의 예약 인원을 더하고, 수정 할 예약 인원을 빼준다.
+		int new_people = people + rp - new_rp;
+		// 만약 new_p_set >= 0 이면, 
+		if (new_people >= 0) {
+			// 예약 가능 인원(people)에 저장
+			rsvo.setPeople(new_people);
 //			int people = rsvo.getPeople();
-//			System.out.println("수정 후의 예약 가능 인원 : "+ people);
-//			// if rsvo.getPeople < r_min 이면 r_status -> false
-//			int min = svo.getP_min();
-//			System.out.println(min);
-//			if (rsvo.getPeople() < svo.getP_min()) {
-//				rsvo.setR_status(false);
-//				System.out.println(rsvo);
+			System.out.println("수정 후의 예약 가능 인원 : "+ new_people);
+			
+			// 예약 가능 인원이 예약 가능 최소 인원보다 작으면,
+			if (new_people < p_min) {
+				// 더이상 예약 불가능.
+				rsvo.setR_status(false);
+				System.out.println(rsvo);
 //				rs.status(rsvo);
-//			}else {
-//				rsvo.setR_status(true);
-//				System.out.println(rsvo);
+			}else {
+				// 예약 가능
+				rsvo.setR_status(true);
+				System.out.println(rsvo);
 //				rs.status(rsvo);
-//			}
-//			// res_set에 people다시 저장하기(update)
-//			rs.update(rsvo);
-//			// where rno=#{rno} and cno=#{cno}인곳에 이름 전화번호 화rp 저장
-//			System.out.println("update전 확인 : "+ruivo);
-//			result = rs.upres(ruivo);
-//			
-//			
-//		}else {
-//			System.out.println("예약 다참");
-//			
-//		}
-//	return result == 1 ? new ResponseEntity<>("success", HttpStatus.OK)
-//	: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-return null;
+			}
+			// res_set에 people과 예약 상태 다시 저장하기(update)
+			rs.update(rsvo);
+			
+			// 수정된 예약자 정보 저장
+			System.out.println("update전 확인 : "+ruvo);
+			result = rus.upres(ruvo);
+			
+			
+		}else {
+			System.out.println("예약 가능 인원을 초과했습니다.");
+		}
+	return result == 1 ? new ResponseEntity<>("success", HttpStatus.OK)
+	: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//return null;
 	}
 	
 }
