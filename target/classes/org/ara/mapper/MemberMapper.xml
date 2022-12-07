@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.ara.mapper.MemberMapper">
+
+<!-- insert / 일반 회원가입, 소셜 회원가입 -->
+	<insert id="insert">
+	insert into member
+		<choose>
+		<!-- 소셜 회원가입 -->
+			<when test="sns==true">
+			(email,password,n_name,sns)
+			values(#{email},#{password},#{n_name},true);
+			</when>
+		<!-- 일반 회원가입 -->
+			<otherwise>
+			(email,password,n_name)
+			values(#{email},#{password},#{n_name});
+			</otherwise>
+		</choose>
+	</insert>
+	
+	
+<!-- select / 로그인, 비밀번호 확인, 닉네임 중복 확인, 이메일 중복 확인 -->
+	<select id="select" resultType="org.ara.model.MemberVO"> 
+	select * from member where
+		<choose>
+		<!-- 일반 로그인, 비밀번호 확인 -->
+			<when test="password!=null">
+			email=#{email} and password=#{password};
+			</when>
+		<!-- 중복 확인 -->
+			<otherwise>
+				<choose>
+				<!-- 닉네임 중복 확인 -->
+					<when test="n_name!=null">
+					n_name=#{n_name};
+					</when>
+				<!-- 이메일 중복 확인 -->
+					<otherwise>
+					email like concat(#{email},'%');
+					</otherwise>
+				</choose>
+			</otherwise>
+		</choose>
+	</select>
+	
+	
+<!-- update / 닉네임 수정, 비밀번호 수정 -->
+	<update id="update">
+	update member
+		<choose>
+		<!-- 닉네임 수정 -->
+			<when test="n_name!=null">
+			set n_name=#{n_name}
+			</when>
+		<!-- 비밀번호 수정 -->
+			<otherwise>
+			set password=#{password}
+			</otherwise>
+		</choose>
+	where email=#{email};
+	</update>
+	
+	
+<!-- delete / 회원 탈퇴 -->
+	<delete id="delete">
+	delete from member
+	where email=#{email}
+	and password=#{password};
+	</delete>
+
+
+
+
+	<!-- 사업자 회원가입, 일반 회원가입, 소셜 회원가입 -->
+<!-- 	<insert id="signUp"> -->
+<!-- 		<choose> -->
+		<!-- 사업자 회원가입 -->
+<!-- 		<when test="admin==true"> -->
+<!-- 		insert into b_member(crno,bname,phone,email,password,name) -->
+<!-- 		values(#{crno},#{bname},#{phone},#{email},#{password},#{name}) -->
+<!-- 		</when> -->
+<!-- 		<otherwise> -->
+<!-- 		insert into member -->
+<!-- 				<choose> -->
+<!-- 				소셜 회원가입 -->
+<!-- 				<when test="sns==true"> -->
+<!-- 				(password,name,email,sns) -->
+<!-- 				values(#{password},#{name},#{email},true); -->
+<!-- 				</when> -->
+<!-- 				일반 회원가입 -->
+<!-- 				<otherwise> -->
+<!-- 				(email,password,name) -->
+<!-- 				values(#{email},#{password},#{name}) -->
+<!-- 				</otherwise> -->
+<!-- 				</choose> -->
+<!-- 		</otherwise> -->
+<!-- 		</choose> -->
+<!-- 	</insert> -->
+	
+	
+	<!-- 로그인, 닉네임 중복 확인, 이메일 중복 확인 -->
+<!-- 	<select id="select" resultType="org.ara.model.MemberVO"> -->
+<!-- 		select * from  -->
+<!-- 		<choose> -->
+		<!-- 사업자 로그인 -->
+<!-- 		<when test="admin==true"> -->
+<!-- 		b_member where -->
+<!-- 		email=#{email} and password=#{password} and crno=#{crno}; -->
+<!-- 		</when> -->
+<!-- 		<otherwise> -->
+<!-- 		member where -->
+<!-- 				<choose> -->
+<!-- 				일반 로그인 -->
+<!-- 				<when test="password!=null"> -->
+<!-- 				email=#{email} and password=#{password}; -->
+<!-- 				</when> -->
+<!-- 				닉네임/이메일 중복 확인 -->
+<!-- 				<otherwise> -->
+<!-- 						<choose> -->
+<!-- 						<when test="name!=null">name=#{name};</when> -->
+<!-- 						<otherwise>email like concat(#{email},'%');</otherwise> -->
+<!-- 						</choose> -->
+<!-- 				</otherwise> -->
+<!-- 				</choose> -->
+<!-- 		</otherwise> -->
+<!-- 		</choose> -->
+<!-- 	</select> -->
+<!-- 	<insert id="insert"> -->
+<!-- 	insert into store(bno, store, address, open_time, close_time, start, cycle, table_no) -->
+<!-- 	values(#{bno}, #{store}, #{address}, #{open_time}, #{close_time}, #{start}, #{cycle}, #{table_no}); -->
+<!-- 	</insert> -->
+</mapper>

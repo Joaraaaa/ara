@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.ara.mapper.StoreMapper">
+
+<!-- insert / 가게 정보 추가 -->	
+	<insert id="insert">
+	insert into store(s_no, s_name, address, o_time, c_time, f_time, l_time, cycle, p_set, p_min, p_max)
+	values(#{s_no}, #{s_name}, #{address}, #{o_time}, #{c_time}, #{f_time}, #{l_time}, #{cycle}, #{p_set}, #{p_min}, #{p_max});
+	</insert>
+	
+<!-- select / 전체 가게 리스트, 가게 정보 검색, 총 가게 수 찾기 -->
+	<!-- 가게 정보 검색 -->
+	<select id="select_one" resultType="org.ara.model.StoreVO">
+	select * from store where s_no = #{s_no};
+	</select>
+	
+	<!-- 전체 가게 리스트 -->
+	<select id="select_all" resultType="org.ara.model.StoreVO">
+	select * from store;
+	</select>
+
+	<!-- 총 가게 수 찾기	 -->
+	<select id="select_num" resultType="int">
+	select max(s_no)
+	from store;
+	</select>
+	
+<!-- update / 가게 정보 수정 -->
+	<update id="update">
+	update store
+	set s_name=#{s_name},address=#{address},o_time=#{o_time},c_time=#{c_time},f_time=#{f_time},l_time=#{l_time},cycle=#{cycle},p_set=#{p_set},p_min=#{p_min},p_max=#{p_max}
+	where s_no=#{s_no};
+	</update>
+</mapper>

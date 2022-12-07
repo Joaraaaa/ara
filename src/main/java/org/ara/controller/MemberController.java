@@ -102,21 +102,28 @@ public class MemberController {
 	
 	
 // 이메일, 닉네임 중복체크
-	@RequestMapping(value = "/member/signup/{str}", method = RequestMethod.GET)
-	public ResponseEntity<String> emchk(@PathVariable String str, MemberVO mvo) {
-		System.out.println(str);
-		try {
-			if (str.contains("@")) {
-				mvo.setEmail(str);
-				return new ResponseEntity<>(ms.select_email(mvo).getEmail(), HttpStatus.OK);
-			} else {
-				mvo.setN_name(str);
-				return new ResponseEntity<>(ms.select_n_name(mvo).getN_name(), HttpStatus.OK);
-			}
+	@RequestMapping(value = "/check", method = RequestMethod.GET)
+	public ResponseEntity<String> check(MemberVO mvo) {
+		
+		// 이메일과 닉네임중 하나의 정보만 들어온다.	
+		System.out.println("중복 체크 : "+mvo);
+		
+		// 만약 이메일에 정보가 있다면,
+		if (mvo.getEmail()!=null) {
 			
-		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+			// 이메일을 검색한 결과를 보낸다. 검색되면 중복, 오류이면 사용가능
+			return new ResponseEntity<>(ms.select_email(mvo).getEmail(), HttpStatus.OK);
+		
+		// 만약 닉네임에 정보가 있다면,
+		} else if (mvo.getN_name()!=null) {
+			
+			// 닉네임을 검색한 결과를 보낸다. 검색되면 중복, 오류이면 사용가능
+			return new ResponseEntity<>(ms.select_n_name(mvo).getN_name(), HttpStatus.OK);
+		
+		}else {
+			return null;
 		}
+				
 	}
 	
 	
