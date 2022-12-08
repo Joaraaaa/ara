@@ -2,7 +2,7 @@
  * 
  */
 
-$(".member").on("click",function(){
+$(".admin_radio").on("click",function(){
 let admin=$('input[name="admin"]:checked').val();	
 	console.log(admin);
 	if(admin=="true"){
@@ -20,35 +20,25 @@ let admin=$('input[name="admin"]:checked').val();
 let lchk=false;
 $("#loginsub").on("click",function(e){
 	e.preventDefault();
-	if($('input[name="admin"]:checked').val()!=true){
+	let admin=$('input[name="admin"]:checked').val();
 		if($("#email").val()==""){
-			$("#login_msg").text("이메일 입력").css("color","red");
+			$("#login_msg").text("이메일을 입력해 주세요").css("color","red");
 		}else{
 			if($("#password").val()==""){
-				$("#login_msg").text("비밀번호 입력").css("color","red");
+				$("#login_msg").text("비밀번호를 입력해 주세요").css("color","red");
 			}else{
-				$("form[action='/member/login']").submit();
-			}
-		}
-	}else{
-		if($("#email").val()==""){
-			$("#login_msg").text("이메일 입력").css("color","red");
-		}else{
-			if($("#password").val()==""){
-				$("#login_msg").text("비밀번호 입력").css("color","red");
-			}else{
-//				if($("input[name=admin]:checked").val()=="true"){
+				if(admin=="true"){
 					if($("#buisness_num").val()==""){
-						$("#login_msg").text("사업자 등록번호 입력").css("color","red");
+						$("#login_msg").text("사업자등록번호를 입력해 주세요").css("color","red");
 					}else{
 						$("form[action='/member/login']").submit();
 					}
-//				}else{
-//					$("form[action='/member/login']").submit();
-//				}
+				}else{
+					$("form[action='/member/login']").submit();
+				}
 			}
 		}
-	}
+
 })
 
 
@@ -116,7 +106,7 @@ var naverLogin = new naver.LoginWithNaverId(
 		callbackUrl: "http://localhost:8080/member/naverlogin",
   		// 본인의 callBack url로 수정하세요.
 		isPopup: false,
-		loginButton: {color: "white", type: 3,height:40}
+		loginButton: {color: "white", type: 2,height:40}
 	}
 );
 

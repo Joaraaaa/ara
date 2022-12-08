@@ -7,12 +7,12 @@
 <title>가게 정보 설정 페이지</title>
 </head>
 <body>
-가게 고유번호 : ${userInfo.s_no}
-사업자 등록번호 : ${userInfo.c_no}
-상호명 : ${userInfo.c_name}
-가게 전화 : ${userInfo.phone}
+가게 고유번호 : ${bUserInfo.s_no}
+사업자 등록번호 : ${bUserInfo.c_no}
+상호명 : ${bUserInfo.c_name}
+가게 전화 : ${bUserInfo.phone}
 <form action="/store/restaurantsetting" method="post">
-<input type="text" name="s_no" value="${userInfo.s_no}">
+<input type="text" name="s_no" value="${bUserInfo.s_no}">
 <h6>가게이름</h6>
 <input type="text" name="s_name" value="${storeInfo.s_name}">
 <h6>가게 주소</h6>

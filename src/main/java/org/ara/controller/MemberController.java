@@ -193,7 +193,7 @@ public class MemberController {
 		try {
 			bs.signUp(bmvo); 
 			// 회원가입 후 바로 로그인.
-			session.setAttribute("userInfo", bs.login(bmvo));
+			session.setAttribute("bUserInfo", bs.login(bmvo));
 			store.setS_no(bs.login(bmvo).getS_no());
 			System.out.println(store.getS_no());
 			session.setAttribute("storeInfo", ss.find_s_info(store));
@@ -232,23 +232,31 @@ public class MemberController {
 		if(mvo.isAdmin()==true) {
 			
 			// 세션에 회원 정보를 저장
-			session.setAttribute("userInfo", bs.login(bmvo));
+			session.setAttribute("bUserInfo", bs.login(bmvo));
 			
-			// 해당 회원의 가게 정보를 불러와 세션에 저장
-			store.setS_no(bs.login(bmvo).getS_no());
-			System.out.println(store.getS_no());
-			session.setAttribute("storeInfo", ss.find_s_info(store));
-			
-			// 사업자 페이지로
-			return "redirect:/bhome";
+			if (session.getAttribute("bUserInfo") != null) {
+				// 해당 회원의 가게 정보를 불러와 세션에 저장
+				store.setS_no(bs.login(bmvo).getS_no());
+				System.out.println(store.getS_no());
+				session.setAttribute("storeInfo", ss.find_s_info(store));
+				// 사업자 페이지로
+				return "redirect:/bhome";
+			} else {
+				session.setAttribute("loginFail", "일치하는 회원 정보가 없습니다.");
+				return "member/login";
+			}
 			
 		}else {
 			
 			// 세션에 회원 정보를 저장
 			session.setAttribute("userInfo", ms.login(mvo));
-			
-			// 일반 회원 페이지로
-			return "redirect:/nhome";
+			if (session.getAttribute("userInfo") != null) {
+				// 일반 회원 페이지로
+				return "redirect:/nhome";
+			} else {
+				session.setAttribute("loginFail", "일치하는 회원 정보가 없습니다.");
+				return "member/login";
+			}
 			
 		}
 	}
