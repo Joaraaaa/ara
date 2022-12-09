@@ -5,14 +5,23 @@
 $(".admin_radio").on("click",function(){
 let admin=$('input[name="admin"]:checked').val();	
 	console.log(admin);
+	$("#login_msg").text("");
 	if(admin=="true"){
 		console.log("사업자 로그인");
 		$("#buisness_num").show();
 		$("#social_login_box").hide();
+		$("#admin_t_box").css({"background-color":"white","border-bottom-style": "none"});
+		$("#admin_f_box").css({"background-color":"#f9f9f9","border-bottom":"2px solid #f9f9f9"});
+		$("#label_f").css({"color":"#808080","font-weight":"100"});
+		$("#label_t").css({"color":"black","font-weight":"bold"});
 	}else{
 		console.log("일반 로그인");
 		$("#buisness_num").hide();
 		$("#social_login_box").show();
+		$("#admin_f_box").css({"background-color":"white","border-bottom-style": "none"});
+		$("#admin_t_box").css({"background-color":"#f9f9f9","border-bottom":"2px solid #f9f9f9"});
+		$("#label_t").css({"color":"#808080","font-weight":"100"});
+		$("#label_f").css({"color":"black","font-weight":"bold"});
 	}
 })
 

@@ -18,31 +18,64 @@
 		<div id="admin_box">
 			<div id="admin_f_box">
 				<input type="radio" class="admin_radio" id="admin_f" name="admin" value="false" checked>
-				<label for="admin_f" class="admin_label">일반 회원 로그인</label>
+				<label for="admin_f" class="admin_label" id="label_f">일반 회원 로그인</label>
 			</div>
 			<div id="admin_t_box">
 				<input type="radio" class="admin_radio" id="admin_t" name="admin" value="true">
-				<label for="admin_t" class="admin_label">사업자 회원 로그인</label>
+				<label for="admin_t" class="admin_label" id="label_t">사업자 회원 로그인</label>
 			</div>
 		</div>
 		
 	<!-- 로그인 입력창 -->
 		<div id="login_box">
-		
+
 			<table id="login_table">
 				<tr>
 					<td><!-- 이메일 입력(일반/사업자) -->
-						<input type="text" placeholder="이메일" name="email" class="loginInput" id="email">
+						<div class="input_div">
+						<span class="input_span">&nbsp;이메일&nbsp;</span>
+						<input type="text" placeholder="xxxx@xxx.xxx" name="email" class="loginInput" id="email">
+						</div>
 					</td>
 				</tr>
 				<tr>
 					<td><!-- 비밀번호 입력(일반/사업자) -->
-						<input type="password" placeholder="비밀번호" name="password" class="loginInput" id="password">
+						<div class="input_div">
+						<span class="input_span">&nbsp;비밀번호&nbsp;</span>
+						<input type="password" placeholder="비밀번호를 입력하세요.." name="password" class="loginInput" id="password">
+						</div>
 					</td>
 				</tr>
 				<tr>
-					<td><!-- 사업자등록번호 입력(일반/사업자) -->
-						<input type="text" placeholder="사업자등록번호" name="c_no" class="loginInput" id="buisness_num" style="display:none">
+					<td>
+					<!-- 사업자등록번호 입력(일반/사업자) -->
+						<div class="input_div" id="buisness_num" style="display:none">
+						<span class="input_span">&nbsp;사업자등록번호&nbsp;</span>
+						<input type="text" placeholder="숫자만 입력.." name="c_no" class="loginInput">
+						</div>
+					<!-- 소셜로그인 -->
+						<div id="social_login_box">
+						<!-- 네이버 로그인 -->
+							<div id="naver_img_box" class="social_btn">
+								<a id="naverIdLogin_loginButton" href="#"> 
+									<img src="http://vonpat01.cafe24.com/wp-content/uploads/2020/08/naver.png" height="60">
+								</a>
+							</div>
+							<div id="naverIdLogin" class="ngk_btn"></div>
+						<!-- 구글 로그인 -->
+							<div id="google_img_box" class="social_btn">
+								<img id="google_img" src="https://littledeep.com/wp-content/uploads/2020/09/google-icon-styl.png" height="60">
+							</div>
+							<div id="buttonDiv" class="ngk_btn"></div>
+						<!-- 카카오 톡로그인 -->
+							<div id="kakao_img_box" class="social_btn">
+								<div class="kakaobtn ngk_btn">
+									<a id="kakao-login-btn" href="javascript:loginWithKakao()"> 
+										<img src="https://www.ssghero.com/assets/images/login/kakao_login_circle.png" width="60" alt="카카오 로그인 버튼" />
+									</a>
+								</div>
+							</div>
+						</div>
 					</td>
 				</tr>
 				<tr>
@@ -52,41 +85,14 @@
 				</tr>	
 				<tr>
 					<td><!-- 로그인 버튼 -->
+						<div id="loginsub_box">
 						<input type="submit" value="로그인" id="loginsub">
-<!-- 						<div id="loginsub_box"> -->
-<!-- 						</div> -->
+						</div>
 					</td>
 				</tr>
 			
 			</table>
 
-		<!-- 소셜로그인 -->
-			<div id="social_login_box">
-			
-			<!-- 네이버 로그인 -->
-				<div id="naver_img_box" class="social_btn">
-					<a id="naverIdLogin_loginButton" href="#"> 
-						<img src="http://vonpat01.cafe24.com/wp-content/uploads/2020/08/naver.png" height="60">
-					</a>
-				</div>
-				<div id="naverIdLogin" class="ngk_btn"></div>
-			
-			<!-- 구글 로그인 -->
-				<div id="google_img_box" class="social_btn">
-					<img id="google_img" src="https://littledeep.com/wp-content/uploads/2020/09/google-icon-styl.png" height="60">
-				</div>
-				<div id="buttonDiv" class="ngk_btn"></div>
-			
-			<!-- 카카오 톡로그인 -->
-				<div id="kakao_img_box" class="social_btn">
-					<div class="kakaobtn ngk_btn">
-						<a id="kakao-login-btn" href="javascript:loginWithKakao()"> 
-							<img src="https://www.ssghero.com/assets/images/login/kakao_login_circle.png" width="60" alt="카카오 로그인 버튼" />
-						</a>
-					</div>
-				</div>
-				
-			</div>
 		
 		<!-- 링크 연결 -->
 			<div id="link_box">
